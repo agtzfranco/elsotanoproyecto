@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Disponibilidad | El Sótano</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=EB+Garamond:ital,wght@0,400;0,600;1,400;1,600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header>
+      <div class="container">
+        <nav>
+          <a href="index.html" class="logo-link">
+            <img
+              src="IMG/ElSotano3offblack.png"
+              alt="El Sótano Logo"
+              class="logo-img"
+            />
+          </a>
+          <ul class="nav-links">
+            <li><a href="index.html">Inicio</a></li>
+            <li><a href="disponibilidad.html">Disponibilidad</a></li>
+            <li id="user-area"></li>
+            <li><a href="reservas.html" class="btn btn-nav">Reservar</a></li>
+          </ul>
+          <button class="mobile-menu-btn" aria-label="Abrir menú">☰</button>
+        </nav>
+      </div>
+    </header>
+
+    <section id="disponibilidad">
+      <div class="container">
+        <span class="sticker">★ PIZARRA DEL DÍA ★</span>
+        <h2>DISPONIBILIDAD <span>EN VIVO</span></h2>
+        <p class="section-intro">
+          Mira qué horarios están libres u ocupados en cada servicio, sin cuenta
+          y sin compromiso. La pizarra es pública.
+        </p>
+
+        <div class="board-controls">
+          <button id="dayPrev" class="cal-nav" aria-label="Día anterior">
+            ←
+          </button>
+          <input type="date" id="dispFecha" />
+          <button id="dayNext" class="cal-nav" aria-label="Día siguiente">
+            →
+          </button>
+          <span id="dispFechaLarga" class="disp-estado"></span>
+        </div>
+
+        <div class="board-scroll">
+          <div id="board" class="board"></div>
+        </div>
+
+        <div class="disp-leyenda">
+          <span class="leyenda-item"
+            ><span class="cuadro libre"></span> Libre</span
+          >
+          <span class="leyenda-item"
+            ><span class="cuadro ocupado"></span> Ocupado / bloqueado</span
+          >
+        </div>
+
+        <div class="cta-panel" style="margin-top: 3rem">
+          <a href="reservas.html" class="btn">VI UN HUECO — IR A RESERVAR</a>
+        </div>
+      </div>
+    </section>
+
+    <script src="auth.js?v=2"></script>
+    <script src="disponibilidad.js?v=1"></script>
+  </body>
+</html>

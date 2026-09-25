@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Panel Administrativo | El Sótano</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=EB+Garamond:ital,wght@0,400;0,600;1,400;1,600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header>
+      <div class="container">
+        <nav>
+          <a href="index.html" class="logo-link">
+            <img
+              src="IMG/ElSotano3offblack.png"
+              alt="El Sótano Logo"
+              class="logo-img"
+            />
+          </a>
+          <ul class="nav-links">
+            <li><a href="index.html">Inicio</a></li>
+            <li><a href="reservas.html">Disponibilidad</a></li>
+            <li id="user-area"></li>
+          </ul>
+          <button class="mobile-menu-btn" aria-label="Abrir menú">☰</button>
+        </nav>
+      </div>
+    </header>
+
+    <section id="admin">
+      <div class="container">
+        <span class="sticker">★ SOLO STAFF ★</span>
+        <h2>PANEL <span>ADMINISTRATIVO</span></h2>
+        <p class="section-intro">
+          Confirma, cancela o bloquea horarios. Todo se refleja al instante en
+          el calendario público.
+        </p>
+        <p id="statLine" class="disp-estado"></p>
+
+        <div class="admin-bar">
+          <div class="form-group">
+            <label for="filtroFecha">Filtrar por fecha</label>
+            <input type="date" id="filtroFecha" />
+          </div>
+          <div class="form-group">
+            <label for="filtroEstado">Estado</label>
+            <select id="filtroEstado">
+              <option value="">Todas</option>
+              <option value="pendiente">Pendientes</option>
+              <option value="confirmada">Confirmadas</option>
+              <option value="cancelada">Canceladas</option>
+              <option value="bloqueo">Bloqueos</option>
+            </select>
+          </div>
+          <button id="btnLimpiarFiltros" class="btn btn-nav">VER TODAS</button>
+        </div>
+
+        <div id="adminMsg" class="disp-estado"></div>
+        <div id="adminList" class="reservas-list"></div>
+
+        <div class="confirm-card admin-block">
+          <h3 class="step-title">
+            <span class="step-num">!</span> BLOQUEAR HORARIO
+          </h3>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="blqFecha">Fecha</label>
+              <input type="date" id="blqFecha" />
+            </div>
+            <div class="form-group">
+              <label for="blqHora">Hora de inicio</label>
+              <select id="blqHora">
+                <option value="11">11:00</option>
+                <option value="12">12:00</option>
+                <option value="13">13:00</option>
+                <option value="14">14:00</option>
+                <option value="15">15:00</option>
+                <option value="16">16:00</option>
+                <option value="17">17:00</option>
+                <option value="18">18:00</option>
+                <option value="19">19:00</option>
+                <option value="20">20:00</option>
+                <option value="21">21:00</option>
+                <option value="22">22:00</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="blqDur">Duración</label>
+              <select id="blqDur">
+                <option value="1" selected>1 hora</option>
+                <option value="2">2 horas</option>
+                <option value="3">3 horas</option>
+                <option value="4">4 horas</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="blqMotivo">Motivo</label>
+              <input
+                type="text"
+                id="blqMotivo"
+                placeholder="Mantenimiento, evento privado..."
+              />
+            </div>
+          </div>
+          <button id="btnBloquear" class="btn btn-full">
+            BLOQUEAR HORARIO
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <script src="auth.js?v=2"></script>
+    <script src="admin.js?v=1"></script>
+  </body>
+</html>
