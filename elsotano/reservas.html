@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reserva en línea | El Sótano</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=EB+Garamond:ital,wght@0,400;0,600;1,400;1,600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header>
+      <div class="container">
+        <nav>
+          <a href="index.html" class="logo-link">
+            <img
+              src="IMG/ElSotano3offblack.png"
+              alt="El Sótano Logo"
+              class="logo-img"
+            />
+          </a>
+          <ul class="nav-links">
+            <li><a href="index.html">Inicio</a></li>
+            <li id="user-area"></li>
+            <li>
+              <a href="reservas.html" class="btn btn-nav">Reservar</a>
+            </li>
+          </ul>
+          <button class="mobile-menu-btn" aria-label="Abrir menú">☰</button>
+        </nav>
+      </div>
+    </header>
+
+    <section id="booking">
+      <div class="container">
+        <h2>RESERVA <span>EN LÍNEA</span></h2>
+        <p class="section-intro">
+          Elige tu servicio, aparta fecha y hora del calendario y confirma al
+          instante. Necesitas una cuenta para confirmar.
+        </p>
+
+        <!-- PASO 1: SERVICIOS -->
+        <div id="stepServicio">
+          <h3 class="step-title">
+            <span class="step-num">1</span> ELIGE TU SERVICIO
+          </h3>
+          <div class="services-grid" id="bookingServices"></div>
+        </div>
+
+        <!-- PASO 2: FECHA Y HORA -->
+        <div class="booking-step" id="stepFecha" hidden>
+          <h3 class="step-title">
+            <span class="step-num">2</span> ELIGE FECHA Y HORA
+            <button
+              id="btnCambiarServicio"
+              class="btn btn-nav"
+              style="margin-left: 1.5rem"
+              hidden
+            >
+              ← CAMBIAR SERVICIO
+            </button>
+          </h3>
+          <div class="booking-calendar-wrap">
+            <div class="calendar">
+              <div class="cal-header">
+                <button id="calPrev" class="cal-nav" aria-label="Mes anterior">
+                  ←
+                </button>
+                <div id="calTitle" class="cal-title"></div>
+                <button id="calNext" class="cal-nav" aria-label="Mes siguiente">
+                  →
+                </button>
+              </div>
+              <div class="cal-week">
+                <span>L</span><span>M</span><span>M</span><span>J</span
+                ><span>V</span><span>S</span><span>D</span>
+              </div>
+              <div id="calGrid" class="cal-grid"></div>
+            </div>
+            <div class="slots-panel">
+              <div id="disp-estado" class="disp-estado">
+                Selecciona una fecha del calendario.
+              </div>
+              <div id="slots-grid" class="slots-grid"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PASO 3: CONFIRMACIÓN -->
+        <div class="booking-step" id="stepConfirm" hidden>
+          <h3 class="step-title">
+            <span class="step-num">3</span> CONFIRMA TU RESERVA
+          </h3>
+          <div class="confirm-card">
+            <div id="confirmSummary"></div>
+            <div class="form-group" id="duracionGroup">
+              <label for="duracion">Duración</label>
+              <select id="duracion">
+                <option value="1" selected>1 hora</option>
+                <option value="2">2 horas</option>
+                <option value="3">3 horas</option>
+                <option value="4">4 horas</option>
+                <option value="5">5 horas</option>
+                <option value="6">6 horas</option>
+                <option value="7">7 horas</option>
+                <option value="8">8 horas</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="mensaje">Notas para el staff (opcional)</label>
+              <textarea
+                id="mensaje"
+                rows="3"
+                placeholder="Integrantes, requerimientos, etc."
+              ></textarea>
+            </div>
+            <div id="confirmMsg" class="disp-estado"></div>
+            <button id="btnConfirmar" class="btn btn-full">
+              CONFIRMAR RESERVA
+            </button>
+            <small class="form-hint" style="margin-top: 1rem">
+              * Al confirmar aceptas el horario de 11:00 a 23:00 y la política
+              de cancelación.
+            </small>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="cut-line" aria-hidden="true"></div>
+
+    <script src="auth.js?v=2"></script>
+    <script src="reservas.js?v=2"></script>
+  </body>
+</html>

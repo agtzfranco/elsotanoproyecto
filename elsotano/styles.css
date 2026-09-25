@@ -1,0 +1,1703 @@
+/* =========================================
+   VARIABLES Y RESET - ESTILO B/N ALTO CONTRASTE
+   ========================================= */
+:root {
+  --bg-dark: #000000; /* Negro puro */
+  --bg-darker: #000000; /* Negro absoluto */
+  --bg-card: #0a0a0a; /* Negro casi puro */
+  --bg-input: #1a1a1a; /* Gris muy oscuro */
+  --text-primary: #ffffff; /* Blanco puro */
+  --text-secondary: #888888; /* Gris medio */
+  --accent: #ffffff; /* Blanco como acento */
+  --accent-hover: #cccccc; /* Gris claro para hover */
+  --error: #ff3333; /* Rojo solo para errores */
+  --success: #ffffff; /* Blanco para éxito */
+  --border: #333333; /* Gris oscuro para bordes */
+  --border-light: #555555; /* Gris medio para bordes */
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: "Impact", "Arial Black", "Helvetica Neue", sans-serif;
+  background-color: var(--bg-dark);
+  color: var(--text-primary);
+  line-height: 1.4;
+  letter-spacing: -0.02em;
+}
+
+/* =========================================
+   TIPOGRAFÍA Y UTILIDADES
+   ========================================= */
+h1,
+h2,
+h3,
+h4 {
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+h2 {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  text-align: center;
+  border-bottom: 3px solid var(--text-primary);
+  padding-bottom: 1rem;
+  display: inline-block;
+  width: 100%;
+}
+
+h2 span {
+  background-color: var(--text-primary);
+  color: var(--bg-dark);
+  padding: 0 0.5rem;
+}
+
+p {
+  color: var(--text-secondary);
+  margin-bottom: 1rem;
+  font-family: "Courier New", monospace;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+}
+
+.section-intro {
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto 3rem;
+  font-size: 1rem;
+  border-left: 4px solid var(--text-primary);
+  padding-left: 1rem;
+  font-family: "Courier New", monospace;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.bg-darker {
+  background-color: var(--bg-darker);
+  border-top: 2px solid var(--border);
+  border-bottom: 2px solid var(--border);
+}
+
+/* =========================================
+   BOTONES - ESTILO MINIMALISTA B/N
+   ========================================= */
+.btn {
+  display: inline-block;
+  background-color: var(--text-primary);
+  color: var(--bg-dark);
+  padding: 16px 40px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  text-decoration: none;
+  border: 3px solid var(--text-primary);
+  border-radius: 0;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.9rem;
+  text-align: center;
+  font-family: "Impact", sans-serif;
+}
+
+.btn:hover {
+  background-color: var(--bg-dark);
+  color: var(--text-primary);
+  transform: translateY(-3px);
+  box-shadow: 5px 5px 0px var(--text-primary);
+}
+
+.btn-outline {
+  background-color: transparent;
+  color: var(--text-primary);
+  border: 3px solid var(--text-primary);
+}
+
+.btn-outline:hover {
+  background-color: var(--text-primary);
+  color: var(--bg-dark);
+}
+
+.btn-full {
+  width: 100%;
+}
+
+.btn-nav {
+  padding: 10px 24px;
+  font-size: 0.85rem;
+  border: 2px solid var(--text-primary);
+}
+
+/* =========================================
+   HEADER Y NAVEGACIÓN
+   ========================================= */
+header {
+  position: sticky;
+  top: 0;
+  background-color: var(--bg-dark);
+  border-bottom: 3px solid var(--text-primary);
+  z-index: 1000;
+  padding: 1.5rem 0;
+}
+
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Estilos para el logo como IMAGEN */
+.logo-link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  filter: grayscale(100%) contrast(1.2);
+}
+
+.logo-img {
+  height: 100px;
+  width: auto;
+  max-width: 250px;
+  display: block;
+  object-fit: contain;
+  filter: grayscale(100%) brightness(0) invert(1);
+}
+
+.footer-logo-img {
+  height: 40px;
+  max-width: 150px;
+  filter: grayscale(100%) brightness(0) invert(1);
+}
+
+.nav-links {
+  display: flex;
+  gap: 2.5rem;
+  list-style: none;
+  align-items: center;
+}
+
+.nav-links a:not(.btn) {
+  color: var(--text-primary);
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  transition: all 0.2s;
+  position: relative;
+  font-family: "Courier New", monospace;
+}
+
+.nav-links a:not(.btn):hover {
+  color: var(--bg-dark);
+  background-color: var(--text-primary);
+  padding: 0.2rem 0.5rem;
+}
+
+.mobile-menu-btn {
+  display: none;
+  background: none;
+  border: 2px solid var(--text-primary);
+  color: var(--text-primary);
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  font-family: "Courier New", monospace;
+}
+
+/* =========================================
+   HERO SECTION - ALTO CONTRASTE
+   ========================================= */
+.hero {
+  min-height: 90vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background:
+    linear-gradient(rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.95)),
+    url("IMG/hero.jpg");
+  background-size: cover;
+  background-position: center;
+  padding: 0 1.5rem;
+  border-bottom: 3px solid var(--text-primary);
+  filter: grayscale(100%) contrast(1.1);
+}
+
+.hero-content h1 {
+  font-size: clamp(3rem, 8vw, 6rem);
+  margin-bottom: 2rem;
+  line-height: 0.95;
+  text-shadow: 4px 4px 0px rgba(255, 255, 255, 0.1);
+}
+
+.hero-content h1 span {
+  display: block;
+  background-color: var(--text-primary);
+  color: var(--bg-dark);
+  padding: 0.5rem 1rem;
+  margin-top: 1rem;
+}
+
+.hero-content p {
+  font-size: 1.1rem;
+  max-width: 600px;
+  margin: 0 auto 3rem;
+  color: var(--text-secondary);
+  font-family: "Courier New", monospace;
+  border-left: 3px solid var(--text-primary);
+  padding-left: 1rem;
+  text-align: left;
+}
+
+.hero-buttons {
+  display: flex;
+  gap: 1.5rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* =========================================
+   NOSOTROS - ESTILO GRID
+   ========================================= */
+#nosotros {
+  padding: 6rem 0;
+  background-color: var(--bg-dark);
+}
+
+.about-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 0;
+  margin-top: 3rem;
+  border: 3px solid var(--text-primary);
+}
+
+.about-card {
+  background-color: var(--bg-card);
+  border: 2px solid var(--border);
+  padding: 3rem;
+  border-radius: 0;
+  transition: all 0.3s;
+  position: relative;
+}
+
+.about-card:nth-child(1) {
+  border-right: 2px solid var(--border);
+}
+.about-card:nth-child(2) {
+  border-right: none;
+}
+
+.about-card:hover {
+  background-color: var(--text-primary);
+  color: var(--bg-dark);
+  transform: none;
+}
+
+.about-card:hover h3,
+.about-card:hover p {
+  color: var(--bg-dark);
+}
+
+.about-card h3 {
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
+  color: var(--text-primary);
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 0.5rem;
+}
+
+.about-card p {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+/* =========================================
+   SERVICIOS - ESTILO TARJETAS B/N
+   ========================================= */
+#servicios {
+  padding: 6rem 0;
+  background-color: var(--bg-card);
+  border-top: 3px solid var(--text-primary);
+  border-bottom: 3px solid var(--text-primary);
+}
+
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 0;
+  margin-top: 3rem;
+  border: 3px solid var(--text-primary);
+}
+
+.service-card {
+  background-color: var(--bg-dark);
+  border: 2px solid var(--border);
+  border-radius: 0;
+  padding: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: all 0.3s;
+  position: relative;
+}
+
+.service-card:nth-child(1) {
+  border-right: 2px solid var(--border);
+  border-bottom: 2px solid var(--border);
+}
+.service-card:nth-child(2) {
+  border-right: 2px solid var(--border);
+  border-bottom: 2px solid var(--border);
+}
+.service-card:nth-child(3) {
+  border-right: 2px solid var(--border);
+  border-bottom: 2px solid var(--border);
+}
+.service-card:nth-child(4) {
+  border-bottom: none;
+}
+
+.service-card:hover {
+  background-color: var(--text-primary);
+  border-color: var(--text-primary);
+  transform: none;
+  box-shadow: 8px 8px 0px var(--bg-dark);
+}
+
+.service-card:hover h3,
+.service-card:hover .price {
+  color: var(--bg-dark);
+}
+
+.service-card:hover p,
+.service-card:hover .service-features li {
+  color: var(--bg-dark);
+  border-color: var(--bg-dark);
+}
+
+.service-card h3 {
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+  color: var(--text-primary);
+}
+
+.price {
+  font-size: 2.5rem;
+  font-weight: 900;
+  color: var(--text-primary);
+  margin: 2rem 0;
+  font-family: "Impact", sans-serif;
+  letter-spacing: -0.05em;
+}
+
+.price-large {
+  font-size: 4rem;
+  margin-bottom: 2rem;
+}
+
+.price span {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  font-weight: 400;
+  font-family: "Courier New", monospace;
+  display: block;
+  margin-top: 0.5rem;
+  letter-spacing: 0.1em;
+}
+
+.service-features {
+  list-style: none;
+  margin-bottom: 2rem;
+}
+
+.service-features li {
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  font-family: "Courier New", monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.service-features li:last-child {
+  border-bottom: none;
+}
+
+/* =========================================
+   EQUIPO DE AUDIO - ESTILO TÉCNICO
+   ========================================= */
+.equipment-section {
+  padding: 6rem 0;
+  background-color: var(--bg-dark);
+}
+
+.equipment-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  margin-top: 3rem;
+  border: 3px solid var(--text-primary);
+}
+
+.equipment-info {
+  padding: 4rem;
+  background-color: var(--bg-card);
+  border-right: 3px solid var(--text-primary);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.equipment-list-container {
+  padding: 4rem;
+  background-color: var(--bg-dark);
+}
+
+.equipment-list-container h3 {
+  margin-bottom: 2rem;
+  color: var(--text-primary);
+  font-size: 1.5rem;
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 1rem;
+}
+
+.equipment-list {
+  list-style: none;
+}
+
+.equipment-list li {
+  padding: 1.25rem 0;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  color: var(--text-secondary);
+  font-family: "Courier New", monospace;
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.equipment-list li::before {
+  content: "▸";
+  color: var(--text-primary);
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.equipment-list li:last-child {
+  border-bottom: none;
+}
+
+/* =========================================
+   RESERVACIONES (FORMULARIO) - ESTILO MINIMALISTA
+   ========================================= */
+#reservaciones {
+  padding: 6rem 0;
+  background-color: var(--bg-card);
+  border-top: 3px solid var(--text-primary);
+}
+
+.reservation-form {
+  max-width: 700px;
+  margin: 0 auto;
+  background-color: var(--bg-dark);
+  padding: 3rem;
+  border: 3px solid var(--text-primary);
+  border-radius: 0;
+}
+
+.form-group {
+  margin-bottom: 2rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.75rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 0.85rem;
+  font-family: "Courier New", monospace;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 16px;
+  background-color: var(--bg-input);
+  border: 2px solid var(--border);
+  border-radius: 0;
+  color: var(--text-primary);
+  font-family: "Courier New", monospace;
+  font-size: 1rem;
+  transition: all 0.2s;
+  letter-spacing: 0.05em;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: var(--text-primary);
+  background-color: var(--bg-dark);
+  box-shadow: 4px 4px 0px var(--text-primary);
+}
+
+.form-group input:user-invalid,
+.form-group select:user-invalid {
+  border-color: var(--error);
+}
+
+.form-group input:user-valid,
+.form-group select:user-valid {
+  border-color: var(--text-primary);
+}
+
+.form-hint {
+  display: block;
+  margin-top: 0.5rem;
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  font-family: "Courier New", monospace;
+  text-transform: uppercase;
+}
+
+.error-message {
+  display: block;
+  color: var(--error);
+  font-size: 0.85rem;
+  margin-top: 0.5rem;
+  min-height: 1.2em;
+  font-family: "Courier New", monospace;
+  text-transform: uppercase;
+}
+
+.success-message {
+  background-color: var(--text-primary);
+  color: var(--bg-dark);
+  padding: 1.5rem;
+  border: 3px solid var(--text-primary);
+  border-radius: 0;
+  text-align: center;
+  margin-top: 1.5rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-family: "Courier New", monospace;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+/* =========================================
+   FOOTER - ESTILO MINIMALISTA
+   ========================================= */
+footer {
+  background-color: var(--bg-darker);
+  border-top: 3px solid var(--text-primary);
+  padding: 4rem 0 2rem;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 3rem;
+  margin-bottom: 3rem;
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 3rem;
+}
+
+.footer-col h4 {
+  color: var(--text-primary);
+  font-size: 1.2rem;
+  margin-bottom: 1.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 0.5rem;
+  display: inline-block;
+}
+
+.footer-col p,
+.footer-col a {
+  color: var(--text-secondary);
+  text-decoration: none;
+  display: block;
+  margin-bottom: 0.75rem;
+  transition: all 0.2s;
+  font-family: "Courier New", monospace;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.footer-col a:hover {
+  color: var(--text-primary);
+  background-color: var(--text-primary);
+  color: var(--bg-dark);
+  padding-left: 0.5rem;
+}
+
+.highlight-text {
+  color: var(--text-primary) !important;
+  font-weight: 700;
+  border: 2px solid var(--text-primary);
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.copyright {
+  text-align: center;
+  padding-top: 2rem;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  font-family: "Courier New", monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+/* =========================================
+   RESPONSIVE BASE
+   ========================================= */
+@media (max-width: 768px) {
+  .nav-links {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background-color: var(--bg-dark);
+    flex-direction: column;
+    padding: 2rem;
+    border-bottom: 3px solid var(--text-primary);
+    gap: 1rem;
+  }
+
+  .nav-links.active {
+    display: flex;
+  }
+
+  .mobile-menu-btn {
+    display: block;
+  }
+
+  h2 {
+    font-size: 2rem;
+  }
+
+  .equipment-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .equipment-info {
+    border-right: none;
+    border-bottom: 3px solid var(--text-primary);
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .reservation-form {
+    padding: 2rem;
+  }
+
+  .hero-buttons {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .hero-buttons .btn {
+    width: 100%;
+  }
+
+  .about-grid,
+  .services-grid {
+    border: none;
+  }
+
+  .about-card,
+  .service-card {
+    border: 3px solid var(--text-primary) !important;
+    margin-bottom: 0;
+  }
+}
+
+/* =========================================
+   IMÁGENES DE SECCIÓN (estilo referencia)
+   ========================================= */
+
+/* Banner fotográfico a todo lo ancho */
+.photo-banner {
+  overflow: hidden;
+  line-height: 0;
+}
+
+.photo-banner img {
+  width: 100%;
+  height: 50vh;
+  min-height: 320px;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  filter: grayscale(100%) contrast(1.15);
+  transition: transform 0.6s ease;
+}
+
+.photo-banner:hover img {
+  transform: scale(1.04);
+}
+
+/* Foto enmarcada con etiqueta (Nosotros) */
+.section-photo {
+  position: relative;
+  margin: 0 0 3rem;
+  border: 3px solid var(--text-primary);
+  overflow: hidden;
+}
+
+.section-photo img {
+  width: 100%;
+  height: 420px;
+  object-fit: cover;
+  display: block;
+  filter: grayscale(100%) contrast(1.1);
+}
+
+.section-photo figcaption {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  background-color: var(--text-primary);
+  color: var(--bg-dark);
+  font-family: "Courier New", monospace;
+  font-weight: 700;
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.5rem 1rem;
+}
+
+/* Imagen al inicio de cada tarjeta de servicio */
+.service-card {
+  padding: 0;
+}
+
+.card-img {
+  overflow: hidden;
+  border-bottom: 2px solid var(--border);
+}
+
+.card-img img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  display: block;
+  filter: grayscale(100%) contrast(1.1);
+  transition:
+    transform 0.4s ease,
+    filter 0.4s ease;
+}
+
+/* Al pasar el mouse, la tarjeta se invierte y la foto "revienta" a color */
+.service-card:hover .card-img img {
+  transform: scale(1.06);
+  filter: grayscale(0%);
+}
+.service-card:hover .card-img {
+  border-color: var(--bg-dark);
+}
+
+.card-content {
+  padding: 2.5rem 2.5rem 0;
+}
+.card-footer {
+  padding: 0 2.5rem 2.5rem;
+}
+
+/* Imagen del panel de equipo */
+.equipment-img {
+  width: 100%;
+  height: 240px;
+  object-fit: cover;
+  display: block;
+  border: 2px solid var(--border);
+  margin-bottom: 2rem;
+  filter: grayscale(100%) contrast(1.1);
+}
+
+/* Fondo sutil para Reservaciones (opcional: borra este bloque si no lo usas) */
+#reservaciones {
+  background:
+    linear-gradient(rgba(0, 0, 0, 0.93), rgba(0, 0, 0, 0.97)),
+    url("IMG/reservaciones.jpg") center / cover no-repeat fixed;
+}
+
+/* Aparición al hacer scroll (lo activa el JS) */
+.reveal-init {
+  opacity: 0;
+  transform: translateY(25px);
+  transition:
+    opacity 0.7s ease,
+    transform 0.7s ease;
+}
+.reveal-init.img-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal-init {
+    transition: none;
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Responsive de imágenes */
+@media (max-width: 768px) {
+  .photo-banner img {
+    height: 35vh;
+    min-height: 220px;
+  }
+  .section-photo img {
+    height: 280px;
+  }
+  .card-img img {
+    height: 180px;
+  }
+  .equipment-img {
+    height: 200px;
+  }
+  #reservaciones {
+    background-attachment: scroll;
+  } /* evita bug en iOS */
+}
+
+/* =========================================
+   PÁGINA DE DISPONIBILIDAD
+   ========================================= */
+#disponibilidad {
+  padding: 6rem 0;
+  background-color: var(--bg-dark);
+}
+
+.disp-controls {
+  max-width: 700px;
+  margin: 0 auto 2rem;
+}
+
+.disp-estado {
+  text-align: center;
+  font-family: "Courier New", monospace;
+  color: var(--text-secondary);
+  margin-bottom: 2rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.slots-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  gap: 1rem;
+  max-width: 900px;
+  margin: 0 auto 2rem;
+}
+
+.slot {
+  padding: 1rem;
+  font-family: "Impact", sans-serif;
+  font-size: 1.1rem;
+  text-align: center;
+  border: 3px solid var(--text-primary);
+  background-color: var(--bg-dark);
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-transform: uppercase;
+}
+
+.slot.libre:hover {
+  background-color: var(--text-primary);
+  color: var(--bg-dark);
+  transform: translateY(-3px);
+  box-shadow: 4px 4px 0px var(--text-primary);
+}
+
+.slot.ocupado {
+  background-color: var(--bg-input);
+  color: var(--text-secondary);
+  border-color: var(--border);
+  cursor: not-allowed;
+  text-decoration: line-through;
+}
+
+.disp-leyenda {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  font-family: "Courier New", monospace;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  font-size: 0.85rem;
+}
+
+.leyenda-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.cuadro {
+  width: 18px;
+  height: 18px;
+  display: inline-block;
+  border: 2px solid var(--text-primary);
+}
+.cuadro.libre {
+  background-color: var(--bg-dark);
+}
+.cuadro.ocupado {
+  background-color: var(--bg-input);
+  border-color: var(--border);
+}
+
+/* =========================================
+   IDENTIDAD ZINE / PUNK (referencia: feed de El Sótano)
+   ========================================= */
+
+/* Grano de película sobre todo el sitio */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
+  opacity: 0.07;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* Títulos ligeramente "pegados a mano" */
+h2 {
+  transform: rotate(-0.6deg);
+  text-shadow: 3px 3px 0 rgba(255, 255, 255, 0.12);
+}
+
+/* Sticker / estampita */
+.sticker {
+  display: inline-block;
+  background: var(--text-primary);
+  color: var(--bg-dark);
+  font-family: "Courier New", monospace;
+  font-weight: 700;
+  font-size: 0.85rem;
+  letter-spacing: 0.15em;
+  padding: 0.4rem 1rem;
+  border: 3px solid var(--bg-dark);
+  box-shadow: 4px 4px 0 var(--text-primary);
+  transform: rotate(-3deg);
+  margin-bottom: 1.5rem;
+}
+
+/* Cinta adhesiva sobre las fotos */
+.section-photo::before {
+  content: "";
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%) rotate(-2deg);
+  width: 150px;
+  height: 26px;
+  background: rgba(255, 255, 255, 0.75);
+  z-index: 2;
+}
+
+/* Línea de tijera ✂ */
+.cut-line {
+  border-top: 3px dashed var(--border-light);
+  position: relative;
+}
+.cut-line::before {
+  content: "✂";
+  position: absolute;
+  top: -0.9em;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--bg-dark);
+  padding: 0 0.5rem;
+  color: var(--text-secondary);
+}
+
+/* Galería tipo feed con posters */
+.insta-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  padding: 0 6px 6px;
+}
+.tile {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+  filter: grayscale(100%) contrast(1.15);
+  transition:
+    filter 0.3s ease,
+    transform 0.3s ease;
+}
+.tile:hover {
+  filter: grayscale(0%);
+  transform: scale(1.02);
+}
+.insta-grid .tile:nth-child(odd) {
+  transform: rotate(0.4deg);
+}
+.tile-poster {
+  background: var(--bg-card);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 1.5rem;
+}
+.tile-poster span {
+  font-family: "Impact", sans-serif;
+  font-size: clamp(1.2rem, 2.5vw, 2rem);
+  text-transform: uppercase;
+  line-height: 1.1;
+  color: var(--text-primary);
+  transform: rotate(-2deg);
+}
+.tile-poster.invert {
+  background: var(--text-primary);
+}
+.tile-poster.invert span {
+  color: var(--bg-dark);
+}
+
+/* Panel CTA de reservaciones */
+.cta-panel {
+  text-align: center;
+}
+
+/* Área de usuario en el nav */
+#user-area {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  list-style: none;
+}
+.user-name {
+  font-family: "Courier New", monospace;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  border: 2px dashed var(--border-light);
+  padding: 0.3rem 0.7rem;
+}
+.user-link {
+  color: var(--text-primary);
+  font-family: "Courier New", monospace;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  text-decoration: underline;
+}
+
+/* =========================================
+   FLUJO DE RESERVA (estilo La Bestia)
+   ========================================= */
+#booking {
+  padding: 6rem 0;
+}
+.step-title {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 1.6rem;
+  margin: 4rem 0 2rem;
+}
+.step-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.4rem;
+  height: 2.4rem;
+  background: var(--text-primary);
+  color: var(--bg-dark);
+  font-family: "Impact", sans-serif;
+  transform: rotate(-4deg);
+}
+.bservice-card.selected {
+  outline: 4px solid var(--text-primary);
+  box-shadow: 10px 10px 0 var(--text-primary);
+}
+.booking-step[hidden] {
+  display: none;
+}
+
+.booking-calendar-wrap {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  border: 3px solid var(--text-primary);
+  padding: 2rem;
+  background: var(--bg-card);
+}
+.calendar {
+  border: 2px solid var(--border);
+  padding: 1.5rem;
+  background: var(--bg-dark);
+}
+.cal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+.cal-title {
+  font-family: "Impact", sans-serif;
+  font-size: 1.4rem;
+  letter-spacing: 0.05em;
+}
+.cal-nav {
+  background: none;
+  border: 2px solid var(--text-primary);
+  color: var(--text-primary);
+  font-size: 1.1rem;
+  cursor: pointer;
+  padding: 0.3rem 0.8rem;
+  transition: all 0.2s;
+}
+.cal-nav:hover {
+  background: var(--text-primary);
+  color: var(--bg-dark);
+}
+.cal-week,
+.cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+.cal-week {
+  margin-bottom: 4px;
+}
+.cal-week span {
+  text-align: center;
+  font-family: "Courier New", monospace;
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+}
+.cal-day {
+  padding: 0.6rem 0;
+  background: transparent;
+  border: 2px solid var(--border);
+  color: var(--text-primary);
+  font-family: "Courier New", monospace;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.cal-day:hover:not(:disabled) {
+  background: var(--text-primary);
+  color: var(--bg-dark);
+}
+.cal-day:disabled {
+  opacity: 0.2;
+  cursor: not-allowed;
+}
+.cal-day.selected {
+  background: var(--text-primary);
+  color: var(--bg-dark);
+  border-color: var(--text-primary);
+}
+
+.slot.elegido {
+  background: var(--text-primary);
+  color: var(--bg-dark);
+  box-shadow: 4px 4px 0 var(--border-light);
+}
+
+.confirm-card {
+  max-width: 700px;
+  margin: 0 auto;
+  border: 3px solid var(--text-primary);
+  background: var(--bg-card);
+  padding: 2.5rem;
+}
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.8rem 0;
+  border-bottom: 2px dashed var(--border);
+  font-family: "Courier New", monospace;
+  font-size: 0.95rem;
+  text-transform: uppercase;
+}
+.summary-row span {
+  color: var(--text-secondary);
+}
+.summary-row strong {
+  text-align: right;
+}
+
+/* =========================================
+   LOGIN / REGISTRO
+   ========================================= */
+.login-wrap {
+  min-height: 85vh;
+  display: grid;
+  place-items: center;
+  padding: 5rem 1rem;
+}
+.login-card {
+  position: relative;
+  width: 100%;
+  max-width: 480px;
+  border: 3px solid var(--text-primary);
+  background: var(--bg-card);
+  padding: 3rem 2.5rem;
+  box-shadow: 10px 10px 0 var(--border);
+}
+.login-card .sticker {
+  position: absolute;
+  top: -16px;
+  left: 24px;
+}
+.tabs {
+  display: flex;
+  margin: 2rem 0;
+}
+.tab {
+  flex: 1;
+  padding: 0.9rem;
+  background: transparent;
+  border: 2px solid var(--border);
+  color: var(--text-secondary);
+  font-family: "Impact", sans-serif;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+}
+.tab.active {
+  background: var(--text-primary);
+  color: var(--bg-dark);
+  border-color: var(--text-primary);
+}
+.auth-msg {
+  min-height: 1.4em;
+  margin-top: 1.2rem;
+  font-family: "Courier New", monospace;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+}
+
+/* =========================================
+   MIS RESERVAS
+   ========================================= */
+#mis-reservas {
+  padding: 6rem 0;
+}
+.reservas-list {
+  max-width: 900px;
+  margin: 0 auto;
+}
+.reserva-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.5rem;
+  border: 3px solid var(--text-primary);
+  background: var(--bg-card);
+  padding: 1.5rem 2rem;
+  margin-bottom: 1rem;
+}
+.reserva-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+.reserva-info strong {
+  font-size: 1.2rem;
+  text-transform: uppercase;
+}
+.reserva-info span {
+  font-family: "Courier New", monospace;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  font-size: 0.85rem;
+}
+.reserva-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.badge {
+  font-family: "Courier New", monospace;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  padding: 0.3rem 0.8rem;
+  border: 2px solid var(--text-primary);
+}
+.badge.confirmada {
+  background: var(--text-primary);
+  color: var(--bg-dark);
+}
+.badge.cancelada {
+  color: var(--error);
+  border-color: var(--error);
+  text-decoration: line-through;
+}
+.btn-cancelar {
+  background: transparent;
+  color: var(--error);
+  border-color: var(--error);
+}
+.btn-cancelar:hover {
+  background: var(--error);
+  color: var(--text-primary);
+  box-shadow: 4px 4px 0 var(--border-light);
+}
+
+/* Responsive de lo nuevo */
+@media (max-width: 768px) {
+  .insta-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .booking-calendar-wrap {
+    grid-template-columns: 1fr;
+  }
+  .reserva-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  #user-area {
+    gap: 0.4rem;
+  }
+}
+
+/* =========================================
+   TEMA PAPEL & TINTA — estilo risograph de El Sótano
+   (papel hueso + tinta negra + acento azul marino)
+   ========================================= */
+:root {
+  --bg-dark: #edebe4; /* papel */
+  --bg-darker: #e5e2d9; /* papel un poco más oscuro */
+  --bg-card: #f2f0e9; /* papel claro para tarjetas */
+  --bg-input: #fbfaf6; /* papel casi blanco para inputs */
+  --text-primary: #171512; /* tinta negra */
+  --text-secondary: #6e675c; /* gris cálido */
+  --accent: #171512;
+  --accent-hover: #000000;
+  --error: #a3251c; /* rojo tinta para errores */
+  --success: #171512;
+  --border: #171512; /* bordes de tinta */
+  --border-light: #948d80;
+  --ink-blue: #1e2a4a; /* azul marino (poster de equipo) */
+}
+
+/* Tipografía: grotesca pesada + serifa itálica de revista */
+body {
+  font-family: "EB Garamond", Georgia, serif;
+  letter-spacing: 0;
+}
+h1,
+h2,
+h3,
+h4,
+.btn,
+.price,
+.slot,
+.cal-title,
+.cal-nav,
+.tab {
+  font-family: "Archivo Black", Impact, sans-serif;
+  letter-spacing: 0;
+}
+h2 {
+  transform: none;
+  text-shadow: none;
+}
+
+p,
+.section-intro {
+  font-family: "EB Garamond", Georgia, serif;
+  font-size: 1.1rem;
+}
+.section-intro {
+  font-style: italic;
+  border-left: 3px solid var(--text-primary);
+}
+
+/* El logo ya no se invierte a blanco: ahora es tinta sobre papel */
+.logo-link,
+.logo-img,
+.footer-logo-img {
+  filter: none;
+}
+
+/* Grano de papel (más notorio, como fotocopia) */
+body::after {
+  opacity: 0.16;
+  mix-blend-mode: multiply;
+}
+
+/* HERO: foto "impresa" bajo velo de papel */
+.hero {
+  filter: none;
+  background:
+    linear-gradient(rgba(237, 235, 228, 0.9), rgba(237, 235, 228, 0.96)),
+    url("IMG/hero.jpg") center / cover no-repeat;
+}
+.hero-content h1 {
+  text-shadow: none;
+}
+.hero-content p {
+  font-style: italic;
+  color: var(--text-secondary);
+}
+
+/* Fotos con look de tinta impresa (dither aproximado) */
+.card-img img,
+.section-photo img,
+.photo-banner img,
+.equipment-img,
+.tile {
+  filter: grayscale(1) contrast(0.9) brightness(1.3);
+  mix-blend-mode: multiply;
+  transition: filter 0.4s ease;
+}
+/* La foto "toma color" cuando el mouse pasa encima */
+.service-card:hover .card-img img,
+.section-photo:hover img,
+.photo-banner:hover img,
+.equipment-img:hover,
+.tile:hover {
+  filter: grayscale(0) contrast(1) brightness(1);
+  mix-blend-mode: normal;
+}
+/* Cinta adhesiva color masking tape sobre papel */
+.section-photo::before {
+  background: rgba(196, 190, 178, 0.9);
+}
+
+/* Acento azul marino (como el poster "¿Qué equipo incluye?") */
+#equipo h2 span,
+.step-num {
+  background-color: var(--ink-blue);
+  color: #f2f0e9;
+}
+.equipment-list li::before {
+  color: var(--ink-blue);
+}
+.equipment-info .price {
+  color: var(--ink-blue);
+}
+
+/* Reservaciones: velo de papel sobre la foto */
+#reservaciones {
+  background:
+    linear-gradient(rgba(237, 235, 228, 0.93), rgba(237, 235, 228, 0.97)),
+    url("IMG/reservaciones.jpg") center / cover no-repeat;
+}
+
+/* Slots ocupados más apagados sobre papel */
+.slot.ocupado {
+  background-color: var(--bg-darker);
+  color: var(--border-light);
+  border-color: var(--border-light);
+  opacity: 0.6;
+}
+
+/* Posters de la galería: tinta sobre papel (ya no fondo negro) */
+.tile-poster {
+  background: var(--bg-card);
+}
+.tile-poster span {
+  color: var(--text-primary);
+  font-family: "Archivo Black", Impact, sans-serif;
+}
+.tile-poster.invert {
+  background: var(--ink-blue);
+}
+.tile-poster.invert span {
+  color: #f2f0e9;
+}
+
+/* Sticker con sombra de tinta */
+.sticker {
+  box-shadow: 4px 4px 0 var(--border-light);
+}
+
+/* Inputs: papel claro con borde de tinta */
+.form-group input,
+.form-group select,
+.form-group textarea {
+  color: var(--text-primary);
+}
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  background-color: var(--bg-input);
+}
+
+/* Mensaje de éxito como sello de tinta */
+.success-message {
+  background-color: var(--text-primary);
+  color: var(--bg-dark);
+}
+
+/* Scrollbar / selección con el tema (detalle fino) */
+::selection {
+  background: var(--ink-blue);
+  color: #f2f0e9;
+}
+
+/* =========================================
+   PANEL ADMIN
+   ========================================= */
+#admin {
+  padding: 6rem 0;
+}
+.admin-bar {
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  max-width: 900px;
+  margin: 0 auto 2.5rem;
+}
+.admin-bar .form-group {
+  margin-bottom: 0;
+  flex: 1;
+  min-width: 200px;
+}
+.admin-row {
+  align-items: flex-start;
+}
+.admin-block {
+  margin-top: 3rem;
+}
+@media (max-width: 768px) {
+  .admin-bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+/* =========================================
+   PIZARRA DE DISPONIBILIDAD
+   ========================================= */
+.board-controls {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 2rem;
+}
+.board-controls input {
+  padding: 0.6rem 1rem;
+  background: var(--bg-input);
+  border: 2px solid var(--border);
+  color: var(--text-primary);
+  font-family: "Courier New", monospace;
+}
+.board-scroll {
+  overflow-x: auto;
+}
+.board {
+  min-width: 640px;
+  border: 3px solid var(--text-primary);
+  background: var(--bg-card);
+}
+.board-head,
+.board-row {
+  display: grid;
+  grid-template-columns: 90px repeat(5, 1fr);
+}
+.board-head {
+  background: var(--text-primary);
+}
+.board-cell {
+  padding: 0.7rem 0.5rem;
+  text-align: center;
+  border: 1px solid var(--border);
+  font-family: "Courier New", monospace;
+  font-size: 0.85rem;
+}
+.board-cell.head {
+  color: var(--bg-dark);
+  font-family: "Archivo Black", Impact, sans-serif;
+  border-color: var(--bg-dark);
+}
+.board-cell.hora {
+  color: var(--text-secondary);
+  background: var(--bg-darker);
+}
+.board-cell.libre {
+  background: var(--bg-input);
+}
+.board-cell.ocupado {
+  background:
+    repeating-linear-gradient(
+      45deg,
+      transparent 0 6px,
+      rgba(23, 21, 18, 0.35) 6px 12px
+    ),
+    var(--bg-darker);
+}
+
+/* =========================================
+   VALORES (sección nosotros)
+   ========================================= */
+.valores-title {
+  text-align: center;
+  font-size: 1.6rem;
+  margin: 4rem 0 0;
+}
+.valores-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  border: 3px solid var(--text-primary);
+  margin-top: 2rem;
+}
+.valor-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  padding: 1.6rem;
+}
+.valor-card h4 {
+  color: var(--ink-blue);
+  font-size: 1rem;
+  margin-bottom: 0.6rem;
+}
+.valor-card p {
+  margin: 0;
+  font-size: 0.95rem;
+  font-style: italic;
+}

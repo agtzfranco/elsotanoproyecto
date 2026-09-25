@@ -46,9 +46,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     Promise.all(
       SERVICIOS.map((s) =>
-        fetch(`/api/disponibilidad?servicio=${s.id}&fecha=${fecha}`, {
-          credentials: "include",
-        }).then((r) => r.json()),
+        fetch(`api/disponibilidad.php?servicio=${s.id}&fecha=${fecha}`).then(
+          (r) => r.json(),
+        ),
       ),
     )
       .then((results) => {

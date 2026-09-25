@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Acceso | El Sótano</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=EB+Garamond:ital,wght@0,400;0,600;1,400;1,600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header>
+      <div class="container">
+        <nav>
+          <a href="index.html" class="logo-link">
+            <img
+              src="IMG/ElSotano3offblack.png"
+              alt="El Sótano Logo"
+              class="logo-img"
+            />
+          </a>
+          <ul class="nav-links">
+            <li><a href="#inicio">Inicio</a></li>
+            <li><a href="#nosotros">Nosotros</a></li>
+            <li><a href="#servicios">Servicios</a></li>
+            <li><a href="#equipo">Equipo</a></li>
+            <li><a href="reservas.html">Disponibilidad</a></li>
+            <li id="user-area"></li>
+            <li>
+              <a href="reservas.html" class="btn btn-nav">Reservar</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main class="login-wrap">
+      <div class="login-card">
+        <span class="sticker">★ SOLO CON CUENTA ★</span>
+        <h2>ACCESO <span>CLIENTES</span></h2>
+
+        <div class="tabs">
+          <button class="tab active" id="tabLogin">ENTRAR</button>
+          <button class="tab" id="tabRegistro">CREAR CUENTA</button>
+        </div>
+
+        <!-- FORM ENTRAR -->
+        <form id="loginForm" class="login-form" novalidate>
+          <div class="form-group">
+            <label for="loginEmail">Correo electrónico</label>
+            <input
+              type="email"
+              id="loginEmail"
+              required
+              placeholder="tu@email.com"
+            />
+          </div>
+          <div class="form-group">
+            <label for="loginPass">Contraseña</label>
+            <input
+              type="password"
+              id="loginPass"
+              required
+              placeholder="••••••••"
+            />
+          </div>
+          <button type="submit" class="btn btn-full">ENTRAR</button>
+        </form>
+
+        <!-- FORM REGISTRO -->
+        <form
+          id="registroForm"
+          class="login-form"
+          style="display: none"
+          novalidate
+        >
+          <div class="form-group">
+            <label for="regNombre">Nombre completo</label>
+            <input
+              type="text"
+              id="regNombre"
+              required
+              placeholder="Tu nombre"
+            />
+          </div>
+          <div class="form-group">
+            <label for="regEmail">Correo electrónico</label>
+            <input
+              type="email"
+              id="regEmail"
+              required
+              placeholder="tu@email.com"
+            />
+          </div>
+          <div class="form-group">
+            <label for="regTel">Teléfono</label>
+            <input type="tel" id="regTel" placeholder="81 1234 5678" />
+          </div>
+          <div class="form-group">
+            <label for="regPass">Contraseña (mín. 6 caracteres)</label>
+            <input
+              type="password"
+              id="regPass"
+              required
+              placeholder="••••••••"
+            />
+          </div>
+          <button type="submit" class="btn btn-full">CREAR CUENTA</button>
+        </form>
+
+        <div id="authMsg" class="auth-msg"></div>
+      </div>
+    </main>
+
+    <script src="login.js"></script>
+  </body>
+</html>

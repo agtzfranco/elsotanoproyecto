@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   /* ---------- acceso ---------- */
-  fetch("/api/usuario", { credentials: "include" })
+  fetch("api/usuario.php")
     .then((r) => r.json())
     .then((u) => {
       if (!u.usuario) {
@@ -33,7 +33,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
   function cargar() {
-    fetch("/api/admin?accion=reservas", { credentials: "include" })
+    fetch("api/admin.php?accion=reservas")
       .then((r) => r.json())
       .then((data) => {
         all = data.reservas || [];
@@ -88,9 +88,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     list.querySelectorAll("button[data-accion]").forEach((b) => {
       b.addEventListener("click", () => {
-        fetch("/api/admin", {
+        fetch("api/admin.php", {
           method: "POST",
-          credentials: "include",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ accion: b.dataset.accion, id: b.dataset.id }),
         }).then(() => cargar());
@@ -108,9 +107,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /* ---------- bloquear horario ---------- */
   $("btnBloquear").addEventListener("click", () => {
-    fetch("/api/admin", {
+    fetch("api/admin.php", {
       method: "POST",
-      credentials: "include",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         accion: "bloquear",
