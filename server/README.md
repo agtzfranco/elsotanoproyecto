@@ -45,6 +45,36 @@ El servidor:
 - Sirve el sitio estático de `../elsotano` en `/` (equivalente a lo que hacía
   Apache/XAMPP), así que basta con abrir `http://localhost:3000`.
 
+## 5. Desplegar (producción)
+
+El servidor sirve frontend + API desde un solo proceso, así que no necesitas
+GitHub Pages ni configurar CORS entre dominios distintos — basta con un host
+que corra Node.js.
+
+### Opción recomendada: Render
+
+El repo incluye `../render.yaml` (Blueprint). Pasos:
+
+1. En https://dashboard.render.com pulsa **New → Blueprint** y conecta este
+   repositorio (branch `main`).
+2. Render detecta `render.yaml` y crea un Web Service con:
+   - Root directory: `server`
+   - Build command: `npm install`
+   - Start command: `npm start`
+3. Te pedirá los valores de `SUPABASE_URL` y `SUPABASE_SERVICE_ROLE_KEY`
+   (los mismos del paso 1). `JWT_SECRET` se genera automáticamente.
+4. Tras el primer deploy exitoso, corre el seed del admin una vez desde la
+   **Shell** del servicio en Render (o localmente apuntando a la misma
+   Supabase): `npm run seed:admin`.
+5. Abre la URL que te da Render (`https://elsotano-xxxx.onrender.com`) — ya
+   sirve todo el sitio (`index.html`, `login.html`, reservas, admin) y la API.
+
+### Otras opciones
+
+Cualquier host que corra Node.js sirve igual: Railway, Fly.io, un VPS, etc.
+Solo necesitas configurar las mismas variables de `.env.example` y correr
+`npm install && npm start` dentro de `server/`.
+
 ## Notas sobre la migración
 
 - **Sesiones**: PHP usaba `$_SESSION` con cookies de sesión de servidor. Node
