@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (!next.endsWith(".html")) next = "index.html";
 
   // Si ya hay sesión, no lo dejes en el login
-  fetch("api/usuario.php")
+  fetch("/api/usuario", { credentials: "include" })
     .then((r) => r.json())
     .then((d) => {
       if (d.usuario) window.location.replace(next);
@@ -34,6 +34,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function enviar(url, payload) {
     fetch(url, {
       method: "POST",
+      credentials: "include",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
     })
@@ -50,13 +51,13 @@ document.addEventListener("DOMContentLoaded", () => {
       })
       .catch(() => {
         msg.style.color = "var(--error)";
-        msg.textContent = "No se pudo conectar con el servidor (XAMPP).";
+        msg.textContent = "No se pudo conectar con el servidor.";
       });
   }
 
   formLogin.addEventListener("submit", (e) => {
     e.preventDefault();
-    enviar("api/login.php", {
+    enviar("/api/login", {
       email: document.getElementById("loginEmail").value.trim(),
       password: document.getElementById("loginPass").value,
     });
@@ -64,7 +65,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   formReg.addEventListener("submit", (e) => {
     e.preventDefault();
-    enviar("api/registro.php", {
+    enviar("/api/registro", {
       nombre: document.getElementById("regNombre").value.trim(),
       email: document.getElementById("regEmail").value.trim(),
       telefono: document.getElementById("regTel").value.trim(),

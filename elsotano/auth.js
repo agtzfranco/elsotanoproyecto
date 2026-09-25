@@ -1,5 +1,5 @@
 // Pinta "Iniciar sesión" o el nombre del usuario + salir en el nav
-fetch("api/usuario.php")
+fetch("/api/usuario", { credentials: "include" })
   .then((r) => r.json())
   .then((data) => {
     const area = document.getElementById("user-area");
@@ -12,7 +12,7 @@ fetch("api/usuario.php")
         <button id="logoutBtn" class="btn btn-nav">SALIR</button>`;
       area.querySelector(".user-name").textContent = data.usuario.nombre;
       area.querySelector("#logoutBtn").addEventListener("click", () => {
-        fetch("api/logout.php").then(
+        fetch("/api/logout", { credentials: "include" }).then(
           () => (window.location.href = "index.html"),
         );
       });
