@@ -61,7 +61,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let usuario = null;
   let calOffset = 0;
 
-  fetch("api/usuario.php")
+  fetch("/api/usuario", { credentials: "include" })
     .then((r) => r.json())
     .then((d) => (usuario = d.usuario));
 
@@ -200,7 +200,8 @@ document.addEventListener("DOMContentLoaded", () => {
     grid.innerHTML = "";
     $("disp-estado").textContent = "Cargando horarios...";
     fetch(
-      `api/disponibilidad.php?servicio=${encodeURIComponent(state.servicio.id)}&fecha=${state.fecha}`,
+      `/api/disponibilidad?servicio=${encodeURIComponent(state.servicio.id)}&fecha=${state.fecha}`,
+      { credentials: "include" },
     )
       .then((r) => r.json())
       .then((data) => {
@@ -285,8 +286,9 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    fetch("api/reservar.php", {
+    fetch("/api/reservar", {
       method: "POST",
+      credentials: "include",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         servicio: s.id,

@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function cargar() {
-    fetch("api/reservas.php")
+    fetch("/api/reservas", { credentials: "include" })
       .then((r) => r.json())
       .then((data) => {
         if (data.login) {
@@ -45,8 +45,9 @@ document.addEventListener("DOMContentLoaded", () => {
         list.querySelectorAll(".btn-cancelar").forEach((btn) => {
           btn.addEventListener("click", () => {
             if (!confirm("¿Cancelar esta reserva?")) return;
-            fetch("api/reservas.php", {
+            fetch("/api/reservas", {
               method: "POST",
+              credentials: "include",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({ accion: "cancelar", id: btn.dataset.id }),
             }).then(() => cargar());
