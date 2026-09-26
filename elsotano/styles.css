@@ -902,18 +902,8 @@ footer {
 }
 
 /* =========================================
-   PÁGINA DE DISPONIBILIDAD
+   HORARIOS DISPONIBLES
    ========================================= */
-#disponibilidad {
-  padding: 6rem 0;
-  background-color: var(--bg-dark);
-}
-
-.disp-controls {
-  max-width: 700px;
-  margin: 0 auto 2rem;
-}
-
 .disp-estado {
   text-align: center;
   font-family: var(--font-body);
@@ -957,36 +947,6 @@ footer {
   border-color: var(--border);
   cursor: not-allowed;
   text-decoration: line-through;
-}
-
-.disp-leyenda {
-  display: flex;
-  justify-content: center;
-  gap: 2rem;
-  font-family: var(--font-body);
-  color: var(--text-secondary);
-  text-transform: uppercase;
-  font-size: 0.85rem;
-}
-
-.leyenda-item {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.cuadro {
-  width: 18px;
-  height: 18px;
-  display: inline-block;
-  border: 2px solid var(--text-primary);
-}
-.cuadro.libre {
-  background-color: var(--bg-dark);
-}
-.cuadro.ocupado {
-  background-color: var(--bg-input);
-  border-color: var(--border);
 }
 
 /* =========================================
@@ -1618,69 +1578,6 @@ body::after {
     flex-direction: column;
     align-items: stretch;
   }
-}
-
-/* =========================================
-   PIZARRA DE DISPONIBILIDAD
-   ========================================= */
-.board-controls {
-  display: flex;
-  gap: 1rem;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
-  margin-bottom: 2rem;
-}
-.board-controls input {
-  padding: 0.6rem 1rem;
-  background: var(--bg-input);
-  border: 2px solid var(--border);
-  color: var(--text-primary);
-  font-family: var(--font-body);
-}
-.board-scroll {
-  overflow-x: auto;
-}
-.board {
-  min-width: 640px;
-  border: 3px solid var(--text-primary);
-  background: var(--bg-card);
-}
-.board-head,
-.board-row {
-  display: grid;
-  grid-template-columns: 90px repeat(5, 1fr);
-}
-.board-head {
-  background: var(--text-primary);
-}
-.board-cell {
-  padding: 0.7rem 0.5rem;
-  text-align: center;
-  border: 1px solid var(--border);
-  font-family: var(--font-body);
-  font-size: 0.85rem;
-}
-.board-cell.head {
-  color: var(--bg-dark);
-  font-family: "Archivo Black", Impact, sans-serif;
-  border-color: var(--bg-dark);
-}
-.board-cell.hora {
-  color: var(--text-secondary);
-  background: var(--bg-darker);
-}
-.board-cell.libre {
-  background: var(--bg-input);
-}
-.board-cell.ocupado {
-  background:
-    repeating-linear-gradient(
-      45deg,
-      transparent 0 6px,
-      rgba(23, 21, 18, 0.35) 6px 12px
-    ),
-    var(--bg-darker);
 }
 
 /* =========================================
