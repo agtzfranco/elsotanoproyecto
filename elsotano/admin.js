@@ -11,6 +11,16 @@ document.addEventListener("DOMContentLoaded", () => {
   const $ = (id) => document.getElementById(id);
   const msg = $("adminMsg");
 
+  // Todo lo que escribe el cliente se escapa antes de pintarlo.
+  const esc = (t) =>
+    String(t ?? "").replace(
+      /[&<>"']/g,
+      (c) =>
+        ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c],
+    );
+  const d = new Date();
+  const hoyISO = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+
   function fechaLarga(iso) {
     const [y, m, d] = iso.split("-").map(Number);
     return `${String(d).padStart(2, "0")}/${String(m).padStart(2, "0")}/${y}`;
@@ -46,6 +56,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function render() {
     const fF = $("filtroFecha").value;
     const fE = $("filtroEstado").value;
+    const verPasadas = $("verPasadas").checked;
     const list = $("adminList");
 
     let rows = all
@@ -54,10 +65,13 @@ document.addEventListener("DOMContentLoaded", () => {
         (a.fecha + a.hora_inicio).localeCompare(b.fecha + b.hora_inicio),
       );
     if (fF) rows = rows.filter((r) => r.fecha === fF);
+    else if (!verPasadas) rows = rows.filter((r) => r.fecha >= hoyISO);
     if (fE === "bloqueo") rows = rows.filter((r) => r.servicio === "bloqueo");
     else if (fE) rows = rows.filter((r) => r.estado === fE);
 
-    const pend = all.filter((r) => r.estado === "pendiente").length;
+    const pend = all.filter(
+      (r) => r.estado === "pendiente" && r.fecha >= hoyISO,
+    ).length;
     $("statLine").textContent = pend
       ? `⚠ ${pend} reserva(s) pendiente(s) por confirmar.`
       : "✔ No hay pendientes.";
@@ -71,38 +85,57 @@ document.addEventListener("DOMContentLoaded", () => {
     rows.forEach((r) => {
       const row = document.createElement("div");
       row.className = "reserva-row admin-row";
+      const esBloqueo = r.servicio === "bloqueo";
+      const contacto = [r.nombre, r.telefono, r.email].filter(Boolean).map(esc).join(" · ");
       row.innerHTML = `
         <div class="reserva-info">
-          <strong>${NOMBRES[r.servicio] || r.servicio}</strong>
-          <span>${fechaLarga(r.fecha)} · ${r.hora_inicio.slice(0, 5)} – ${r.hora_fin.slice(0, 5)} · ${r.duracion_horas}h</span>
-          <span>${r.nombre}${r.telefono ? " · " + r.telefono : ""}${r.email ? " · " + r.email : ""}</span>
-          ${r.mensaje ? `<span>📝 ${r.mensaje}</span>` : ""}
+          <strong>${esc(NOMBRES[r.servicio] || r.servicio)}</strong>
+          <span>${fechaLarga(r.fecha)} · ${esc(r.hora_inicio.slice(0, 5))} – ${esc(r.hora_fin.slice(0, 5))} · ${esc(r.duracion_horas)}h</span>
+          ${esBloqueo ? "" : `<span>${contacto}</span>`}
+          ${r.mensaje ? `<span>📝 ${esc(r.mensaje)}</span>` : ""}
         </div>
         <div class="reserva-actions">
-          <span class="badge ${r.estado}">${r.estado}</span>
-          ${r.estado === "pendiente" ? `<button class="btn btn-nav" data-accion="confirmar" data-id="${r.id}">✔ CONFIRMAR</button>` : ""}
-          ${r.estado !== "cancelada" ? `<button class="btn btn-nav btn-cancelar" data-accion="cancelar" data-id="${r.id}">✖ CANCELAR</button>` : ""}
+          <span class="badge ${esc(r.estado)}">${esc(r.estado)}</span>
+          ${r.estado === "pendiente" ? `<button class="btn btn-nav" data-accion="confirmar" data-id="${esc(r.id)}">✔ CONFIRMAR</button>` : ""}
+          ${r.estado !== "cancelada" ? `<button class="btn btn-nav btn-cancelar" data-accion="cancelar" data-id="${esc(r.id)}">${esBloqueo ? "✖ QUITAR BLOQUEO" : "✖ CANCELAR"}</button>` : ""}
         </div>`;
       list.appendChild(row);
     });
 
     list.querySelectorAll("button[data-accion]").forEach((b) => {
       b.addEventListener("click", () => {
+        const pregunta =
+          b.dataset.accion === "confirmar"
+            ? "¿Confirmar esta reserva? Se le avisará al cliente por correo."
+            : "¿Cancelar esto? Si es una reserva, se le avisará al cliente por correo.";
+        if (!confirm(pregunta)) return;
+        b.disabled = true;
         fetch("/api/admin", {
           method: "POST",
           credentials: "include",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ accion: b.dataset.accion, id: b.dataset.id }),
-        }).then(() => cargar());
+        })
+          .then((r) => r.json())
+          .then((d) => {
+            msg.textContent = d.ok ? "" : "Error: " + (d.error || "no se pudo actualizar.");
+            cargar();
+          })
+          .catch(() => {
+            b.disabled = false;
+            msg.textContent = "No se pudo conectar con el servidor.";
+          });
       });
     });
   }
 
   $("filtroFecha").addEventListener("change", render);
   $("filtroEstado").addEventListener("change", render);
+  $("verPasadas").addEventListener("change", render);
   $("btnLimpiarFiltros").addEventListener("click", () => {
     $("filtroFecha").value = "";
     $("filtroEstado").value = "";
+    $("verPasadas").checked = false;
     render();
   });
 

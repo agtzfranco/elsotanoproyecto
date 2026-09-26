@@ -46,15 +46,6 @@ function attachUsuario(req, _res, next) {
   next();
 }
 
-function requireAuth(req, res, next) {
-  if (!req.usuario) {
-    return res
-      .status(401)
-      .json({ ok: false, error: "Debes iniciar sesión para reservar.", login: true });
-  }
-  next();
-}
-
 function requireAdmin(req, res, next) {
   if (!req.usuario || req.usuario.rol !== "admin") {
     return res
@@ -69,6 +60,5 @@ export {
   setSessionCookie,
   clearSessionCookie,
   attachUsuario,
-  requireAuth,
   requireAdmin,
 };

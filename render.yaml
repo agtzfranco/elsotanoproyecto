@@ -15,3 +15,11 @@ services:
         sync: false
       - key: JWT_SECRET
         generateValue: true
+      - key: SITE_URL
+        sync: false
+      - key: RESEND_API_KEY
+        sync: false
+      - key: CORREO_REMITENTE
+        sync: false
+      - key: CORREO_STAFF
+        sync: false

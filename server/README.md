@@ -14,6 +14,13 @@ por un servidor Express que habla con Supabase (Postgres).
    - `Project URL` → `SUPABASE_URL`
    - `service_role` key (secreta) → `SUPABASE_SERVICE_ROLE_KEY`
 
+### Si tu base de Supabase ya existía
+
+Ejecuta también `../supabase/migrations/002_reservas_seguras.sql` en el SQL
+Editor (una sola vez). Agrega el enlace secreto de cada reserva y la función
+`reservar_si_libre`, que impide que dos personas reserven el mismo horario al
+mismo tiempo. Sin ella el servidor no puede registrar reservas.
+
 ## 2. Configurar el servidor
 
 ```bash
@@ -22,6 +29,27 @@ cp .env.example .env
 # edita .env con tus valores (SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, JWT_SECRET...)
 npm install
 ```
+
+### Correos (opcional pero recomendado)
+
+1. Crea una cuenta gratis en https://resend.com y verifica el dominio del
+   estudio (o usa `onboarding@resend.dev` para pruebas).
+2. Define `RESEND_API_KEY`, `CORREO_REMITENTE` y `CORREO_STAFF`.
+
+Con eso se envían estos avisos:
+- Al staff: cada reserva nueva y cada cancelación hecha por el cliente.
+- Al cliente: la reserva recibida (con el enlace para verla o cancelarla),
+  la confirmación y la cancelación hecha por el staff.
+
+## Cómo funcionan las reservas
+
+- Los clientes reservan sin cuenta, solo con nombre, correo y teléfono.
+- Cada reserva recibe un enlace secreto (`mis-reservas.html?token=...`) que
+  llega por correo y también se muestra al terminar de reservar. Con él se
+  consulta o cancela la reserva mientras no haya empezado.
+- Solo el staff inicia sesión (`login.html`) para entrar a `admin.html`.
+- La renta de equipo se reserva por evento: ocupa desde la hora de inicio
+  hasta el cierre (23:00).
 
 ## 3. Crear el usuario admin inicial
 
@@ -40,7 +68,7 @@ npm run dev   # o: npm start
 
 El servidor:
 - Sirve la API en `/api/*` (mismas rutas que antes, sin `.php`:
-  `/api/usuario`, `/api/login`, `/api/logout`, `/api/registro`,
+  `/api/usuario`, `/api/login`, `/api/logout`,
   `/api/disponibilidad`, `/api/reservar`, `/api/reservas`, `/api/admin`).
 - Sirve el sitio estático de `../elsotano` en `/` (equivalente a lo que hacía
   Apache/XAMPP), así que basta con abrir `http://localhost:3000`.

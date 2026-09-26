@@ -57,15 +57,19 @@ document.addEventListener("DOMContentLoaded", () => {
     "DICIEMBRE",
   ];
 
-  let state = { servicio: null, fecha: null, hora: null };
-  let usuario = null;
+  let state = { servicio: null, fecha: null, hora: null, maxDur: 1 };
   let calOffset = 0;
 
-  fetch("/api/usuario", { credentials: "include" })
-    .then((r) => r.json())
-    .then((d) => (usuario = d.usuario));
-
   const $ = (id) => document.getElementById(id);
+
+  // Recordamos los datos de contacto en este navegador para la próxima reserva.
+  const CONTACTO_KEY = "elsotano-contacto";
+  try {
+    const guardado = JSON.parse(localStorage.getItem(CONTACTO_KEY) || "{}");
+    $("resNombre").value = guardado.nombre || "";
+    $("resEmail").value = guardado.email || "";
+    $("resTel").value = guardado.telefono || "";
+  } catch {}
   const toISO = (d) =>
     `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
   const hoy = new Date();
@@ -205,10 +209,19 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  function cargarSlots() {
+  // Horas seguidas libres desde el slot i hasta el cierre o la siguiente reserva.
+  function horasLibresDesde(slots, i) {
+    let n = 0;
+    while (slots[i + n] && !slots[i + n].ocupado) n++;
+    return n;
+  }
+
+  function cargarSlots(conservar = false) {
     const grid = $("slots-grid");
-    grid.innerHTML = "";
-    $("disp-estado").textContent = "Cargando horarios...";
+    if (!conservar) {
+      grid.innerHTML = "";
+      $("disp-estado").textContent = "Cargando horarios...";
+    }
     fetch(
       `/api/disponibilidad?servicio=${encodeURIComponent(state.servicio.id)}&fecha=${state.fecha}`,
       { credentials: "include" },
@@ -219,18 +232,49 @@ document.addEventListener("DOMContentLoaded", () => {
           $("disp-estado").textContent = "Error: " + data.error;
           return;
         }
+        // Si es hoy, las horas que ya empezaron no se pueden reservar.
+        const ahora = new Date();
+        if (state.fecha === toISO(ahora)) {
+          data.slots.forEach((slot) => {
+            if (parseInt(slot.hora, 10) <= ahora.getHours())
+              slot.ocupado = true;
+          });
+        }
+        // La renta de equipo ocupa desde la hora de inicio hasta el cierre.
+        if (state.servicio.porEvento) {
+          let ocupadoDespues = false;
+          for (let i = data.slots.length - 1; i >= 0; i--) {
+            ocupadoDespues = ocupadoDespues || data.slots[i].ocupado;
+            data.slots[i].ocupado = ocupadoDespues;
+          }
+        }
         const libres = data.slots.filter((s) => !s.ocupado).length;
         $("disp-estado").textContent = libres
           ? `Disponibilidad para: ${fechaTexto(state.fecha)}`
           : `Disponibilidad para: ${fechaTexto(state.fecha)} · No hay horarios libres`;
-        data.slots.forEach((slot) => {
+        grid.innerHTML = "";
+        const elegido = data.slots.find(
+          (x) => x.hora === state.hora && !x.ocupado,
+        );
+        if (conservar && state.hora && !elegido) {
+          // La hora elegida ya pasó o alguien más la tomó.
+          state.hora = null;
+          $("stepConfirm").hidden = true;
+        }
+        data.slots.forEach((slot, i) => {
           const b = document.createElement("button");
           b.className = "slot " + (slot.ocupado ? "ocupado" : "libre");
           b.textContent = slot.hora;
           b.disabled = slot.ocupado;
+          if (conservar && slot === elegido) {
+            b.classList.add("elegido");
+            state.maxDur = horasLibresDesde(data.slots, i);
+            if (!$("stepConfirm").hidden) actualizarDuraciones();
+          }
           if (!slot.ocupado)
             b.addEventListener("click", () => {
               state.hora = slot.hora;
+              state.maxDur = horasLibresDesde(data.slots, i);
               document
                 .querySelectorAll(".slot")
                 .forEach((x) => x.classList.remove("elegido"));
@@ -247,21 +291,44 @@ document.addEventListener("DOMContentLoaded", () => {
       );
   }
 
+  // Tiempo real: cada minuto se vuelve a consultar la disponibilidad del día
+  // elegido, así desaparecen las horas que van pasando y las que alguien reserva.
+  setInterval(() => {
+    if (state.servicio && state.fecha && !document.hidden) cargarSlots(true);
+  }, 60 * 1000);
+
   /* ---------- PASO 3: confirmación ---------- */
   function mostrarConfirmacion() {
     const s = state.servicio;
     $("duracionGroup").style.display = s.porEvento ? "none" : "block";
-    if (s.porEvento) $("duracion").value = "1";
-    pintarResumen();
+    actualizarDuraciones();
     $("stepConfirm").hidden = false;
     $("confirmMsg").textContent = "";
     $("stepConfirm").scrollIntoView({ behavior: "smooth" });
   }
 
+  // La duración va de 1 hora hasta el cierre o la siguiente reserva.
+  function actualizarDuraciones() {
+    if (state.servicio.porEvento) $("duracion").value = "1";
+    else {
+      const sel = $("duracion");
+      const previa = parseInt(sel.value, 10) || 1;
+      sel.innerHTML = "";
+      for (let h = 1; h <= state.maxDur; h++) {
+        const opt = document.createElement("option");
+        opt.value = h;
+        opt.textContent = h === 1 ? "1 hora" : `${h} horas`;
+        sel.appendChild(opt);
+      }
+      sel.value = String(Math.min(previa, state.maxDur));
+    }
+    pintarResumen();
+  }
+
   function pintarResumen() {
     const s = state.servicio;
-    const dur = s.porEvento ? 1 : parseInt($("duracion").value, 10);
     const horaNum = parseInt(state.hora, 10);
+    const dur = s.porEvento ? 23 - horaNum : parseInt($("duracion").value, 10);
     const fin = horaNum + dur;
     let total = "SE COTIZARÁ";
     if (s.porEvento) total = "$9,000 MXN";
@@ -279,7 +346,7 @@ document.addEventListener("DOMContentLoaded", () => {
       msg.textContent =
         "La duración excede el cierre (23:00). Reduce horas o elige otra hora.";
     } else {
-      msg.textContent = usuario ? "" : "⚠ Debes iniciar sesión para confirmar.";
+      msg.textContent = "";
       msg.style.color = "var(--text-secondary)";
     }
   }
@@ -287,14 +354,31 @@ document.addEventListener("DOMContentLoaded", () => {
 
   $("btnConfirmar").addEventListener("click", () => {
     const s = state.servicio;
-    const dur = s.porEvento ? 1 : parseInt($("duracion").value, 10);
-    if (parseInt(state.hora, 10) + dur > 23) return;
+    if (!state.hora) return;
+    const horaNum = parseInt(state.hora, 10);
+    const dur = s.porEvento ? 23 - horaNum : parseInt($("duracion").value, 10);
+    if (horaNum + dur > 23) return;
 
-    if (!usuario) {
-      window.location.href =
-        "login.html?next=" + encodeURIComponent("reservas.html");
+    const contacto = {
+      nombre: $("resNombre").value.trim(),
+      email: $("resEmail").value.trim(),
+      telefono: $("resTel").value.trim(),
+    };
+    const msg = $("confirmMsg");
+    const faltante = !contacto.nombre
+      ? "Escribe tu nombre."
+      : !contacto.email
+        ? "Escribe tu correo."
+        : !contacto.telefono
+          ? "Escribe tu teléfono."
+          : "";
+    if (faltante) {
+      msg.style.color = "var(--error)";
+      msg.textContent = faltante;
       return;
     }
+    const btn = $("btnConfirmar");
+    btn.disabled = true;
 
     fetch("/api/reservar", {
       method: "POST",
@@ -306,20 +390,28 @@ document.addEventListener("DOMContentLoaded", () => {
         hora: state.hora,
         duracion: dur,
         mensaje: $("mensaje").value.trim(),
+        ...contacto,
       }),
     })
       .then((r) => r.json())
       .then((data) => {
-        const msg = $("confirmMsg");
-        if (data.login) {
-          window.location.href =
-            "login.html?next=" + encodeURIComponent("reservas.html");
-          return;
-        }
+        btn.disabled = false;
         if (data.ok) {
+          try {
+            localStorage.setItem(CONTACTO_KEY, JSON.stringify(contacto));
+          } catch {}
           msg.style.color = "var(--text-primary)";
-          msg.textContent = "✔ " + data.mensaje + " (Revísala en MIS RESERVAS)";
+          msg.textContent =
+            "✔ " +
+            data.mensaje +
+            (data.correo ? " Te enviamos los detalles a tu correo. " : " ");
+          const link = document.createElement("a");
+          link.href = data.enlace;
+          link.textContent = "Ver o cancelar mi reserva →";
+          link.style.color = "var(--text-primary)";
+          msg.appendChild(link);
           $("mensaje").value = "";
+          state.hora = null;
           cargarSlots();
         } else {
           msg.style.color = "var(--error)";
@@ -327,6 +419,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       })
       .catch(() => {
+        btn.disabled = false;
         $("confirmMsg").style.color = "var(--error)";
         $("confirmMsg").textContent = "No se pudo conectar con el servidor.";
       });
