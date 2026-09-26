@@ -1753,3 +1753,118 @@ p,
   color: #f2f0e9;
   border-color: rgba(242, 240, 233, 0.4);
 }
+
+/* =========================================
+   RESERVAS: CALENDARIO LIMPIO (referencia La Bestia)
+   Días sin cajitas, día elegido en azul marino y
+   horarios que se acomodan sin salirse del recuadro.
+   ========================================= */
+.booking-calendar-wrap {
+  grid-template-columns: minmax(300px, 1fr) 1.3fr;
+  gap: 3rem;
+  padding: 2.5rem;
+}
+.calendar {
+  border: none;
+  padding: 0;
+  background: transparent;
+}
+.cal-header {
+  justify-content: center;
+  gap: 2.5rem;
+  margin-bottom: 1.5rem;
+}
+.cal-title {
+  font-family: var(--font-body);
+  font-size: 1.15rem;
+  letter-spacing: 0;
+  white-space: nowrap;
+  text-transform: lowercase;
+}
+.cal-title::first-letter {
+  text-transform: uppercase;
+}
+.cal-nav {
+  border: none;
+  font-size: 1.3rem;
+  padding: 0.2rem 0.6rem;
+}
+.cal-nav:hover {
+  background: transparent;
+  color: var(--ink-blue);
+}
+.cal-week {
+  margin-bottom: 0.6rem;
+}
+.cal-week span {
+  font-size: 0.9rem;
+}
+.cal-grid {
+  gap: 6px;
+}
+.cal-day {
+  position: relative;
+  aspect-ratio: 1;
+  padding: 0;
+  border: none;
+  font-size: 1rem;
+  color: var(--ink-blue);
+}
+/* Puntito bajo los días que se pueden reservar */
+.cal-day:not(:disabled)::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 18%;
+  width: 4px;
+  height: 4px;
+  margin-left: -2px;
+  border-radius: 50%;
+  background: currentColor;
+}
+.cal-day:disabled {
+  opacity: 0.35;
+  color: var(--text-secondary);
+}
+.cal-day:hover:not(:disabled) {
+  background: var(--bg-darker);
+  color: var(--ink-blue);
+}
+.cal-day.selected,
+.cal-day.selected:hover:not(:disabled) {
+  background: var(--ink-blue);
+  color: #f2f0e9;
+}
+
+.slots-panel .disp-estado {
+  text-align: left;
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 1.05rem;
+  color: var(--text-primary);
+  margin-bottom: 1.5rem;
+}
+.slots-panel .disp-estado::first-letter {
+  text-transform: uppercase;
+}
+.slots-panel .slots-grid {
+  grid-template-columns: repeat(auto-fill, minmax(92px, 1fr));
+  gap: 0.8rem;
+  max-width: none;
+  margin: 0;
+}
+.slots-panel .slot {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 0.8rem 0.5rem;
+  border-width: 2px;
+}
+.slots-panel .slot.libre:hover,
+.slot.elegido {
+  background: var(--ink-blue);
+  border-color: var(--ink-blue);
+  color: #f2f0e9;
+  transform: none;
+  box-shadow: none;
+}

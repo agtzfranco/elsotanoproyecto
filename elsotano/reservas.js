@@ -71,6 +71,16 @@ document.addEventListener("DOMContentLoaded", () => {
   const hoy = new Date();
   hoy.setHours(0, 0, 0, 0);
 
+  // "martes, 29 de septiembre" (como el calendario de referencia)
+  function fechaTexto(iso) {
+    const [y, m, d] = iso.split("-").map(Number);
+    return new Date(y, m - 1, d).toLocaleDateString("es-MX", {
+      weekday: "long",
+      day: "numeric",
+      month: "long",
+    });
+  }
+
   function fechaLarga(iso) {
     const [y, m, d] = iso.split("-").map(Number);
     return `${String(d).padStart(2, "0")}/${String(m).padStart(2, "0")}/${y}`;
@@ -211,8 +221,8 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         const libres = data.slots.filter((s) => !s.ocupado).length;
         $("disp-estado").textContent = libres
-          ? `${libres} horario(s) libre(s) — ${fechaLarga(state.fecha)}`
-          : `Sin horarios libres el ${fechaLarga(state.fecha)}.`;
+          ? `Disponibilidad para: ${fechaTexto(state.fecha)}`
+          : `Disponibilidad para: ${fechaTexto(state.fecha)} · No hay horarios libres`;
         data.slots.forEach((slot) => {
           const b = document.createElement("button");
           b.className = "slot " + (slot.ocupado ? "ocupado" : "libre");
