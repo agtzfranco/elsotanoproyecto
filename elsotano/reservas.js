@@ -209,10 +209,19 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  function cargarSlots() {
+  // Horas seguidas libres desde el slot i hasta el cierre o la siguiente reserva.
+  function horasLibresDesde(slots, i) {
+    let n = 0;
+    while (slots[i + n] && !slots[i + n].ocupado) n++;
+    return n;
+  }
+
+  function cargarSlots(conservar = false) {
     const grid = $("slots-grid");
-    grid.innerHTML = "";
-    $("disp-estado").textContent = "Cargando horarios...";
+    if (!conservar) {
+      grid.innerHTML = "";
+      $("disp-estado").textContent = "Cargando horarios...";
+    }
     fetch(
       `/api/disponibilidad?servicio=${encodeURIComponent(state.servicio.id)}&fecha=${state.fecha}`,
       { credentials: "include" },
@@ -222,6 +231,14 @@ document.addEventListener("DOMContentLoaded", () => {
         if (data.error) {
           $("disp-estado").textContent = "Error: " + data.error;
           return;
+        }
+        // Si es hoy, las horas que ya empezaron no se pueden reservar.
+        const ahora = new Date();
+        if (state.fecha === toISO(ahora)) {
+          data.slots.forEach((slot) => {
+            if (parseInt(slot.hora, 10) <= ahora.getHours())
+              slot.ocupado = true;
+          });
         }
         // La renta de equipo ocupa desde la hora de inicio hasta el cierre.
         if (state.servicio.porEvento) {
@@ -235,22 +252,29 @@ document.addEventListener("DOMContentLoaded", () => {
         $("disp-estado").textContent = libres
           ? `Disponibilidad para: ${fechaTexto(state.fecha)}`
           : `Disponibilidad para: ${fechaTexto(state.fecha)} · No hay horarios libres`;
+        grid.innerHTML = "";
+        const elegido = data.slots.find(
+          (x) => x.hora === state.hora && !x.ocupado,
+        );
+        if (conservar && state.hora && !elegido) {
+          // La hora elegida ya pasó o alguien más la tomó.
+          state.hora = null;
+          $("stepConfirm").hidden = true;
+        }
         data.slots.forEach((slot, i) => {
           const b = document.createElement("button");
           b.className = "slot " + (slot.ocupado ? "ocupado" : "libre");
           b.textContent = slot.hora;
           b.disabled = slot.ocupado;
+          if (conservar && slot === elegido) {
+            b.classList.add("elegido");
+            state.maxDur = horasLibresDesde(data.slots, i);
+            if (!$("stepConfirm").hidden) actualizarDuraciones();
+          }
           if (!slot.ocupado)
             b.addEventListener("click", () => {
               state.hora = slot.hora;
-              // Horas seguidas libres desde aquí hasta el cierre o la siguiente reserva.
-              let libresSeguidas = 0;
-              while (
-                data.slots[i + libresSeguidas] &&
-                !data.slots[i + libresSeguidas].ocupado
-              )
-                libresSeguidas++;
-              state.maxDur = libresSeguidas;
+              state.maxDur = horasLibresDesde(data.slots, i);
               document
                 .querySelectorAll(".slot")
                 .forEach((x) => x.classList.remove("elegido"));
@@ -267,11 +291,25 @@ document.addEventListener("DOMContentLoaded", () => {
       );
   }
 
+  // Tiempo real: cada minuto se vuelve a consultar la disponibilidad del día
+  // elegido, así desaparecen las horas que van pasando y las que alguien reserva.
+  setInterval(() => {
+    if (state.servicio && state.fecha && !document.hidden) cargarSlots(true);
+  }, 60 * 1000);
+
   /* ---------- PASO 3: confirmación ---------- */
   function mostrarConfirmacion() {
     const s = state.servicio;
     $("duracionGroup").style.display = s.porEvento ? "none" : "block";
-    if (s.porEvento) $("duracion").value = "1";
+    actualizarDuraciones();
+    $("stepConfirm").hidden = false;
+    $("confirmMsg").textContent = "";
+    $("stepConfirm").scrollIntoView({ behavior: "smooth" });
+  }
+
+  // La duración va de 1 hora hasta el cierre o la siguiente reserva.
+  function actualizarDuraciones() {
+    if (state.servicio.porEvento) $("duracion").value = "1";
     else {
       const sel = $("duracion");
       const previa = parseInt(sel.value, 10) || 1;
@@ -285,9 +323,6 @@ document.addEventListener("DOMContentLoaded", () => {
       sel.value = String(Math.min(previa, state.maxDur));
     }
     pintarResumen();
-    $("stepConfirm").hidden = false;
-    $("confirmMsg").textContent = "";
-    $("stepConfirm").scrollIntoView({ behavior: "smooth" });
   }
 
   function pintarResumen() {
@@ -319,6 +354,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   $("btnConfirmar").addEventListener("click", () => {
     const s = state.servicio;
+    if (!state.hora) return;
     const horaNum = parseInt(state.hora, 10);
     const dur = s.porEvento ? 23 - horaNum : parseInt($("duracion").value, 10);
     if (horaNum + dur > 23) return;
@@ -375,6 +411,7 @@ document.addEventListener("DOMContentLoaded", () => {
           link.style.color = "var(--text-primary)";
           msg.appendChild(link);
           $("mensaje").value = "";
+          state.hora = null;
           cargarSlots();
         } else {
           msg.style.color = "var(--error)";
