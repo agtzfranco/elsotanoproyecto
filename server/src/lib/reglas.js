@@ -2,7 +2,8 @@
 
 export const HORA_APERTURA = 11;
 export const HORA_CIERRE = 23;
-export const DURACION_MAXIMA = 8;
+// Lo que dure la jornada: el límite real es la hora de cierre.
+export const DURACION_MAXIMA = 12;
 export const DIAS_MAXIMOS_ANTICIPACION = 365;
 
 export const SERVICIOS = {

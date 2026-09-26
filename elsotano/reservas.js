@@ -57,7 +57,7 @@ document.addEventListener("DOMContentLoaded", () => {
     "DICIEMBRE",
   ];
 
-  let state = { servicio: null, fecha: null, hora: null };
+  let state = { servicio: null, fecha: null, hora: null, maxDur: 1 };
   let calOffset = 0;
 
   const $ = (id) => document.getElementById(id);
@@ -235,7 +235,7 @@ document.addEventListener("DOMContentLoaded", () => {
         $("disp-estado").textContent = libres
           ? `Disponibilidad para: ${fechaTexto(state.fecha)}`
           : `Disponibilidad para: ${fechaTexto(state.fecha)} · No hay horarios libres`;
-        data.slots.forEach((slot) => {
+        data.slots.forEach((slot, i) => {
           const b = document.createElement("button");
           b.className = "slot " + (slot.ocupado ? "ocupado" : "libre");
           b.textContent = slot.hora;
@@ -243,6 +243,14 @@ document.addEventListener("DOMContentLoaded", () => {
           if (!slot.ocupado)
             b.addEventListener("click", () => {
               state.hora = slot.hora;
+              // Horas seguidas libres desde aquí hasta el cierre o la siguiente reserva.
+              let libresSeguidas = 0;
+              while (
+                data.slots[i + libresSeguidas] &&
+                !data.slots[i + libresSeguidas].ocupado
+              )
+                libresSeguidas++;
+              state.maxDur = libresSeguidas;
               document
                 .querySelectorAll(".slot")
                 .forEach((x) => x.classList.remove("elegido"));
@@ -264,6 +272,18 @@ document.addEventListener("DOMContentLoaded", () => {
     const s = state.servicio;
     $("duracionGroup").style.display = s.porEvento ? "none" : "block";
     if (s.porEvento) $("duracion").value = "1";
+    else {
+      const sel = $("duracion");
+      const previa = parseInt(sel.value, 10) || 1;
+      sel.innerHTML = "";
+      for (let h = 1; h <= state.maxDur; h++) {
+        const opt = document.createElement("option");
+        opt.value = h;
+        opt.textContent = h === 1 ? "1 hora" : `${h} horas`;
+        sel.appendChild(opt);
+      }
+      sel.value = String(Math.min(previa, state.maxDur));
+    }
     pintarResumen();
     $("stepConfirm").hidden = false;
     $("confirmMsg").textContent = "";
