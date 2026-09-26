@@ -66,7 +66,7 @@ h2 span {
 p {
   color: var(--text-secondary);
   margin-bottom: 1rem;
-  font-family: "Courier New", monospace;
+  font-family: var(--font-body);
   font-weight: 400;
   letter-spacing: 0.05em;
 }
@@ -78,7 +78,7 @@ p {
   font-size: 1rem;
   border-left: 4px solid var(--text-primary);
   padding-left: 1rem;
-  font-family: "Courier New", monospace;
+  font-family: var(--font-body);
 }
 
 .container {
@@ -199,7 +199,7 @@ nav {
   letter-spacing: 0.1em;
   transition: all 0.2s;
   position: relative;
-  font-family: "Courier New", monospace;
+  font-family: var(--font-body);
 }
 
 .nav-links a:not(.btn):hover {
@@ -216,7 +216,7 @@ nav {
   font-size: 1.5rem;
   cursor: pointer;
   padding: 0.5rem;
-  font-family: "Courier New", monospace;
+  font-family: var(--font-body);
 }
 
 /* =========================================
@@ -258,7 +258,7 @@ nav {
   max-width: 600px;
   margin: 0 auto 3rem;
   color: var(--text-secondary);
-  font-family: "Courier New", monospace;
+  font-family: var(--font-body);
   border-left: 3px solid var(--text-primary);
   padding-left: 1rem;
   text-align: left;
@@ -416,7 +416,7 @@ nav {
   font-size: 1rem;
   color: var(--text-secondary);
   font-weight: 400;
-  font-family: "Courier New", monospace;
+  font-family: var(--font-body);
   display: block;
   margin-top: 0.5rem;
   letter-spacing: 0.1em;
@@ -432,7 +432,7 @@ nav {
   border-bottom: 1px solid var(--border);
   color: var(--text-secondary);
   font-size: 0.9rem;
-  font-family: "Courier New", monospace;
+  font-family: var(--font-body);
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
@@ -492,7 +492,7 @@ nav {
   align-items: center;
   gap: 1rem;
   color: var(--text-secondary);
-  font-family: "Courier New", monospace;
+  font-family: var(--font-body);
   font-size: 0.95rem;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -539,7 +539,7 @@ nav {
   text-transform: uppercase;
   letter-spacing: 0.1em;
   font-size: 0.85rem;
-  font-family: "Courier New", monospace;
+  font-family: var(--font-body);
 }
 
 .form-group input,
@@ -551,7 +551,7 @@ nav {
   border: 2px solid var(--border);
   border-radius: 0;
   color: var(--text-primary);
-  font-family: "Courier New", monospace;
+  font-family: var(--font-body);
   font-size: 1rem;
   transition: all 0.2s;
   letter-spacing: 0.05em;
@@ -581,7 +581,7 @@ nav {
   margin-top: 0.5rem;
   color: var(--text-secondary);
   font-size: 0.8rem;
-  font-family: "Courier New", monospace;
+  font-family: var(--font-body);
   text-transform: uppercase;
 }
 
@@ -591,7 +591,7 @@ nav {
   font-size: 0.85rem;
   margin-top: 0.5rem;
   min-height: 1.2em;
-  font-family: "Courier New", monospace;
+  font-family: var(--font-body);
   text-transform: uppercase;
 }
 
@@ -606,7 +606,7 @@ nav {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  font-family: "Courier New", monospace;
+  font-family: var(--font-body);
 }
 
 .form-row {
@@ -651,7 +651,7 @@ footer {
   display: block;
   margin-bottom: 0.75rem;
   transition: all 0.2s;
-  font-family: "Courier New", monospace;
+  font-family: var(--font-body);
   font-size: 0.9rem;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -678,7 +678,7 @@ footer {
   padding-top: 2rem;
   color: var(--text-secondary);
   font-size: 0.85rem;
-  font-family: "Courier New", monospace;
+  font-family: var(--font-body);
   text-transform: uppercase;
   letter-spacing: 0.1em;
 }
@@ -797,7 +797,7 @@ footer {
   left: 0;
   background-color: var(--text-primary);
   color: var(--bg-dark);
-  font-family: "Courier New", monospace;
+  font-family: var(--font-body);
   font-weight: 700;
   font-size: 0.8rem;
   letter-spacing: 0.1em;
@@ -916,7 +916,7 @@ footer {
 
 .disp-estado {
   text-align: center;
-  font-family: "Courier New", monospace;
+  font-family: var(--font-body);
   color: var(--text-secondary);
   margin-bottom: 2rem;
   text-transform: uppercase;
@@ -963,7 +963,7 @@ footer {
   display: flex;
   justify-content: center;
   gap: 2rem;
-  font-family: "Courier New", monospace;
+  font-family: var(--font-body);
   color: var(--text-secondary);
   text-transform: uppercase;
   font-size: 0.85rem;
@@ -1015,7 +1015,7 @@ h2 {
   display: inline-block;
   background: var(--text-primary);
   color: var(--bg-dark);
-  font-family: "Courier New", monospace;
+  font-family: var(--font-body);
   font-weight: 700;
   font-size: 0.85rem;
   letter-spacing: 0.15em;
@@ -1115,7 +1115,7 @@ h2 {
   list-style: none;
 }
 .user-name {
-  font-family: "Courier New", monospace;
+  font-family: var(--font-body);
   font-size: 0.85rem;
   text-transform: uppercase;
   border: 2px dashed var(--border-light);
@@ -1123,7 +1123,7 @@ h2 {
 }
 .user-link {
   color: var(--text-primary);
-  font-family: "Courier New", monospace;
+  font-family: var(--font-body);
   font-size: 0.85rem;
   text-transform: uppercase;
   text-decoration: underline;
@@ -1209,7 +1209,7 @@ h2 {
 }
 .cal-week span {
   text-align: center;
-  font-family: "Courier New", monospace;
+  font-family: var(--font-body);
   color: var(--text-secondary);
   font-size: 0.8rem;
 }
@@ -1218,7 +1218,7 @@ h2 {
   background: transparent;
   border: 2px solid var(--border);
   color: var(--text-primary);
-  font-family: "Courier New", monospace;
+  font-family: var(--font-body);
   cursor: pointer;
   transition: all 0.15s;
 }
@@ -1255,7 +1255,7 @@ h2 {
   gap: 1rem;
   padding: 0.8rem 0;
   border-bottom: 2px dashed var(--border);
-  font-family: "Courier New", monospace;
+  font-family: var(--font-body);
   font-size: 0.95rem;
   text-transform: uppercase;
 }
@@ -1311,7 +1311,7 @@ h2 {
 .auth-msg {
   min-height: 1.4em;
   margin-top: 1.2rem;
-  font-family: "Courier New", monospace;
+  font-family: var(--font-body);
   text-transform: uppercase;
   font-size: 0.85rem;
 }
@@ -1346,7 +1346,7 @@ h2 {
   text-transform: uppercase;
 }
 .reserva-info span {
-  font-family: "Courier New", monospace;
+  font-family: var(--font-body);
   color: var(--text-secondary);
   text-transform: uppercase;
   font-size: 0.85rem;
@@ -1357,7 +1357,7 @@ h2 {
   gap: 1rem;
 }
 .badge {
-  font-family: "Courier New", monospace;
+  font-family: var(--font-body);
   text-transform: uppercase;
   font-size: 0.8rem;
   padding: 0.3rem 0.8rem;
@@ -1422,7 +1422,7 @@ h2 {
 
 /* Tipografía: grotesca pesada + serifa itálica de revista */
 body {
-  font-family: "EB Garamond", Georgia, serif;
+  font-family: var(--font-body);
   letter-spacing: 0;
 }
 h1,
@@ -1445,7 +1445,7 @@ h2 {
 
 p,
 .section-intro {
-  font-family: "EB Garamond", Georgia, serif;
+  font-family: var(--font-body);
   font-size: 1.1rem;
 }
 .section-intro {
@@ -1625,7 +1625,7 @@ body::after {
   background: var(--bg-input);
   border: 2px solid var(--border);
   color: var(--text-primary);
-  font-family: "Courier New", monospace;
+  font-family: var(--font-body);
 }
 .board-scroll {
   overflow-x: auto;
@@ -1647,7 +1647,7 @@ body::after {
   padding: 0.7rem 0.5rem;
   text-align: center;
   border: 1px solid var(--border);
-  font-family: "Courier New", monospace;
+  font-family: var(--font-body);
   font-size: 0.85rem;
 }
 .board-cell.head {
@@ -1700,4 +1700,171 @@ body::after {
   margin: 0;
   font-size: 0.95rem;
   font-style: italic;
+}
+
+/* =========================================
+   TIPOGRAFÍA DE TEXTO: HELVETICA
+   ========================================= */
+:root {
+  --font-body: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+body,
+p,
+.section-intro,
+.hero-content p,
+.valor-card p {
+  font-family: var(--font-body);
+  font-style: normal;
+}
+p,
+.section-intro {
+  font-size: 1rem;
+  line-height: 1.55;
+  letter-spacing: 0;
+}
+
+/* =========================================
+   FOTOS SIEMPRE A COLOR
+   Al pasar el mouse solo cambia el color de la tarjeta.
+   ========================================= */
+.card-img img,
+.section-photo img,
+.photo-banner img,
+.equipment-img,
+.tile,
+.service-card:hover .card-img img,
+.section-photo:hover img,
+.photo-banner:hover img,
+.equipment-img:hover,
+.tile:hover {
+  filter: none;
+  mix-blend-mode: normal;
+}
+.service-card:hover {
+  background-color: var(--ink-blue);
+  border-color: var(--ink-blue);
+}
+.service-card:hover h3,
+.service-card:hover .price,
+.service-card:hover p,
+.service-card:hover .price span,
+.service-card:hover .service-features li {
+  color: #f2f0e9;
+  border-color: rgba(242, 240, 233, 0.4);
+}
+
+/* =========================================
+   RESERVAS: CALENDARIO LIMPIO (referencia La Bestia)
+   Días sin cajitas, día elegido en azul marino y
+   horarios que se acomodan sin salirse del recuadro.
+   ========================================= */
+.booking-calendar-wrap {
+  grid-template-columns: minmax(300px, 1fr) 1.3fr;
+  gap: 3rem;
+  padding: 2.5rem;
+}
+.calendar {
+  border: none;
+  padding: 0;
+  background: transparent;
+}
+.cal-header {
+  justify-content: center;
+  gap: 2.5rem;
+  margin-bottom: 1.5rem;
+}
+.cal-title {
+  font-family: var(--font-body);
+  font-size: 1.15rem;
+  letter-spacing: 0;
+  white-space: nowrap;
+  text-transform: lowercase;
+}
+.cal-title::first-letter {
+  text-transform: uppercase;
+}
+.cal-nav {
+  border: none;
+  font-size: 1.3rem;
+  padding: 0.2rem 0.6rem;
+}
+.cal-nav:hover {
+  background: transparent;
+  color: var(--ink-blue);
+}
+.cal-week {
+  margin-bottom: 0.6rem;
+}
+.cal-week span {
+  font-size: 0.9rem;
+}
+.cal-grid {
+  gap: 6px;
+}
+.cal-day {
+  position: relative;
+  aspect-ratio: 1;
+  padding: 0;
+  border: none;
+  font-size: 1rem;
+  color: var(--ink-blue);
+}
+/* Puntito bajo los días que se pueden reservar */
+.cal-day:not(:disabled)::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 18%;
+  width: 4px;
+  height: 4px;
+  margin-left: -2px;
+  border-radius: 50%;
+  background: currentColor;
+}
+.cal-day:disabled {
+  opacity: 0.35;
+  color: var(--text-secondary);
+}
+.cal-day:hover:not(:disabled) {
+  background: var(--bg-darker);
+  color: var(--ink-blue);
+}
+.cal-day.selected,
+.cal-day.selected:hover:not(:disabled) {
+  background: var(--ink-blue);
+  color: #f2f0e9;
+}
+
+.slots-panel .disp-estado {
+  text-align: left;
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 1.05rem;
+  color: var(--text-primary);
+  margin-bottom: 1.5rem;
+}
+.slots-panel .disp-estado::first-letter {
+  text-transform: uppercase;
+}
+.slots-panel .slots-grid {
+  grid-template-columns: repeat(auto-fill, minmax(92px, 1fr));
+  gap: 0.8rem;
+  max-width: none;
+  margin: 0;
+}
+.slots-panel .slot {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 0.8rem 0.5rem;
+  border-width: 2px;
+}
+.slots-panel .slot.libre:hover,
+.slot.elegido {
+  background: var(--ink-blue);
+  border-color: var(--ink-blue);
+  color: #f2f0e9;
+  transform: none;
+  box-shadow: none;
 }
