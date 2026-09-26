@@ -1,69 +1,91 @@
 import { Router } from "express";
 import { supabase } from "../supabaseClient.js";
 import { requireAdmin } from "../middleware/auth.js";
+import { avisos } from "../lib/correo.js";
+import {
+  HORA_APERTURA,
+  HORA_CIERRE,
+  esFechaValida,
+  parseHora,
+  parseEntero,
+  horaSql,
+} from "../lib/reglas.js";
 
 const router = Router();
+const CAMPOS = "id, servicio, fecha, hora_inicio, hora_fin, duracion_horas, nombre, telefono, email, mensaje, estado";
 
 router.use(requireAdmin);
+
+async function listarReservas(res) {
+  const { data, error } = await supabase
+    .from("reservaciones")
+    .select(CAMPOS)
+    .order("fecha", { ascending: true })
+    .order("hora_inicio", { ascending: true });
+  if (error) {
+    return res.status(500).json({ ok: false, error: "No se pudo conectar a la base de datos." });
+  }
+  res.json({ reservas: data ?? [] });
+}
 
 router.get("/", async (req, res) => {
   const accion = req.query.accion ?? "";
   if (accion !== "reservas") {
     return res.json({ ok: false, error: "Acción no válida." });
   }
-  const { data, error } = await supabase
-    .from("reservaciones")
-    .select("id, servicio, fecha, hora_inicio, hora_fin, duracion_horas, nombre, telefono, email, mensaje, estado");
-  if (error) {
-    return res.status(500).json({ ok: false, error: "No se pudo conectar a la base de datos." });
-  }
-  res.json({ reservas: data ?? [] });
+  return listarReservas(res);
 });
 
 router.post("/", async (req, res) => {
   const accion = req.body?.accion ?? "";
 
   if (accion === "reservas") {
-    const { data, error } = await supabase
-      .from("reservaciones")
-      .select("id, servicio, fecha, hora_inicio, hora_fin, duracion_horas, nombre, telefono, email, mensaje, estado");
-    if (error) {
-      return res.status(500).json({ ok: false, error: "No se pudo conectar a la base de datos." });
-    }
-    return res.json({ reservas: data ?? [] });
+    return listarReservas(res);
   }
 
   if (accion === "confirmar" || accion === "cancelar") {
+    const id = parseEntero(req.body?.id);
+    if (!Number.isInteger(id)) {
+      return res.json({ ok: false, error: "Reserva no válida." });
+    }
     const estado = accion === "confirmar" ? "confirmada" : "cancelada";
-    const { data, error } = await supabase
-      .from("reservaciones")
-      .update({ estado })
-      .eq("id", req.body?.id)
-      .select("id");
+    let consulta = supabase.from("reservaciones").update({ estado }).eq("id", id);
+    // Solo se confirma lo pendiente; no se "revive" una reserva cancelada.
+    consulta = accion === "confirmar" ? consulta.eq("estado", "pendiente") : consulta.neq("estado", "cancelada");
+    const { data, error } = await consulta.select(CAMPOS);
     if (error) {
       return res.status(500).json({ ok: false, error: "No se pudo conectar a la base de datos." });
     }
-    return res.json({ ok: (data ?? []).length > 0 });
+    const r = (data ?? [])[0];
+    if (r && r.servicio !== "bloqueo") {
+      if (accion === "confirmar") avisos.reservaConfirmada(r);
+      else avisos.reservaCanceladaPorStaff(r);
+    }
+    return res.json({ ok: Boolean(r), error: r ? undefined : "La reserva ya cambió de estado. Recarga la página." });
   }
 
   if (accion === "bloquear") {
-    const fecha = req.body?.fecha ?? "";
-    const horaNum = parseInt(req.body?.hora ?? 11, 10) || 11;
-    const dur = Math.max(1, parseInt(req.body?.duracion ?? 1, 10) || 1);
-    const motivo = String(req.body?.motivo ?? "").trim() || "Bloqueo del staff";
+    const fecha = String(req.body?.fecha ?? "");
+    const horaNum = parseHora(req.body?.hora ?? HORA_APERTURA);
+    const dur = parseEntero(req.body?.duracion ?? 1);
+    const motivo = String(req.body?.motivo ?? "").trim().slice(0, 300) || "Bloqueo del staff";
 
     if (!fecha) {
       return res.json({ ok: false, error: "Falta la fecha." });
     }
-    if (horaNum < 11 || horaNum + dur > 23) {
+    if (!esFechaValida(fecha)) {
+      return res.json({ ok: false, error: "Fecha no válida." });
+    }
+    if (!Number.isInteger(horaNum) || !Number.isInteger(dur) || dur < 1 ||
+        horaNum < HORA_APERTURA || horaNum + dur > HORA_CIERRE) {
       return res.json({ ok: false, error: "Fuera del horario 11:00–23:00." });
     }
 
     const { error } = await supabase.from("reservaciones").insert({
       servicio: "bloqueo",
       fecha,
-      hora_inicio: `${String(horaNum).padStart(2, "0")}:00:00`,
-      hora_fin: `${String(horaNum + dur).padStart(2, "0")}:00:00`,
+      hora_inicio: horaSql(horaNum),
+      hora_fin: horaSql(horaNum + dur),
       duracion_horas: dur,
       nombre: "BLOQUEO",
       telefono: "",

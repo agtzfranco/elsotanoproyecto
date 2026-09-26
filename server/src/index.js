@@ -9,7 +9,6 @@ import { attachUsuario } from "./middleware/auth.js";
 import usuarioRouter from "./routes/usuario.js";
 import loginRouter from "./routes/login.js";
 import logoutRouter from "./routes/logout.js";
-import registroRouter from "./routes/registro.js";
 import disponibilidadRouter from "./routes/disponibilidad.js";
 import reservarRouter from "./routes/reservar.js";
 import reservasRouter from "./routes/reservas.js";
@@ -19,6 +18,9 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const FRONTEND_DIR = path.resolve(__dirname, "../../elsotano");
 
 const app = express();
+// Render (y la mayoría de hosts) ponen un proxy delante: así req.ip y
+// req.protocol reflejan al visitante real.
+app.set("trust proxy", 1);
 
 if (process.env.CORS_ORIGIN) {
   app.use(cors({ origin: process.env.CORS_ORIGIN, credentials: true }));
@@ -30,7 +32,6 @@ app.use(attachUsuario);
 app.use("/api/usuario", usuarioRouter);
 app.use("/api/login", loginRouter);
 app.use("/api/logout", logoutRouter);
-app.use("/api/registro", registroRouter);
 app.use("/api/disponibilidad", disponibilidadRouter);
 app.use("/api/reservar", reservarRouter);
 app.use("/api/reservas", reservasRouter);
