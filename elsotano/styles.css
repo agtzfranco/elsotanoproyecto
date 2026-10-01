@@ -1987,3 +1987,17 @@ p,
     padding: 1.25rem;
   }
 }
+
+/* Renta de equipo: todo el recuadro en Helvetica */
+.rental,
+.rental h3,
+.rental h4,
+.rental .price,
+.rental .btn {
+  font-family: var(--font-body);
+}
+.rental h3,
+.rental .price {
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
