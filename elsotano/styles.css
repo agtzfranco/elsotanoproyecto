@@ -2034,3 +2034,23 @@ h6,
   font-family: var(--font-title);
   font-weight: 600;
 }
+
+/* Pie: logo del disco "El Sótano · Espacio creativo" */
+.footer-logo-img {
+  height: 120px;
+  width: 120px;
+  max-width: none;
+  margin-bottom: 1.25rem;
+}
+
+/* Interacciones: sin bloque negro ni desplazamiento al pasar el mouse */
+.nav-links a:not(.btn):hover,
+.footer-col a:hover {
+  background-color: transparent;
+  color: var(--text-primary);
+  padding: 0;
+  text-decoration: none;
+}
+.footer-col a.logo-link:hover {
+  opacity: 0.85;
+}
