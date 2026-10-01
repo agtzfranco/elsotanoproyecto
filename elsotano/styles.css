@@ -1949,3 +1949,42 @@ p,
 .service-card:hover .card-gear .form-hint {
   color: #f2f0e9;
 }
+
+/* Renta de equipo sobre textura negra (como la guía impresa) */
+#equipo {
+  background: #111 url("IMG/textura-negra.jpg") center / cover no-repeat;
+  color: #f2f0e9;
+}
+#equipo h2,
+#equipo .rental-box h3,
+#equipo .rental-box h4,
+#equipo .rental-note,
+#equipo .rental-footer .price {
+  color: #f2f0e9;
+}
+#equipo h2 {
+  border-color: #f2f0e9;
+}
+#equipo .section-intro {
+  color: #c9c5bb;
+  border-left-color: #f2f0e9;
+}
+#equipo .rental-photo,
+#equipo .rental-box,
+#equipo .rental-note {
+  background-color: transparent;
+  border-color: #c9c5bb;
+  color: #c9c5bb;
+}
+#equipo .rental-list li,
+#equipo .rental-footer .price span {
+  color: #c9c5bb;
+}
+#equipo .rental-list b {
+  color: #f2f0e9;
+}
+#equipo .btn {
+  background-color: #f2f0e9;
+  color: #171512;
+  border-color: #f2f0e9;
+}
