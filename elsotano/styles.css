@@ -2219,3 +2219,60 @@ h6,
     font-size: 1.8rem;
   }
 }
+
+/* =========================================
+   UBICACIÓN (mapa + dirección)
+   ========================================= */
+.ubicacion {
+  padding: 6rem 0 2rem;
+}
+.ubicacion-grid {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr;
+  gap: 2rem;
+  margin-top: 3rem;
+}
+.ubicacion-mapa {
+  width: 100%;
+  min-height: 380px;
+  height: 100%;
+  border: 2px solid var(--border);
+  display: block;
+}
+.ubicacion-info {
+  border: 2px solid var(--border);
+  background-color: var(--bg-card);
+  padding: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1.25rem;
+}
+.ubicacion-info h3 {
+  font-size: 1.6rem;
+  text-transform: uppercase;
+}
+.ubicacion-info p {
+  font-family: var(--font-body);
+  font-size: 1.05rem;
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+.ubicacion-horario {
+  border-top: 1px solid var(--border-light);
+  padding-top: 1.25rem;
+}
+.ubicacion-info .btn {
+  align-self: flex-start;
+}
+@media (max-width: 768px) {
+  .ubicacion-grid {
+    grid-template-columns: 1fr;
+  }
+  .ubicacion-mapa {
+    min-height: 280px;
+  }
+  .ubicacion-info {
+    padding: 1.75rem;
+  }
+}
