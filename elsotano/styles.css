@@ -2276,3 +2276,27 @@ h6,
     padding: 1.75rem;
   }
 }
+
+/* Sobre nosotros: ilustraciones de los espacios */
+.nosotros-ilustraciones {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin-top: 3rem;
+}
+.nosotros-ilustraciones img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+}
+@media (max-width: 768px) {
+  .nosotros-ilustraciones {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+}
+#nosotros .ubicacion-grid {
+  margin-top: 2rem;
+  margin-bottom: 4rem;
+}
