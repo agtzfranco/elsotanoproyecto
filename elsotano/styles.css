@@ -1897,10 +1897,55 @@ p,
   color: var(--ink-blue);
   padding: 0.5rem 0;
 }
-.card-gear .service-features {
+.card-gear summary::-webkit-details-marker {
+  display: none;
+}
+.card-gear summary {
+  list-style: none;
+}
+.card-gear .gear-open::before {
+  content: "+ ";
+}
+.card-gear .gear-close,
+.card-gear[open] .gear-open {
+  display: none;
+}
+/* Al abrir, la lista cubre la misma tarjeta: las demás no se estiran */
+.card-gear[open] .gear-close {
+  display: inline;
+}
+.card-gear[open] summary {
+  position: absolute;
+  top: 1.25rem;
+  right: 2.5rem;
+  z-index: 3;
+}
+.gear-panel {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  overflow-y: auto;
+  padding: 1.5rem 2.5rem 2rem;
+  background-color: var(--bg-card);
+}
+.gear-panel h4 {
+  font-family: "Archivo Black", Impact, sans-serif;
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+  padding-right: 6rem;
+}
+.gear-panel .service-features {
   margin-bottom: 1rem;
 }
+.gear-panel .service-features li {
+  padding: 0.5rem 0;
+}
+.service-card:hover .gear-panel {
+  background-color: var(--ink-blue);
+}
 .service-card:hover .card-gear summary,
+.service-card:hover .gear-panel h4,
 .service-card:hover .card-gear .form-hint {
   color: #f2f0e9;
 }
