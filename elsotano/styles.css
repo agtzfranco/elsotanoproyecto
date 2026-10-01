@@ -1,3 +1,20 @@
+/* Founders Grotesk (Klim Type Foundry). Coloca los archivos con licencia en
+   elsotano/fonts/. Mientras no estén, la página usa Helvetica. */
+@font-face {
+  font-family: "Founders Grotesk";
+  src: url("fonts/FoundersGrotesk-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Founders Grotesk";
+  src: url("fonts/FoundersGrotesk-Semibold.woff2") format("woff2");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* =========================================
    VARIABLES Y RESET - ESTILO B/N ALTO CONTRASTE
    ========================================= */
@@ -27,7 +44,7 @@ html {
 }
 
 body {
-  font-family: "Impact", "Arial Black", "Helvetica Neue", sans-serif;
+  font-family: var(--font-body);
   background-color: var(--bg-dark);
   color: var(--text-primary);
   line-height: 1.4;
@@ -111,7 +128,7 @@ p {
   transition: all 0.2s ease;
   font-size: 0.9rem;
   text-align: center;
-  font-family: "Impact", sans-serif;
+  font-family: var(--font-title);
 }
 
 .btn:hover {
@@ -403,7 +420,7 @@ nav {
   font-weight: 900;
   color: var(--text-primary);
   margin: 2rem 0;
-  font-family: "Impact", sans-serif;
+  font-family: var(--font-title);
   letter-spacing: -0.05em;
 }
 
@@ -923,7 +940,7 @@ footer {
 
 .slot {
   padding: 1rem;
-  font-family: "Impact", sans-serif;
+  font-family: var(--font-title);
   font-size: 1.1rem;
   text-align: center;
   border: 3px solid var(--text-primary);
@@ -1048,7 +1065,7 @@ h2 {
   padding: 1.5rem;
 }
 .tile-poster span {
-  font-family: "Impact", sans-serif;
+  font-family: var(--font-title);
   font-size: clamp(1.2rem, 2.5vw, 2rem);
   text-transform: uppercase;
   line-height: 1.1;
@@ -1110,7 +1127,7 @@ h2 {
   height: 2.4rem;
   background: var(--text-primary);
   color: var(--bg-dark);
-  font-family: "Impact", sans-serif;
+  font-family: var(--font-title);
   transform: rotate(-4deg);
 }
 .bservice-card.selected {
@@ -1141,7 +1158,7 @@ h2 {
   margin-bottom: 1rem;
 }
 .cal-title {
-  font-family: "Impact", sans-serif;
+  font-family: var(--font-title);
   font-size: 1.4rem;
   letter-spacing: 0.05em;
 }
@@ -1259,7 +1276,7 @@ h2 {
   background: transparent;
   border: 2px solid var(--border);
   color: var(--text-secondary);
-  font-family: "Impact", sans-serif;
+  font-family: var(--font-title);
   letter-spacing: 0.1em;
   cursor: pointer;
 }
@@ -1395,7 +1412,8 @@ h4,
 .cal-title,
 .cal-nav,
 .tab {
-  font-family: "Archivo Black", Impact, sans-serif;
+  font-family: var(--font-title);
+  font-weight: 600;
   letter-spacing: 0;
 }
 h2 {
@@ -1499,7 +1517,8 @@ body::after {
 }
 .tile-poster span {
   color: var(--text-primary);
-  font-family: "Archivo Black", Impact, sans-serif;
+  font-family: var(--font-title);
+  font-weight: 600;
 }
 .tile-poster.invert {
   background: var(--ink-blue);
@@ -1614,7 +1633,8 @@ body::after {
    TIPOGRAFÍA DE TEXTO: HELVETICA
    ========================================= */
 :root {
-  --font-body: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-body: "Founders Grotesk", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-title: "Founders Grotesk", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 body,
@@ -1929,7 +1949,8 @@ p,
   background-color: var(--bg-card);
 }
 .gear-panel h4 {
-  font-family: "Archivo Black", Impact, sans-serif;
+  font-family: var(--font-title);
+  font-weight: 600;
   font-size: 1.2rem;
   text-transform: uppercase;
   margin-bottom: 1rem;
@@ -1988,16 +2009,213 @@ p,
   }
 }
 
-/* Renta de equipo: todo el recuadro en Helvetica */
-.rental,
-.rental h3,
-.rental h4,
-.rental .price,
-.rental .btn {
-  font-family: var(--font-body);
-}
+/* Renta de equipo: misma familia en todo el recuadro */
 .rental h3,
 .rental .price {
-  font-weight: 700;
   letter-spacing: -0.01em;
+}
+
+/* =========================================
+   TIPOGRAFÍA GLOBAL: Founders Grotesk
+   Títulos en Semibold (600), texto en Regular (400)
+   ========================================= */
+body {
+  font-family: var(--font-body);
+  font-weight: 400;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.price,
+.btn {
+  font-family: var(--font-title);
+  font-weight: 600;
+}
+
+/* Pie: logo del disco "El Sótano · Espacio creativo" */
+.footer-logo-img {
+  height: 120px;
+  width: 120px;
+  max-width: none;
+  margin-bottom: 1.25rem;
+}
+
+/* Interacciones: sin bloque negro ni desplazamiento al pasar el mouse */
+.nav-links a:not(.btn):hover,
+.footer-col a:hover {
+  background-color: transparent;
+  color: var(--text-primary);
+  padding: 0;
+  text-decoration: none;
+}
+.footer-col a.logo-link:hover {
+  opacity: 0.85;
+}
+
+/* =========================================
+   REGLAMENTOS (página propia y al reservar)
+   ========================================= */
+#reglamentos {
+  padding: 6rem 0;
+}
+.reglamentos-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin-top: 3rem;
+}
+.reglamento-card {
+  border: 2px solid var(--border);
+  background-color: var(--bg-card);
+  padding: 2.5rem;
+}
+.reglamento-card h3 {
+  font-size: 1.6rem;
+  margin-bottom: 1.5rem;
+  text-transform: uppercase;
+}
+.reglamento-card h3 span {
+  display: block;
+  font-size: 1rem;
+  font-family: var(--font-body);
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: var(--text-secondary);
+}
+.reglas {
+  list-style: none;
+}
+.reglas li {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--text-secondary);
+  padding: 0.85rem 0;
+  border-bottom: 1px solid var(--border-light);
+}
+.reglas li:last-child {
+  border-bottom: none;
+}
+.reglas strong {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+.regla-num {
+  color: var(--ink-blue);
+}
+.reglamento-box {
+  border: 1px solid var(--border);
+  background-color: var(--bg-card);
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+}
+.reglamento-box h4 {
+  font-size: 1rem;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+.reglamento-box .reglas li {
+  font-size: 0.9rem;
+  padding: 0.6rem 0;
+}
+.reglamento-box[hidden] {
+  display: none;
+}
+.reglamento-acepto {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 1rem;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-transform: none;
+  cursor: pointer;
+}
+.reglamento-acepto input {
+  width: 1.1rem;
+  height: 1.1rem;
+  accent-color: var(--ink-blue);
+}
+@media (max-width: 768px) {
+  .reglamentos-grid {
+    grid-template-columns: 1fr;
+  }
+  .reglamento-card {
+    padding: 1.5rem;
+  }
+}
+
+/* Sin línea de tijeras */
+.cut-line {
+  display: none;
+}
+
+/* Reglamentos con el diseño de los pósters: centrado, oscuro y crema */
+.reglamento-card {
+  text-align: center;
+  padding: 4rem 3rem 3rem;
+  border: none;
+}
+.reglamento-oscuro {
+  background-color: #262626;
+  color: #f7f4e4;
+}
+.reglamento-claro {
+  background-color: #faf8ea;
+  color: #262626;
+}
+.reglamento-card h3 {
+  font-family: Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  font-size: 2.2rem;
+  letter-spacing: -0.02em;
+  color: inherit;
+  margin-bottom: 3rem;
+}
+.reglamento-card h3 span {
+  display: block;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.85rem;
+  letter-spacing: 0.04em;
+  color: inherit;
+  margin-top: 0.2rem;
+}
+.reglamento-card .reglas li {
+  color: inherit;
+  border-bottom: none;
+  padding: 0 0 1.75rem;
+  font-size: 1.1rem;
+  line-height: 1.45;
+}
+.reglamento-card .reglas strong {
+  color: inherit;
+}
+.reglamento-card .regla-num {
+  color: inherit;
+  font-weight: 400;
+}
+.reglamento-card .reglas .regla-desc {
+  display: block;
+}
+.reglamento-logo {
+  display: block;
+  width: 110px;
+  height: auto;
+  margin: 2rem auto 0;
+}
+.reglamento-oscuro .reglamento-logo {
+  filter: invert(1) sepia(0.15) brightness(1.05);
+}
+@media (max-width: 768px) {
+  .reglamento-card {
+    padding: 3rem 1.5rem 2rem;
+  }
+  .reglamento-card h3 {
+    font-size: 1.8rem;
+  }
 }

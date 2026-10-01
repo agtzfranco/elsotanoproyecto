@@ -4,12 +4,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Reserva en línea | El Sótano</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=EB+Garamond:ital,wght@0,400;0,600;1,400;1,600&display=swap"
-      rel="stylesheet"
-    />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
@@ -144,6 +138,14 @@
                 placeholder="Integrantes, requerimientos, etc."
               ></textarea>
             </div>
+            <div id="reglamentoBox" class="reglamento-box" hidden>
+              <h4 id="reglamentoTitulo">Reglamento</h4>
+              <div id="reglamentoLista"></div>
+              <label class="reglamento-acepto">
+                <input type="checkbox" id="aceptoReglamento" />
+                He leído y acepto el reglamento
+              </label>
+            </div>
             <div id="confirmMsg" class="disp-estado"></div>
             <button id="btnConfirmar" class="btn btn-full">
               CONFIRMAR RESERVA
@@ -157,9 +159,8 @@
       </div>
     </section>
 
-    <div class="cut-line" aria-hidden="true"></div>
-
     <script src="auth.js?v=3"></script>
-    <script src="reservas.js?v=5"></script>
+    <script src="reglamentos.js"></script>
+    <script src="reservas.js?v=6"></script>
   </body>
 </html>
