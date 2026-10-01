@@ -1882,3 +1882,25 @@ p,
     padding: 1.75rem 1.25rem;
   }
 }
+
+/* Sala de ensayo: equipo incluido desplegable dentro de la tarjeta */
+.card-gear {
+  margin-bottom: 1.5rem;
+}
+.card-gear summary {
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--ink-blue);
+  padding: 0.5rem 0;
+}
+.card-gear .service-features {
+  margin-bottom: 1rem;
+}
+.service-card:hover .card-gear summary,
+.service-card:hover .card-gear .form-hint {
+  color: #f2f0e9;
+}
