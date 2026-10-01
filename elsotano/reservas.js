@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", () => {
     {
       id: "sala-ensayo",
       nombre: "Sala de Ensayo",
-      img: "IMG/6.jpg",
+      img: "IMG/5.jpg",
       precio: 250,
       precioLabel: "$250 <span>MXN / hora</span>",
       desc: "Monitoreo personal con mezcla individual y grabación multipista.",
@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
     {
       id: "grabacion",
       nombre: "Estudio de Grabación",
-      img: "IMG/5.jpg",
+      img: "IMG/estudio-grabacion.jpg",
       precio: null,
       precioLabel: "Cotizar <span>por proyecto</span>",
       desc: "Grabación, mezcla y masterización con asesoría técnica.",
@@ -159,9 +159,14 @@ document.addEventListener("DOMContentLoaded", () => {
     seleccionarServicio(servicioPre);
     ocultarPaso1();
     window.scrollTo(0, 0); // la página abre arriba: título + calendario
+  } else {
+    // Sin servicio elegido: el cliente elige en la página de inicio
+    window.location.replace("index.html#servicios");
   }
 
-  btnCambiar.addEventListener("click", mostrarPaso1);
+  btnCambiar.addEventListener("click", () => {
+    window.location.href = "index.html#servicios";
+  });
 
   /* ---------- PASO 2: calendario ---------- */
   function renderCalendar() {
