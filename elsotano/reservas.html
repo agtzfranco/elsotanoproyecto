@@ -31,12 +31,12 @@
       <div class="container">
         <h2>RESERVA <span>EN LÍNEA</span></h2>
         <p class="section-intro">
-          Elige tu servicio, aparta fecha y hora del calendario y déjanos tu
+          Aparta fecha y hora del calendario y déjanos tu
           nombre, correo y teléfono.
         </p>
 
         <!-- PASO 1: SERVICIOS -->
-        <div id="stepServicio">
+        <div id="stepServicio" hidden>
           <h3 class="step-title">
             <span class="step-num">1</span> ELIGE TU SERVICIO
           </h3>
@@ -46,7 +46,7 @@
         <!-- PASO 2: FECHA Y HORA -->
         <div class="booking-step" id="stepFecha" hidden>
           <h3 class="step-title">
-            <span class="step-num">2</span> ELIGE FECHA Y HORA
+            <span class="step-num">1</span> ELIGE FECHA Y HORA
             <button
               id="btnCambiarServicio"
               class="btn btn-nav"
@@ -86,7 +86,7 @@
         <!-- PASO 3: CONFIRMACIÓN -->
         <div class="booking-step" id="stepConfirm" hidden>
           <h3 class="step-title">
-            <span class="step-num">3</span> CONFIRMA TU RESERVA
+            <span class="step-num">2</span> CONFIRMA TU RESERVA
           </h3>
           <div class="confirm-card">
             <div id="confirmSummary"></div>
@@ -163,6 +163,6 @@
 
     <script src="auth.js?v=3"></script>
     <script src="reglamentos.js"></script>
-    <script src="reservas.js?v=6"></script>
+    <script src="reservas.js?v=7"></script>
   </body>
 </html>

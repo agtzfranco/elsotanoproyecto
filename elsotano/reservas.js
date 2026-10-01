@@ -159,9 +159,14 @@ document.addEventListener("DOMContentLoaded", () => {
     seleccionarServicio(servicioPre);
     ocultarPaso1();
     window.scrollTo(0, 0); // la página abre arriba: título + calendario
+  } else {
+    // Sin servicio elegido: el cliente elige en la página de inicio
+    window.location.replace("index.html#servicios");
   }
 
-  btnCambiar.addEventListener("click", mostrarPaso1);
+  btnCambiar.addEventListener("click", () => {
+    window.location.href = "index.html#servicios";
+  });
 
   /* ---------- PASO 2: calendario ---------- */
   function renderCalendar() {
