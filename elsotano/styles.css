@@ -1776,3 +1776,109 @@ p,
   transform: none;
   box-shadow: none;
 }
+
+/* =========================================
+   RENTA DE EQUIPO (estructura tipo guía)
+   4 fotos arriba · foto grande + lista · nota · precio
+   ========================================= */
+.rental {
+  margin-top: 3rem;
+}
+.rental-strip {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.25rem;
+}
+.rental-photo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  background-color: var(--bg-darker);
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+}
+.rental-main {
+  display: grid;
+  grid-template-columns: 1.55fr 1fr;
+  gap: 1.25rem;
+  margin-top: 1.25rem;
+}
+.rental-photo-large {
+  aspect-ratio: auto;
+  height: 100%;
+  min-height: 360px;
+}
+.rental-box {
+  border: 1px solid var(--border);
+  background-color: var(--bg-card);
+  padding: 2.5rem 2rem;
+}
+.rental-box h3 {
+  font-size: 1.6rem;
+  margin-bottom: 1.5rem;
+  text-transform: uppercase;
+}
+.rental-box h4 {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-bottom: 0.4rem;
+}
+.rental-list {
+  list-style: none;
+  margin-bottom: 1.5rem;
+}
+.rental-list:last-child {
+  margin-bottom: 0;
+}
+.rental-list li {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  padding: 0.2rem 0;
+}
+.rental-list b {
+  color: var(--ink-blue);
+}
+.rental-note {
+  margin-top: 1.25rem;
+  border: 1px solid var(--border);
+  padding: 1.25rem 1.75rem;
+  font-weight: 700;
+  font-style: normal;
+  text-transform: uppercase;
+  max-width: 820px;
+}
+.rental-footer {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+  margin-top: 2rem;
+}
+.rental-footer .price {
+  color: var(--ink-blue);
+  margin: 0;
+}
+@media (max-width: 768px) {
+  .rental-strip {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .rental-main {
+    grid-template-columns: 1fr;
+  }
+  .rental-photo-large {
+    min-height: 240px;
+  }
+  .rental-box {
+    padding: 1.75rem 1.25rem;
+  }
+}
