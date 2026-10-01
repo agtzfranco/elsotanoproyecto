@@ -2300,3 +2300,27 @@ h6,
   margin-top: 2rem;
   margin-bottom: 4rem;
 }
+
+/* Sobre nosotros: recuadro con textura de manchas detrás de ilustraciones y mapa */
+.nosotros-panel {
+  background: #111 url("IMG/textura-manchas.jpg") center / cover no-repeat;
+  border: 2px solid var(--text-primary);
+  padding: 2.5rem;
+  margin: 3rem 0 4rem;
+}
+.nosotros-panel .nosotros-ilustraciones {
+  margin-top: 0;
+}
+.nosotros-panel .nosotros-ilustraciones img,
+.nosotros-panel .ubicacion-mapa,
+.nosotros-panel .ubicacion-info {
+  border: 2px solid #f2f0e9;
+}
+#nosotros .nosotros-panel .ubicacion-grid {
+  margin: 2rem 0 0;
+}
+@media (max-width: 768px) {
+  .nosotros-panel {
+    padding: 1.25rem;
+  }
+}
