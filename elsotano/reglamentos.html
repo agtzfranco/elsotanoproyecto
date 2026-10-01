@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reglamentos | El Sótano</title>
+    <meta
+      name="description"
+      content="Reglamento de la sala de ensayo y del estudio de fotografía de El Sótano."
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header>
+      <div class="container">
+        <nav>
+          <a href="index.html" class="logo-link">
+            <img
+              src="IMG/ElSotano3offblack.png"
+              alt="El Sótano Logo"
+              class="logo-img"
+            />
+          </a>
+          <ul class="nav-links">
+            <li><a href="index.html#servicios">Servicios</a></li>
+            <li><a href="reservas.html" class="btn">RESERVA AQUÍ</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <section id="reglamentos">
+      <div class="container">
+        <h2>REGLAMENTOS</h2>
+        <p class="section-intro">
+          Para que todos disfrutemos los espacios, te pedimos seguir estas
+          reglas durante tu sesión.
+        </p>
+        <div class="reglamentos-grid">
+          <article class="reglamento-card" id="sala-ensayo">
+            <h3>Reglamento: <span>Sala de ensayo</span></h3>
+            <div data-reglamento="sala-ensayo"></div>
+          </article>
+          <article class="reglamento-card" id="fotografia">
+            <h3>Reglamento: <span>Estudio de fotografía</span></h3>
+            <div data-reglamento="fotografia"></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <script src="reglamentos.js"></script>
+    <script>
+      document.querySelectorAll("[data-reglamento]").forEach((el) => {
+        el.innerHTML = listaReglamento(el.dataset.reglamento);
+      });
+    </script>
+  </body>
+</html>

@@ -2054,3 +2054,102 @@ h6,
 .footer-col a.logo-link:hover {
   opacity: 0.85;
 }
+
+/* =========================================
+   REGLAMENTOS (página propia y al reservar)
+   ========================================= */
+#reglamentos {
+  padding: 6rem 0;
+}
+.reglamentos-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin-top: 3rem;
+}
+.reglamento-card {
+  border: 2px solid var(--border);
+  background-color: var(--bg-card);
+  padding: 2.5rem;
+}
+.reglamento-card h3 {
+  font-size: 1.6rem;
+  margin-bottom: 1.5rem;
+  text-transform: uppercase;
+}
+.reglamento-card h3 span {
+  display: block;
+  font-size: 1rem;
+  font-family: var(--font-body);
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: var(--text-secondary);
+}
+.reglas {
+  list-style: none;
+}
+.reglas li {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--text-secondary);
+  padding: 0.85rem 0;
+  border-bottom: 1px solid var(--border-light);
+}
+.reglas li:last-child {
+  border-bottom: none;
+}
+.reglas strong {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+.regla-num {
+  color: var(--ink-blue);
+}
+.reglamento-box {
+  border: 1px solid var(--border);
+  background-color: var(--bg-card);
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+}
+.reglamento-box h4 {
+  font-size: 1rem;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+.reglamento-box .reglas li {
+  font-size: 0.9rem;
+  padding: 0.6rem 0;
+}
+.reglamento-box[hidden] {
+  display: none;
+}
+.reglamento-acepto {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 1rem;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-transform: none;
+  cursor: pointer;
+}
+.reglamento-acepto input {
+  width: 1.1rem;
+  height: 1.1rem;
+  accent-color: var(--ink-blue);
+}
+@media (max-width: 768px) {
+  .reglamentos-grid {
+    grid-template-columns: 1fr;
+  }
+  .reglamento-card {
+    padding: 1.5rem;
+  }
+}
+
+/* Sin línea de tijeras */
+.cut-line {
+  display: none;
+}

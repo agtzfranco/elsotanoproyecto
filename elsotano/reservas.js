@@ -304,6 +304,12 @@ document.addEventListener("DOMContentLoaded", () => {
     actualizarDuraciones();
     $("stepConfirm").hidden = false;
     $("confirmMsg").textContent = "";
+    const reg = window.REGLAMENTOS && window.REGLAMENTOS[s.id];
+    $("reglamentoBox").hidden = !reg;
+    if (reg) {
+      $("reglamentoTitulo").textContent = "Reglamento: " + reg.titulo;
+      $("reglamentoLista").innerHTML = window.listaReglamento(s.id);
+    }
     $("stepConfirm").scrollIntoView({ behavior: "smooth" });
   }
 
@@ -371,7 +377,9 @@ document.addEventListener("DOMContentLoaded", () => {
         ? "Escribe tu correo."
         : !contacto.telefono
           ? "Escribe tu teléfono."
-          : "";
+          : !$("reglamentoBox").hidden && !$("aceptoReglamento").checked
+            ? "Acepta el reglamento para continuar."
+            : "";
     if (faltante) {
       msg.style.color = "var(--error)";
       msg.textContent = faltante;
