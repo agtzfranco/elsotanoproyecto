@@ -2328,14 +2328,18 @@ h6,
 /* Servicios: 4 tarjetas parejas en cuadrícula 2x2, sobre un recuadro con fondo */
 .services-grid {
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1.25rem;
-  padding: 1.25rem;
+  gap: 3rem;
+  padding: 3.5rem;
   background: #111 url("IMG/textura-pared-negra.jpg") center / cover no-repeat;
   border: 2px solid var(--text-primary);
 }
 .services-grid .service-card {
   min-width: 0;
   border: 2px solid var(--text-primary) !important;
+  justify-content: flex-start;
+}
+.services-grid .service-card .card-footer {
+  margin-top: auto;
 }
 .services-grid .service-card:hover {
   box-shadow: none;
@@ -2343,7 +2347,7 @@ h6,
 @media (max-width: 640px) {
   .services-grid {
     grid-template-columns: 1fr;
-    padding: 0.75rem;
-    gap: 0.75rem;
+    padding: 1.25rem;
+    gap: 1.25rem;
   }
 }
