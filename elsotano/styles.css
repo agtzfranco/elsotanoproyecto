@@ -2153,3 +2153,69 @@ h6,
 .cut-line {
   display: none;
 }
+
+/* Reglamentos con el diseño de los pósters: centrado, oscuro y crema */
+.reglamento-card {
+  text-align: center;
+  padding: 4rem 3rem 3rem;
+  border: none;
+}
+.reglamento-oscuro {
+  background-color: #262626;
+  color: #f7f4e4;
+}
+.reglamento-claro {
+  background-color: #faf8ea;
+  color: #262626;
+}
+.reglamento-card h3 {
+  font-family: Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  font-size: 2.2rem;
+  letter-spacing: -0.02em;
+  color: inherit;
+  margin-bottom: 3rem;
+}
+.reglamento-card h3 span {
+  display: block;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.85rem;
+  letter-spacing: 0.04em;
+  color: inherit;
+  margin-top: 0.2rem;
+}
+.reglamento-card .reglas li {
+  color: inherit;
+  border-bottom: none;
+  padding: 0 0 1.75rem;
+  font-size: 1.1rem;
+  line-height: 1.45;
+}
+.reglamento-card .reglas strong {
+  color: inherit;
+}
+.reglamento-card .regla-num {
+  color: inherit;
+  font-weight: 400;
+}
+.reglamento-card .reglas .regla-desc {
+  display: block;
+}
+.reglamento-logo {
+  display: block;
+  width: 110px;
+  height: auto;
+  margin: 2rem auto 0;
+}
+.reglamento-oscuro .reglamento-logo {
+  filter: invert(1) sepia(0.15) brightness(1.05);
+}
+@media (max-width: 768px) {
+  .reglamento-card {
+    padding: 3rem 1.5rem 2rem;
+  }
+  .reglamento-card h3 {
+    font-size: 1.8rem;
+  }
+}

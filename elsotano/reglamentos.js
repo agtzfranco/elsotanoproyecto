@@ -28,7 +28,7 @@ window.listaReglamento = function (id) {
     r.reglas
       .map(
         ([t, d], i) =>
-          `<li><span class="regla-num">[${i + 1}]</span> <strong>${t}:</strong> ${d}</li>`,
+          `<li><span class="regla-num">[${i + 1}]</span> <strong>${t}</strong>: <span class="regla-desc">${d}</span></li>`,
       )
       .join("") +
     "</ol>"
