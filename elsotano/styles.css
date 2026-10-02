@@ -2665,3 +2665,26 @@ section h2.reveal-init,
   margin-right: 0.5rem;
   flex-shrink: 0;
 }
+
+/* Footer: horario de atención */
+.footer-horario .horario-dias {
+  margin: 0 0 0.6rem;
+  letter-spacing: 0.12em;
+}
+.footer-col .horario-horas {
+  display: inline-block;
+  margin: 0;
+  padding: 0.55rem 0.9rem;
+  background: #111;
+  color: #f2f0e9;
+  font-family: var(--font-title);
+  font-size: 1.35rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: none;
+}
+.footer-col .horario-horas span {
+  font-size: 0.75em;
+  font-weight: 400;
+  text-transform: lowercase;
+}
