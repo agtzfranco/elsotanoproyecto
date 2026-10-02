@@ -55,19 +55,24 @@ router.post("/", async (req, res) => {
     return res.json({ ok: false, error: "Solo se puede reservar con hasta un año de anticipación." });
   }
 
-  const horaNum = parseHora(hora);
+  // La renta de equipo es por día: siempre ocupa de la apertura al cierre.
+  const horaNum = infoServicio.porDia ? HORA_APERTURA : parseHora(hora);
   if (!Number.isInteger(horaNum) || horaNum < HORA_APERTURA || horaNum >= HORA_CIERRE) {
     return res.json({ ok: false, error: "El horario debe estar entre 11:00 y 23:00." });
   }
   if (fecha === ahora.fecha && horaNum <= ahora.hora) {
-    return res.json({ ok: false, error: "Esa hora ya pasó. Elige una más tarde." });
+    return res.json({
+      ok: false,
+      error: infoServicio.porDia
+        ? "La renta de equipo de hoy ya no está disponible. Elige otro día."
+        : "Esa hora ya pasó. Elige una más tarde.",
+    });
   }
 
-  // La renta de equipo ocupa desde la hora de inicio hasta el cierre.
-  const duracion = infoServicio.porEvento
-    ? HORA_CIERRE - horaNum
+  const duracion = infoServicio.porDia
+    ? HORA_CIERRE - HORA_APERTURA
     : parseEntero(req.body?.duracion ?? 1);
-  if (!Number.isInteger(duracion) || duracion < 1 || (!infoServicio.porEvento && duracion > DURACION_MAXIMA)) {
+  if (!Number.isInteger(duracion) || duracion < 1 || (!infoServicio.porDia && duracion > DURACION_MAXIMA)) {
     return res.json({ ok: false, error: `La duración debe ser de 1 a ${DURACION_MAXIMA} horas.` });
   }
   const horaFinNum = horaNum + duracion;

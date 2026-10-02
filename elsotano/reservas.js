@@ -37,8 +37,8 @@ document.addEventListener("DOMContentLoaded", () => {
       nombre: "Renta de Equipo",
       img: "IMG/3.jpg",
       precio: 9000,
-      porEvento: true,
-      precioLabel: "$9,000 <span>MXN / evento</span>",
+      porDia: true,
+      precioLabel: "$9,000 <span>MXN / día</span>",
       desc: "Paquete completo con transporte, montaje y operación.",
     },
   ];
@@ -158,6 +158,18 @@ document.addEventListener("DOMContentLoaded", () => {
   if (servicioPre && SERVICIOS.some((s) => s.id === servicioPre)) {
     seleccionarServicio(servicioPre);
     ocultarPaso1();
+    if (state.servicio.porDia) {
+      // La renta de equipo se aparta por día completo, sin elegir hora.
+      const titulo = document.querySelector("#stepFecha .step-title");
+      titulo.childNodes.forEach((n) => {
+        if (n.nodeType === 3 && n.textContent.includes("ELIGE FECHA"))
+          n.textContent = " ELIGE EL DÍA ";
+      });
+      const intro = document.querySelector("#booking .section-intro");
+      if (intro)
+        intro.textContent =
+          "Aparta el día de tu evento en el calendario y déjanos tu nombre, correo y teléfono.";
+    }
     window.scrollTo(0, 0); // la página abre arriba: título + calendario
   } else {
     // Sin servicio elegido: el cliente elige en la página de inicio
@@ -245,13 +257,10 @@ document.addEventListener("DOMContentLoaded", () => {
               slot.ocupado = true;
           });
         }
-        // La renta de equipo ocupa desde la hora de inicio hasta el cierre.
-        if (state.servicio.porEvento) {
-          let ocupadoDespues = false;
-          for (let i = data.slots.length - 1; i >= 0; i--) {
-            ocupadoDespues = ocupadoDespues || data.slots[i].ocupado;
-            data.slots[i].ocupado = ocupadoDespues;
-          }
+        // La renta de equipo es por día: el día completo tiene que estar libre.
+        if (state.servicio.porDia) {
+          mostrarDiaCompleto(data.slots.every((x) => !x.ocupado), conservar);
+          return;
         }
         const libres = data.slots.filter((s) => !s.ocupado).length;
         $("disp-estado").textContent = libres
@@ -296,6 +305,26 @@ document.addEventListener("DOMContentLoaded", () => {
       );
   }
 
+  function mostrarDiaCompleto(libre, conservar) {
+    const grid = $("slots-grid");
+    grid.innerHTML = "";
+    $("disp-estado").textContent = libre
+      ? `Disponibilidad para: ${fechaTexto(state.fecha)}`
+      : `Disponibilidad para: ${fechaTexto(state.fecha)} · Ese día ya está ocupado`;
+    const b = document.createElement("button");
+    b.className = "slot slot-dia " + (libre ? "libre elegido" : "ocupado");
+    b.textContent = libre ? "DÍA COMPLETO · 11:00 – 23:00" : "NO DISPONIBLE";
+    b.disabled = !libre;
+    grid.appendChild(b);
+    if (!libre) {
+      state.hora = null;
+      $("stepConfirm").hidden = true;
+      return;
+    }
+    state.hora = "11:00";
+    if (!conservar) mostrarConfirmacion();
+  }
+
   // Tiempo real: cada minuto se vuelve a consultar la disponibilidad del día
   // elegido, así desaparecen las horas que van pasando y las que alguien reserva.
   setInterval(() => {
@@ -305,7 +334,7 @@ document.addEventListener("DOMContentLoaded", () => {
   /* ---------- PASO 3: confirmación ---------- */
   function mostrarConfirmacion() {
     const s = state.servicio;
-    $("duracionGroup").style.display = s.porEvento ? "none" : "block";
+    $("duracionGroup").style.display = s.porDia ? "none" : "block";
     actualizarDuraciones();
     $("stepConfirm").hidden = false;
     $("confirmMsg").textContent = "";
@@ -320,7 +349,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // La duración va de 1 hora hasta el cierre o la siguiente reserva.
   function actualizarDuraciones() {
-    if (state.servicio.porEvento) $("duracion").value = "1";
+    if (state.servicio.porDia) $("duracion").value = "1";
     else {
       const sel = $("duracion");
       const previa = parseInt(sel.value, 10) || 1;
@@ -339,16 +368,16 @@ document.addEventListener("DOMContentLoaded", () => {
   function pintarResumen() {
     const s = state.servicio;
     const horaNum = parseInt(state.hora, 10);
-    const dur = s.porEvento ? 23 - horaNum : parseInt($("duracion").value, 10);
+    const dur = s.porDia ? 23 - horaNum : parseInt($("duracion").value, 10);
     const fin = horaNum + dur;
     let total = "SE COTIZARÁ";
-    if (s.porEvento) total = "$9,000 MXN";
+    if (s.porDia) total = "$9,000 MXN";
     else if (s.precio) total = `$${(s.precio * dur).toLocaleString()} MXN`;
 
     $("confirmSummary").innerHTML = `
       <div class="summary-row"><span>SERVICIO</span><strong>${s.nombre}</strong></div>
       <div class="summary-row"><span>FECHA</span><strong>${fechaLarga(state.fecha)}</strong></div>
-      <div class="summary-row"><span>HORARIO</span><strong>${state.hora} – ${String(fin).padStart(2, "0")}:00</strong></div>
+      <div class="summary-row"><span>HORARIO</span><strong>${s.porDia ? "Día completo (11:00 – 23:00)" : `${state.hora} – ${String(fin).padStart(2, "0")}:00`}</strong></div>
       <div class="summary-row"><span>TOTAL ESTIMADO</span><strong>${total}</strong></div>`;
 
     const msg = $("confirmMsg");
@@ -367,7 +396,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const s = state.servicio;
     if (!state.hora) return;
     const horaNum = parseInt(state.hora, 10);
-    const dur = s.porEvento ? 23 - horaNum : parseInt($("duracion").value, 10);
+    const dur = s.porDia ? 23 - horaNum : parseInt($("duracion").value, 10);
     if (horaNum + dur > 23) return;
 
     const contacto = {
