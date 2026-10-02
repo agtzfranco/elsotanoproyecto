@@ -2707,12 +2707,12 @@ section h2.reveal-init,
   border-color: rgba(17, 17, 17, 0.25);
 }
 
-/* Colores de fondo: página papel, header crema */
+/* Colores de fondo: página papel, header papel más oscuro */
 :root {
   --bg-dark: #f2f0e9; /* papel */
 }
 header {
-  background-color: #fbfbe8;
+  background-color: #e4e1d6;
 }
 .hero {
   background:
