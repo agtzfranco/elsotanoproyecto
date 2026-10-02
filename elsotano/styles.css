@@ -1484,7 +1484,6 @@ body::after {
 }
 
 /* Acento azul marino (como el poster "¿Qué equipo incluye?") */
-#equipo h2 span,
 .step-num {
   background-color: var(--ink-blue);
   color: #f2f0e9;
