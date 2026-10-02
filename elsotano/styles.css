@@ -2376,3 +2376,11 @@ footer {
 .footer-grid {
   border-bottom: none;
 }
+
+/* Sin línea bajo el menú ni bajo los títulos de sección */
+header {
+  border-bottom: none;
+}
+h2 {
+  border-bottom: none !important;
+}
