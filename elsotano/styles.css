@@ -2519,3 +2519,35 @@ footer { padding-top: 2.25rem; }
     padding: 0.5rem;
   }
 }
+
+/* Redes sociales en el footer */
+.footer-redes a {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+.footer-redes svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  flex-shrink: 0;
+}
+.footer-redes svg .punto {
+  fill: currentColor;
+  stroke: none;
+}
+.footer-col .footer-correo {
+  display: inline;
+  text-transform: none;
+  color: inherit;
+  margin: 0;
+}
+
+/* Logo del footer más grande */
+footer .logo-img.footer-logo-img {
+  height: 170px;
+  width: 170px;
+  max-width: none;
+}
