@@ -2329,7 +2329,7 @@ h6,
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 2rem;
   padding: 2.25rem;
-  background: #111 url("IMG/textura-pared-negra.jpg") center / cover no-repeat;
+  background: #000 url("IMG/textura-servicios.jpg") center / cover no-repeat;
   border: 2px solid var(--text-primary);
 }
 .services-grid .service-card {
