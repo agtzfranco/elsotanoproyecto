@@ -2631,3 +2631,14 @@ section h2.reveal-init,
 #equipo .rental {
   margin-top: 0.75rem;
 }
+
+/* Menos aire entre portada, Sobre nosotros y Servicios */
+#nosotros {
+  padding-top: 1.75rem;
+}
+#nosotros .nosotros-panel {
+  margin-bottom: 0;
+}
+#servicios {
+  padding-top: 1.75rem;
+}
