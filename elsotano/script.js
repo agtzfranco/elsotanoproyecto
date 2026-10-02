@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // 2. Aparición suave de imágenes al hacer scroll
   const imageContainers = document.querySelectorAll(
-    ".photo-banner, .section-photo, .card-img, .equipment-img",
+    ".photo-banner, .section-photo, .card-img, .equipment-img, .nosotros-ilustraciones img",
   );
   const imageObserver = new IntersectionObserver(
     (entries) => {

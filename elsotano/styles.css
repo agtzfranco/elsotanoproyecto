@@ -2384,3 +2384,17 @@ header {
 h2 {
   border-bottom: none !important;
 }
+
+/* Ilustraciones de Sobre nosotros: aparecen una vez, la segunda un poco después */
+.nosotros-ilustraciones img.reveal-init {
+  transform: translateY(40px);
+  transition:
+    opacity 0.9s ease,
+    transform 0.9s ease;
+}
+.nosotros-ilustraciones img.reveal-init.img-visible {
+  transform: translateY(0);
+}
+.nosotros-ilustraciones img.reveal-init:nth-child(2) {
+  transition-delay: 0.25s;
+}
