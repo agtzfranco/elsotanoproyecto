@@ -2421,3 +2421,13 @@ h2 {
     url("IMG/hero-cables.jpg") center / cover no-repeat;
 }
 .hero-content h1 { font-size: clamp(2.25rem, 5.5vw, 4rem); margin-bottom: 1rem; }
+
+/* Menos espacio entre secciones */
+#nosotros,
+#servicios,
+.equipment-section,
+#galeria {
+  padding-top: 3.5rem;
+  padding-bottom: 3.5rem;
+}
+footer { padding-top: 3rem; }
