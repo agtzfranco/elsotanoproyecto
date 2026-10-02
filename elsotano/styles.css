@@ -2719,3 +2719,13 @@ header {
     linear-gradient(rgba(242, 240, 233, 0.72), rgba(242, 240, 233, 0.82)),
     url("IMG/hero-cables.jpg") center / cover no-repeat;
 }
+
+/* Reservas: ilustración de la sala de ensayo de fondo, tenue */
+#booking {
+  background: url("IMG/fondo-reservas.png") center 4rem / min(1300px, 140%) auto no-repeat;
+  min-height: calc(100vh - 100px);
+}
+#booking .booking-calendar-wrap,
+#booking .confirm-card {
+  background-color: rgba(242, 240, 233, 0.72);
+}
