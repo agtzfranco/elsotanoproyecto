@@ -2663,4 +2663,5 @@ section h2.reveal-init,
   color: #f2f0e9;
   transform: none;
   margin-right: 0.5rem;
+  flex-shrink: 0;
 }
