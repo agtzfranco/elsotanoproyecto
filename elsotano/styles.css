@@ -2774,7 +2774,7 @@ header {
   inset: 0;
   z-index: -1;
   pointer-events: none;
-  background: url("IMG/fondo-reservas.png") center 58% / min(1300px, 140%) auto no-repeat;
+  background: url("IMG/fondo-reservas.png") center / cover no-repeat;
 }
 
 /* Footer: menos espacio entre los enlaces y el © */
@@ -2784,4 +2784,9 @@ header {
 }
 .copyright {
   padding-top: 0.5rem;
+}
+@media (max-width: 640px) {
+  #booking::before {
+    background-size: 100% auto;
+  }
 }
