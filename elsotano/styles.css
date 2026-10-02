@@ -2430,7 +2430,7 @@ h2 {
   padding-bottom: 2.25rem;
 }
 footer { padding-top: 2.25rem; }
-#servicios .services-grid { margin-top: 1.5rem; }
+#servicios .services-grid { margin-top: 0.25rem; }
 
 /* Fotos de las tarjetas de servicio más grandes */
 .card-img img { height: 340px; }
@@ -2622,4 +2622,23 @@ section h2.reveal-init,
 }
 .services-grid .card-footer .price {
   margin: 1rem 0;
+}
+
+/* Menos aire alrededor del título de Renta de equipo */
+#equipo {
+  padding-top: 1.75rem;
+}
+#equipo .rental {
+  margin-top: 0.75rem;
+}
+
+/* Menos aire entre portada, Sobre nosotros y Servicios */
+#nosotros {
+  padding-top: 1.75rem;
+}
+#nosotros .nosotros-panel {
+  margin-bottom: 0;
+}
+#servicios {
+  padding-top: 1.75rem;
 }
