@@ -2433,7 +2433,7 @@ h2 {
 footer { padding-top: 3rem; }
 
 /* Fotos de las tarjetas de servicio más grandes */
-.card-img img { height: 290px; }
+.card-img img { height: 340px; }
 @media (max-width: 768px) {
-  .card-img img { height: 230px; }
+  .card-img img { height: 260px; }
 }
