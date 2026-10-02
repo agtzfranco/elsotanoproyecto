@@ -18,9 +18,17 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  // Los títulos se envuelven para animar el texto sin ocultar el título observado
+  document.querySelectorAll("section h2, .hero-content h1").forEach((titulo) => {
+    const texto = document.createElement("div");
+    texto.className = "titulo-texto";
+    while (titulo.firstChild) texto.appendChild(titulo.firstChild);
+    titulo.appendChild(texto);
+  });
+
   // 2. Aparición suave de imágenes al hacer scroll
   const imageContainers = document.querySelectorAll(
-    ".photo-banner, .section-photo, .card-img, .equipment-img, .nosotros-ilustraciones img",
+    ".photo-banner, .section-photo, .service-card, .equipment-img, .nosotros-ilustraciones img, section h2, .hero-content h1",
   );
   const imageObserver = new IntersectionObserver(
     (entries) => {
