@@ -2642,3 +2642,11 @@ section h2.reveal-init,
 #servicios {
   padding-top: 1.75rem;
 }
+
+/* Página de reservar: título más arriba */
+#booking {
+  padding-top: 1.75rem;
+}
+#booking #stepFecha > .step-title:first-child {
+  margin-top: 0.75rem;
+}
