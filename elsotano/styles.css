@@ -2411,3 +2411,13 @@ h2 {
 .hero-content p {
   margin-bottom: 0;
 }
+
+/* Portada con foto de cables, más baja */
+.hero {
+  min-height: 42vh;
+  padding: 3rem 1.5rem;
+  background:
+    linear-gradient(rgba(237, 235, 228, 0.72), rgba(237, 235, 228, 0.82)),
+    url("IMG/hero-cables.jpg") center / cover no-repeat;
+}
+.hero-content h1 { font-size: clamp(2.25rem, 5.5vw, 4rem); margin-bottom: 1rem; }
