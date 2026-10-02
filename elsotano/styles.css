@@ -2651,19 +2651,16 @@ section h2.reveal-init,
   margin-top: 0.75rem;
 }
 
-/* Reservas: resumen sin líneas punteadas; pasos con número sencillo */
+/* Reservas: resumen sin líneas punteadas; números de paso en recuadro negro derecho */
 .summary-row {
   border-bottom: none;
 }
 .step-num,
 .step-title .step-num {
-  width: auto;
-  height: auto;
-  background: none;
-  color: var(--ink-blue);
+  width: 2.4rem;
+  height: 2.4rem;
+  background: #111;
+  color: #f2f0e9;
   transform: none;
-  margin-right: 0.15rem;
-}
-.step-num::after {
-  content: ".";
+  margin-right: 0.5rem;
 }
