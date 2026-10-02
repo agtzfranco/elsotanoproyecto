@@ -2430,7 +2430,7 @@ h2 {
   padding-bottom: 2.25rem;
 }
 footer { padding-top: 2.25rem; }
-#servicios .services-grid { margin-top: 1.5rem; }
+#servicios .services-grid { margin-top: 0.25rem; }
 
 /* Fotos de las tarjetas de servicio más grandes */
 .card-img img { height: 340px; }
