@@ -2763,3 +2763,16 @@ header {
     flex-basis: 100%;
   }
 }
+
+/* Reservas: la ilustración se queda fija al hacer scroll (también en iPhone) */
+#booking {
+  background: none;
+}
+#booking::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: url("IMG/fondo-reservas.png") center 58% / min(1300px, 140%) auto no-repeat;
+}
