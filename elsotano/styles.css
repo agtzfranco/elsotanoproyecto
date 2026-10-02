@@ -2623,3 +2623,11 @@ section h2.reveal-init,
 .services-grid .card-footer .price {
   margin: 1rem 0;
 }
+
+/* Menos aire alrededor del título de Renta de equipo */
+#equipo {
+  padding-top: 1.75rem;
+}
+#equipo .rental {
+  margin-top: 0.75rem;
+}
