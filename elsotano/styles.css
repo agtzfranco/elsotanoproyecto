@@ -2431,3 +2431,9 @@ h2 {
   padding-bottom: 3.5rem;
 }
 footer { padding-top: 3rem; }
+
+/* Fotos de las tarjetas de servicio 10% más grandes */
+.card-img img { height: 242px; }
+@media (max-width: 768px) {
+  .card-img img { height: 198px; }
+}
