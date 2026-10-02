@@ -373,12 +373,15 @@ document.addEventListener("DOMContentLoaded", () => {
     let total = "SE COTIZARÁ";
     if (s.porDia) total = "$9,000 MXN";
     else if (s.precio) total = `$${(s.precio * dur).toLocaleString()} MXN`;
+    // Precio fijo: TOTAL; "desde" o por cotizar: TOTAL ESTIMADO
+    const precioFijo = s.precio && !/^Desde/i.test(s.precioLabel);
+    const etiquetaTotal = precioFijo ? "TOTAL" : "TOTAL ESTIMADO";
 
     $("confirmSummary").innerHTML = `
       <div class="summary-row"><span>SERVICIO</span><strong>${s.nombre}</strong></div>
       <div class="summary-row"><span>FECHA</span><strong>${fechaLarga(state.fecha)}</strong></div>
       <div class="summary-row"><span>HORARIO</span><strong>${s.porDia ? "Día completo (11:00 – 23:00)" : `${state.hora} – ${String(fin).padStart(2, "0")}:00`}</strong></div>
-      <div class="summary-row"><span>TOTAL ESTIMADO</span><strong>${total}</strong></div>`;
+      <div class="summary-row"><span>${etiquetaTotal}</span><strong>${total}</strong></div>`;
 
     const msg = $("confirmMsg");
     if (fin > 23) {
