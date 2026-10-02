@@ -2706,3 +2706,16 @@ section h2.reveal-init,
   color: var(--text-primary);
   border-color: rgba(17, 17, 17, 0.25);
 }
+
+/* Colores de fondo: página crema, header papel */
+:root {
+  --bg-dark: #fbfbe8; /* crema */
+}
+header {
+  background-color: #f2f0e9;
+}
+.hero {
+  background:
+    linear-gradient(rgba(251, 251, 232, 0.72), rgba(251, 251, 232, 0.82)),
+    url("IMG/hero-cables.jpg") center / cover no-repeat;
+}
