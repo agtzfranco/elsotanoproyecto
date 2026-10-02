@@ -2538,3 +2538,9 @@ footer { padding-top: 2.25rem; }
   fill: currentColor;
   stroke: none;
 }
+.footer-col .footer-correo {
+  display: inline;
+  text-transform: none;
+  color: inherit;
+  margin: 0;
+}
