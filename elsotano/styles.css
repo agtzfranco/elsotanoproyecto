@@ -2359,3 +2359,8 @@ header {
 .logo-img {
   height: 64px;
 }
+
+/* Renta de equipo por día: un solo botón de día completo */
+.slot.slot-dia {
+  grid-column: 1 / -1;
+}

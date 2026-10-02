@@ -11,8 +11,8 @@ export const SERVICIOS = {
   grabacion: { nombre: "Estudio de Grabación" },
   podcast: { nombre: "Producción de Podcast" },
   fotografia: { nombre: "Sesiones de Fotografía" },
-  // La renta de equipo es por evento: ocupa desde la hora de inicio hasta el cierre.
-  equipo: { nombre: "Renta de Equipo", porEvento: true },
+  // La renta de equipo es por día: ocupa el día completo, de la apertura al cierre.
+  equipo: { nombre: "Renta de Equipo", porDia: true },
 };
 
 export const NOMBRES_SERVICIO = {
