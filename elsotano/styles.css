@@ -2364,3 +2364,15 @@ header {
 .slot.slot-dia {
   grid-column: 1 / -1;
 }
+
+/* Sin líneas entre secciones */
+section,
+.hero,
+#servicios,
+footer {
+  border-top: none !important;
+  border-bottom: none !important;
+}
+.footer-grid {
+  border-bottom: none;
+}
