@@ -2688,3 +2688,21 @@ section h2.reveal-init,
   font-weight: 400;
   text-transform: lowercase;
 }
+
+/* Tarjetas de servicios: hover en menta */
+.service-card:hover,
+.service-card:hover .gear-panel {
+  background-color: #d7e5e2;
+  border-color: var(--text-primary);
+}
+.service-card:hover h3,
+.service-card:hover .price,
+.service-card:hover p,
+.service-card:hover .price span,
+.service-card:hover .service-features li,
+.service-card:hover .card-gear summary,
+.service-card:hover .gear-panel h4,
+.service-card:hover .card-gear .form-hint {
+  color: var(--text-primary);
+  border-color: rgba(17, 17, 17, 0.25);
+}
