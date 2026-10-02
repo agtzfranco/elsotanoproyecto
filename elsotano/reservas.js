@@ -28,8 +28,8 @@ document.addEventListener("DOMContentLoaded", () => {
       id: "fotografia",
       nombre: "Sesiones de Fotografía",
       img: "IMG/fotografiaelsotano.jpg",
-      precio: null,
-      precioLabel: "Cotizar <span>por sesión</span>",
+      precio: 350,
+      precioLabel: "$350 <span>MXN / hora</span>",
       desc: "Fondos intercambiables e iluminación profesional.",
     },
     {
