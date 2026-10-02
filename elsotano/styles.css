@@ -2776,3 +2776,12 @@ header {
   pointer-events: none;
   background: url("IMG/fondo-reservas.png") center 58% / min(1300px, 140%) auto no-repeat;
 }
+
+/* Footer: menos espacio entre los enlaces y el © */
+.footer-grid {
+  margin-bottom: 0;
+  padding-bottom: 1.5rem;
+}
+.copyright {
+  padding-top: 0.5rem;
+}
