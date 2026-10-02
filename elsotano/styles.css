@@ -2650,3 +2650,20 @@ section h2.reveal-init,
 #booking #stepFecha > .step-title:first-child {
   margin-top: 0.75rem;
 }
+
+/* Reservas: resumen sin líneas punteadas; pasos con número sencillo */
+.summary-row {
+  border-bottom: none;
+}
+.step-num,
+.step-title .step-num {
+  width: auto;
+  height: auto;
+  background: none;
+  color: var(--ink-blue);
+  transform: none;
+  margin-right: 0.15rem;
+}
+.step-num::after {
+  content: ".";
+}
