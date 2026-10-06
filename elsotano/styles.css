@@ -3368,6 +3368,22 @@ h2 {
   font-family: var(--font-display);
 }
 
+/* Sesión de staff en el menú: el nombre como texto discreto, sin recuadro */
+.user-name {
+  border: none;
+  padding: 0;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  color: var(--text-secondary);
+}
+.user-name::before {
+  content: "●";
+  margin-right: 0.4rem;
+  font-size: 0.6rem;
+  vertical-align: 0.15em;
+  color: #3f8f5a;
+}
+
 /* Botones: el color entra de izquierda a derecha al pasar el mouse */
 .btn,
 .nav-links a:not(.btn) {
@@ -3390,6 +3406,7 @@ h2 {
   box-shadow: none;
 }
 .btn-full,
+.btn-nav,
 .ubicacion-info .btn,
 .nav-links a:not(.btn) {
   background-color: var(--carbon);
@@ -3398,6 +3415,8 @@ h2 {
 }
 .btn-full:hover,
 .btn-full:focus-visible,
+.btn-nav:hover,
+.btn-nav:focus-visible,
 .ubicacion-info .btn:hover,
 .ubicacion-info .btn:focus-visible,
 .nav-links a:not(.btn):hover,
