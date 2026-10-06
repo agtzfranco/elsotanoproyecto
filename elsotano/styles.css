@@ -2945,3 +2945,33 @@ html {
   margin-left: auto;
   margin-right: auto;
 }
+
+/* Etiqueta "SOLO STAFF": plana, como el resto de los recuadros negros */
+.sticker {
+  transform: none;
+  box-shadow: none;
+  border: none;
+  background: #111;
+  color: #f2f0e9;
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  padding: 0.35rem 0.75rem;
+}
+.login-card {
+  box-shadow: none;
+}
+
+/* Enlace discreto al panel del staff, junto al © */
+.copyright .acceso-staff {
+  color: inherit;
+  text-decoration: none;
+}
+.copyright .acceso-staff:hover,
+.copyright .acceso-staff:focus-visible {
+  text-decoration: underline;
+}
+
+/* Reservar: al terminar solo queda el resumen y el aviso de confirmación */
+.confirm-card.reserva-hecha > :not(#confirmSummary):not(#confirmMsg) {
+  display: none !important;
+}
