@@ -142,6 +142,66 @@ document.addEventListener("DOMContentLoaded", () => {
     render();
   });
 
+  /* ---------- reserva manual ---------- */
+  for (let h = 11; h < 23; h++) {
+    $("manHora").add(new Option(`${h}:00`, h));
+  }
+  function opcionesDuracion() {
+    const inicio = Number($("manHora").value);
+    const previa = Number($("manDur").value) || 1;
+    $("manDur").innerHTML = "";
+    for (let n = 1; inicio + n <= 23; n++) {
+      $("manDur").add(new Option(`${n} hora${n > 1 ? "s" : ""} (hasta ${inicio + n}:00)`, n));
+    }
+    $("manDur").value = String(Math.min(previa, 23 - inicio));
+  }
+  function horarioSegunServicio() {
+    // La renta de equipo es por día completo: no lleva hora ni duración.
+    $("manHorario").hidden = $("manServicio").value === "equipo";
+  }
+  $("manFecha").value = hoyISO;
+  $("manFecha").min = hoyISO;
+  opcionesDuracion();
+  $("manHora").addEventListener("change", opcionesDuracion);
+  $("manServicio").addEventListener("change", horarioSegunServicio);
+
+  $("btnReservaManual").addEventListener("click", () => {
+    const boton = $("btnReservaManual");
+    const manMsg = $("manMsg");
+    boton.disabled = true;
+    manMsg.textContent = "Guardando...";
+    fetch("/api/admin", {
+      method: "POST",
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        accion: "crear",
+        servicio: $("manServicio").value,
+        fecha: $("manFecha").value,
+        hora: $("manHora").value,
+        duracion: $("manDur").value,
+        nombre: $("manNombre").value.trim(),
+        telefono: $("manTelefono").value.trim(),
+        email: $("manEmail").value.trim(),
+        mensaje: $("manNotas").value.trim(),
+      }),
+    })
+      .then((r) => r.json())
+      .then((d) => {
+        if (!d.ok) {
+          manMsg.textContent = "Error: " + (d.error || "no se pudo guardar.");
+          return;
+        }
+        manMsg.textContent = d.correo
+          ? "✔ Reserva guardada. Le enviamos la confirmación por correo."
+          : "✔ Reserva guardada y confirmada.";
+        ["manNombre", "manTelefono", "manEmail", "manNotas"].forEach((id) => ($(id).value = ""));
+        cargar();
+      })
+      .catch(() => (manMsg.textContent = "No se pudo conectar con el servidor."))
+      .finally(() => (boton.disabled = false));
+  });
+
   /* ---------- bloquear horario ---------- */
   $("btnBloquear").addEventListener("click", () => {
     fetch("/api/admin", {

@@ -11,6 +11,18 @@ document.addEventListener("DOMContentLoaded", () => {
       if (d.usuario) window.location.replace(next);
     });
 
+  // Botón para ver lo que se está escribiendo en la contraseña.
+  const pass = document.getElementById("loginPass");
+  const verPass = document.getElementById("verPass");
+  verPass.addEventListener("click", () => {
+    const mostrar = pass.type === "password";
+    pass.type = mostrar ? "text" : "password";
+    verPass.textContent = mostrar ? "OCULTAR" : "VER";
+    verPass.setAttribute("aria-pressed", String(mostrar));
+    verPass.setAttribute("aria-label", mostrar ? "Ocultar contraseña" : "Mostrar contraseña");
+    pass.focus();
+  });
+
   const formLogin = document.getElementById("loginForm");
   const msg = document.getElementById("authMsg");
 

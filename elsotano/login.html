@@ -46,12 +46,22 @@
           </div>
           <div class="form-group">
             <label for="loginPass">Contraseña</label>
-            <input
-              type="password"
-              id="loginPass"
-              required
-              placeholder="••••••••"
-            />
+            <div class="campo-pass">
+              <input
+                type="password"
+                id="loginPass"
+                required
+                placeholder="••••••••"
+                autocomplete="current-password"
+              />
+              <button
+                type="button"
+                id="verPass"
+                class="ver-pass"
+                aria-label="Mostrar contraseña"
+                aria-pressed="false"
+              >VER</button>
+            </div>
           </div>
           <button type="submit" class="btn btn-full">ENTRAR</button>
         </form>
@@ -60,6 +70,6 @@
       </div>
     </main>
 
-    <script src="login.js?v=2"></script>
+    <script src="login.js?v=3"></script>
   </body>
 </html>
