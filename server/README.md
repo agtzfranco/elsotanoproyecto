@@ -121,10 +121,3 @@ Solo necesitas configurar las mismas variables de `.env.example` y correr
 
 Las páginas se abren sin `.html` (`/reservas`, `/login`, `/admin`). Los links
 viejos con `.html` (por ejemplo, en correos ya enviados) se redirigen solos.
-
-## Posts de Instagram
-
-La sección "Síguenos en Instagram" de la portada está oculta hasta que se
-configure un feed. Crea una cuenta gratis en https://behold.so, conecta
-@elsotanomx, crea un feed tipo JSON y pega su URL en `data-feed` de
-`<section id="instagram">` en `elsotano/index.html`.
