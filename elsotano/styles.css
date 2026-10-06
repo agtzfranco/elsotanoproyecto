@@ -2945,3 +2945,18 @@ html {
   margin-left: auto;
   margin-right: auto;
 }
+
+/* Etiqueta "SOLO STAFF": plana, como el resto de los recuadros negros */
+.sticker {
+  transform: none;
+  box-shadow: none;
+  border: none;
+  background: #111;
+  color: #f2f0e9;
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  padding: 0.35rem 0.75rem;
+}
+.login-card {
+  box-shadow: none;
+}
