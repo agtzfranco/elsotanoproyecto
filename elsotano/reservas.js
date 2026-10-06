@@ -7,6 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
       precio: 250,
       precioLabel: "$250 <span>MXN / hora</span>",
       desc: "Monitoreo personal con mezcla individual y grabación multipista.",
+      nota: "Ej. necesitamos un micrófono extra o queremos grabar el ensayo",
     },
     {
       id: "grabacion",
@@ -15,6 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
       precio: null,
       precioLabel: "Cotizar <span>por proyecto</span>",
       desc: "Grabación, mezcla y masterización con asesoría técnica.",
+      nota: "Ej. qué quieres grabar y cuántas canciones",
     },
     {
       id: "podcast",
@@ -23,6 +25,7 @@ document.addEventListener("DOMContentLoaded", () => {
       precio: 800,
       precioLabel: "Desde $800 <span>MXN / hora</span>",
       desc: "Audio o audio + video con microfonía profesional.",
+      nota: "Ej. solo audio o audio + video",
     },
     {
       id: "fotografia",
@@ -31,6 +34,7 @@ document.addEventListener("DOMContentLoaded", () => {
       precio: 350,
       precioLabel: "$350 <span>MXN / hora</span>",
       desc: "Fondos intercambiables e iluminación profesional.",
+      nota: "Ej. tipo de sesión y fondo que te gustaría",
     },
     {
       id: "equipo",
@@ -40,6 +44,7 @@ document.addEventListener("DOMContentLoaded", () => {
       porDia: true,
       precioLabel: "$9,000 <span>MXN / día</span>",
       desc: "Paquete completo con transporte, montaje y operación.",
+      nota: "Ej. tipo de evento y dirección",
     },
   ];
   const MESES = [
@@ -384,6 +389,7 @@ document.addEventListener("DOMContentLoaded", () => {
     document.querySelector("#stepConfirm .confirm-card").classList.remove("reserva-hecha");
     $("confirmTitulo").textContent = "CONFIRMA TU RESERVA";
     $("confirmMsg").textContent = "";
+    if (s.nota) $("mensaje").placeholder = s.nota;
     const reg = window.REGLAMENTOS && window.REGLAMENTOS[s.id];
     $("reglamentoBox").hidden = !reg;
     if (reg) {
