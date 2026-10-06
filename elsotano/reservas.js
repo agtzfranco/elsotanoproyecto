@@ -321,7 +321,11 @@ document.addEventListener("DOMContentLoaded", () => {
     grid.appendChild(b);
     if (!libre) {
       state.hora = null;
-      $("stepConfirm").hidden = true;
+      // Si el día se ocupó por la reserva que acaba de hacer, se queda el resumen.
+      const hecha = document
+        .querySelector("#stepConfirm .confirm-card")
+        .classList.contains("reserva-hecha");
+      if (!hecha) $("stepConfirm").hidden = true;
       return;
     }
     state.hora = "11:00";
