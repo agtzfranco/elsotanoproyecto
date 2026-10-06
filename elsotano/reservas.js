@@ -209,6 +209,9 @@ document.addEventListener("DOMContentLoaded", () => {
         btn.classList.add("selected");
         $("stepConfirm").hidden = true;
         cargarSlots();
+        // En celular los horarios quedan debajo del calendario: bajar a ellos.
+        if (window.matchMedia("(max-width: 768px)").matches)
+          $("disp-estado").scrollIntoView({ behavior: "smooth", block: "start" });
       });
       grid.appendChild(btn);
     }
@@ -394,6 +397,11 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
   $("duracion").addEventListener("change", pintarResumen);
+  ["resNombre", "resEmail", "resTel"].forEach((id) =>
+    $(id).addEventListener("input", () =>
+      $(id).classList.remove("campo-faltante"),
+    ),
+  );
 
   $("btnConfirmar").addEventListener("click", () => {
     const s = state.servicio;
@@ -408,18 +416,30 @@ document.addEventListener("DOMContentLoaded", () => {
       telefono: $("resTel").value.trim(),
     };
     const msg = $("confirmMsg");
-    const faltante = !contacto.nombre
-      ? "Escribe tu nombre."
-      : !contacto.email
-        ? "Escribe tu correo."
-        : !contacto.telefono
-          ? "Escribe tu teléfono."
-          : !$("reglamentoBox").hidden && !$("aceptoReglamento").checked
-            ? "Acepta el reglamento para continuar."
-            : "";
+    // Mostrar todo lo que falta de una vez y marcar los campos vacíos.
+    const campos = [
+      ["resNombre", "tu nombre"],
+      ["resEmail", "tu correo"],
+      ["resTel", "tu teléfono"],
+    ];
+    const faltan = [];
+    campos.forEach(([id, texto]) => {
+      const vacio = !$(id).value.trim();
+      $(id).classList.toggle("campo-faltante", vacio);
+      if (vacio) faltan.push(texto);
+    });
+    const sinReglamento =
+      !$("reglamentoBox").hidden && !$("aceptoReglamento").checked;
+    let faltante = faltan.length
+      ? "Escribe " + faltan.join(", ").replace(/, ([^,]*)$/, " y $1") + "."
+      : "";
+    if (sinReglamento)
+      faltante += (faltante ? " " : "") + "Acepta el reglamento para continuar.";
     if (faltante) {
       msg.style.color = "var(--error)";
       msg.textContent = faltante;
+      const primero = campos.find(([id]) => !$(id).value.trim());
+      if (primero) $(primero[0]).focus();
       return;
     }
     const btn = $("btnConfirmar");
