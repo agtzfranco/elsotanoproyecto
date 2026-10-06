@@ -15,6 +15,7 @@ import reservasRouter from "./routes/reservas.js";
 import adminRouter from "./routes/admin.js";
 import calendarioRouter from "./routes/calendario.js";
 import { asegurarAdmin, confirmarPendientes } from "./lib/adminInicial.js";
+import { SERVICIOS } from "./lib/reglas.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const FRONTEND_DIR = path.resolve(__dirname, "../../elsotano");
@@ -39,6 +40,26 @@ app.use("/api/reservar", reservarRouter);
 app.use("/api/reservas", reservasRouter);
 app.use("/api/admin", adminRouter);
 app.use("/api/calendario", calendarioRouter);
+
+// Links limpios con ruta: /reservas/sala-ensayo y /mis-reservas/<token>.
+// Los links viejos con ?servicio= o ?token= se redirigen a la ruta nueva.
+app.get("/reservas", (req, res, next) => {
+  const servicio = req.query.servicio;
+  if (!servicio) return next();
+  res.redirect(301, `/reservas/${encodeURIComponent(String(servicio))}`);
+});
+app.get("/reservas/:servicio", (req, res) => {
+  if (!SERVICIOS[req.params.servicio]) return res.redirect("/#servicios");
+  res.sendFile(path.join(FRONTEND_DIR, "reservas.html"));
+});
+app.get("/mis-reservas", (req, res, next) => {
+  const token = req.query.token;
+  if (!token) return next();
+  res.redirect(301, `/mis-reservas/${encodeURIComponent(String(token))}`);
+});
+app.get("/mis-reservas/:token", (req, res) => {
+  res.sendFile(path.join(FRONTEND_DIR, "mis-reservas.html"));
+});
 
 // Links limpios: /reservas en vez de /reservas.html. Los links viejos
 // (correos ya enviados, favoritos) se redirigen a la versión sin .html.

@@ -157,9 +157,10 @@ document.addEventListener("DOMContentLoaded", () => {
     if (paso1Els[0]) paso1Els[0].scrollIntoView({ behavior: "smooth" });
   }
 
-  const servicioPre = new URLSearchParams(window.location.search).get(
-    "servicio",
-  );
+  // Link limpio: /reservas/sala-ensayo (antes /reservas?servicio=sala-ensayo)
+  const servicioPre =
+    window.location.pathname.split("/")[2] ||
+    new URLSearchParams(window.location.search).get("servicio");
   if (servicioPre && SERVICIOS.some((s) => s.id === servicioPre)) {
     seleccionarServicio(servicioPre);
     ocultarPaso1();
