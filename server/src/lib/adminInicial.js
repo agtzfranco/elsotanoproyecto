@@ -41,3 +41,18 @@ export async function asegurarAdmin() {
   }
   console.log(`✔ Cuenta admin lista: ${email}`);
 }
+
+// Las reservas ya no esperan confirmación del staff: las que quedaron
+// "pendiente" de antes se pasan a confirmadas al arrancar.
+export async function confirmarPendientes() {
+  const { data, error } = await supabase
+    .from("reservaciones")
+    .update({ estado: "confirmada" })
+    .eq("estado", "pendiente")
+    .select("id");
+  if (error) {
+    console.error("No se pudieron confirmar las reservas pendientes:", error.message);
+    return;
+  }
+  if (data?.length) console.log(`✔ ${data.length} reserva(s) pendiente(s) pasaron a confirmadas.`);
+}
