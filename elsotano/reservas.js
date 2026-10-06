@@ -173,11 +173,11 @@ document.addEventListener("DOMContentLoaded", () => {
     window.scrollTo(0, 0); // la página abre arriba: título + calendario
   } else {
     // Sin servicio elegido: el cliente elige en la página de inicio
-    window.location.replace("index.html#servicios");
+    window.location.replace("/#servicios");
   }
 
   btnCambiar.addEventListener("click", () => {
-    window.location.href = "index.html#servicios";
+    window.location.href = "/#servicios";
   });
 
   /* ---------- PASO 2: calendario ---------- */
@@ -240,7 +240,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const grid = $("slots-grid");
     if (!conservar) {
       grid.innerHTML = "";
-      $("disp-estado").textContent = "Cargando horarios...";
+      $("disp-estado").innerHTML =
+        '<img class="disco-cargando" src="IMG/logo-disco-128.png" alt="" /> Cargando horarios...';
     }
     fetch(
       `/api/disponibilidad?servicio=${encodeURIComponent(state.servicio.id)}&fecha=${state.fecha}`,
@@ -337,6 +338,42 @@ document.addEventListener("DOMContentLoaded", () => {
   setInterval(() => {
     if (state.servicio && state.fecha && !document.hidden) cargarSlots(true);
   }, 60 * 1000);
+
+  /* ---------- Agregar la reserva al calendario ---------- */
+  // Monterrey está en UTC-6 todo el año (sin horario de verano).
+  function fechaUTC(fecha, hora) {
+    const [a, m, d] = fecha.split("-").map(Number);
+    return new Date(Date.UTC(a, m - 1, d, hora + 6)).toISOString().replace(/[-:]|\.\d{3}/g, "");
+  }
+  function botonesCalendario(s, fecha, hora, dur) {
+    const inicio = fechaUTC(fecha, hora);
+    const fin = fechaUTC(fecha, hora + dur);
+    const titulo = `${s.nombre} · El Sótano`;
+    const lugar = "Av. La Luz 6944, Pedregal de la Silla, Monterrey, N.L.";
+    const detalles = "Reserva en El Sótano. Dudas: instagram.com/elsotanomx";
+    const google =
+      "https://calendar.google.com/calendar/render?action=TEMPLATE" +
+      `&text=${encodeURIComponent(titulo)}&dates=${inicio}/${fin}` +
+      `&location=${encodeURIComponent(lugar)}&details=${encodeURIComponent(detalles)}`;
+    // El .ics lo arma el servidor: así el iPhone lo abre directo en Calendario.
+    const ics =
+      `/api/calendario?servicio=${encodeURIComponent(s.id)}` +
+      `&fecha=${fecha}&hora=${hora}&dur=${dur}`;
+
+    const caja = document.createElement("div");
+    caja.className = "agregar-calendario";
+    caja.innerHTML = "<span>Agrégala a tu calendario:</span>";
+    const g = document.createElement("a");
+    g.href = google;
+    g.target = "_blank";
+    g.rel = "noopener";
+    g.textContent = "Google Calendar";
+    const a = document.createElement("a");
+    a.href = ics;
+    a.textContent = "iPhone / Outlook";
+    caja.append(g, a);
+    return caja;
+  }
 
   /* ---------- PASO 3: confirmación ---------- */
   function mostrarConfirmacion() {
@@ -481,6 +518,7 @@ document.addEventListener("DOMContentLoaded", () => {
           link.textContent = "Ver o cancelar mi reserva →";
           link.style.color = "var(--text-primary)";
           msg.appendChild(link);
+          msg.appendChild(botonesCalendario(s, state.fecha, horaNum, dur));
           $("mensaje").value = "";
           state.hora = null;
           // Ya quedó: se esconde el formulario y queda solo el resumen y el aviso.

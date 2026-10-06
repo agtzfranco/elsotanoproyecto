@@ -146,3 +146,38 @@ document.addEventListener("DOMContentLoaded", () => {
     inicioX = null;
   });
 });
+
+/* ---------- 7. Últimos posts de Instagram ---------- */
+// data-feed en #instagram es la URL JSON de un feed de Behold (behold.so).
+// Sin feed, la sección se queda oculta.
+document.addEventListener("DOMContentLoaded", () => {
+  const seccion = document.getElementById("instagram");
+  const feed = seccion && seccion.dataset.feed;
+  if (!feed) return;
+  fetch(feed)
+    .then((r) => r.json())
+    .then((data) => {
+      const posts = (Array.isArray(data) ? data : data.posts || []).slice(0, 6);
+      if (!posts.length) return;
+      const grid = document.getElementById("igGrid");
+      posts.forEach((p) => {
+        const img =
+          (p.sizes && p.sizes.medium && p.sizes.medium.mediaUrl) ||
+          (p.mediaType === "VIDEO" ? p.thumbnailUrl : p.mediaUrl);
+        if (!img || !p.permalink) return;
+        const a = document.createElement("a");
+        a.href = p.permalink;
+        a.target = "_blank";
+        a.rel = "noopener";
+        a.className = "ig-post";
+        const foto = document.createElement("img");
+        foto.src = img;
+        foto.loading = "lazy";
+        foto.alt = (p.prunedCaption || p.caption || "Publicación de @elsotanomx").slice(0, 120);
+        a.appendChild(foto);
+        grid.appendChild(a);
+      });
+      if (grid.children.length) seccion.hidden = false;
+    })
+    .catch(() => {});
+});

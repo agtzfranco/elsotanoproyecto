@@ -44,10 +44,10 @@ Con eso se envían estos avisos:
 ## Cómo funcionan las reservas
 
 - Los clientes reservan sin cuenta, solo con nombre, correo y teléfono.
-- Cada reserva recibe un enlace secreto (`mis-reservas.html?token=...`) que
+- Cada reserva recibe un enlace secreto (`/mis-reservas?token=...`) que
   llega por correo y también se muestra al terminar de reservar. Con él se
   consulta o cancela la reserva mientras no haya empezado.
-- Solo el staff inicia sesión (`login.html`) para entrar a `admin.html`.
+- Solo el staff inicia sesión (`/login`) para entrar a `/admin`.
 - La renta de equipo se reserva por evento: ocupa desde la hora de inicio
   hasta el cierre (23:00).
 
@@ -57,7 +57,7 @@ Pon `ADMIN_EMAIL` y `ADMIN_PASSWORD` (mínimo 8 caracteres; opcional
 `ADMIN_NOMBRE`) en las variables de entorno y reinicia el servidor. Al
 arrancar, si ese correo no existe se crea como admin; si ya existe, se le pone
 esa contraseña. Sirve también para recuperar el acceso: cambia
-`ADMIN_PASSWORD` en Render y vuelve a desplegar. Luego entra en `login.html`.
+`ADMIN_PASSWORD` en Render y vuelve a desplegar. Luego entra en `/login`.
 
 En local también puedes usar `npm run seed:admin` con los mismos valores en
 `.env`.
@@ -116,3 +116,15 @@ Solo necesitas configurar las mismas variables de `.env.example` y correr
 - **Base de datos**: MySQL/PDO se reemplaza por Supabase (`@supabase/supabase-js`
   con la service role key). El esquema (`supabase/schema.sql`) es el
   equivalente en Postgres de `database.sql`.
+
+## Links limpios
+
+Las páginas se abren sin `.html` (`/reservas`, `/login`, `/admin`). Los links
+viejos con `.html` (por ejemplo, en correos ya enviados) se redirigen solos.
+
+## Posts de Instagram
+
+La sección "Síguenos en Instagram" de la portada está oculta hasta que se
+configure un feed. Crea una cuenta gratis en https://behold.so, conecta
+@elsotanomx, crea un feed tipo JSON y pega su URL en `data-feed` de
+`<section id="instagram">` en `elsotano/index.html`.
