@@ -2847,3 +2847,42 @@ header {
 .campo-faltante {
   border-color: var(--error) !important;
 }
+
+/* Los saltos a #servicios / #equipo no quedan debajo del header fijo */
+html {
+  scroll-padding-top: 100px;
+}
+
+/* Botón fijo RESERVAR (solo celular) */
+.reservar-fijo {
+  display: none;
+}
+@media (max-width: 768px) {
+  .reservar-fijo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    left: 1rem;
+    right: 1rem;
+    bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
+    z-index: 900;
+    min-height: 52px;
+    background: #111;
+    color: #f2f0e9;
+    font-family: var(--font-title);
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-decoration: none;
+    transform: translateY(calc(100% + 2rem));
+    transition: transform 0.3s ease;
+  }
+  .reservar-fijo.visible {
+    transform: translateY(0);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .reservar-fijo {
+    transition: none;
+  }
+}
