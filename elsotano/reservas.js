@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
       precio: 250,
       precioLabel: "$250 <span>MXN / hora</span>",
       desc: "Monitoreo personal con mezcla individual y grabación multipista.",
-      nota: "Ej. traemos nuestros platillos, necesitamos un micrófono extra",
+      nota: "Ej. necesitamos un micrófono extra o un cable de más",
     },
     {
       id: "grabacion",
