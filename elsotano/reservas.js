@@ -202,7 +202,8 @@ document.addEventListener("DOMContentLoaded", () => {
       const dateObj = new Date(base.getFullYear(), base.getMonth(), d);
       const iso = toISO(dateObj);
       const btn = document.createElement("button");
-      btn.className = "cal-day";
+      btn.className = "cal-day entra";
+      btn.style.setProperty("--i", d);
       btn.textContent = d;
       if (dateObj < hoy) btn.disabled = true;
       if (state.fecha === iso) btn.classList.add("selected");
@@ -288,6 +289,11 @@ document.addEventListener("DOMContentLoaded", () => {
         data.slots.forEach((slot, i) => {
           const b = document.createElement("button");
           b.className = "slot " + (slot.ocupado ? "ocupado" : "libre");
+          // Entran en cascada solo al elegir fecha, no en la actualización de cada minuto.
+          if (!conservar) {
+            b.classList.add("entra");
+            b.style.setProperty("--i", i);
+          }
           b.textContent = slot.hora;
           b.disabled = slot.ocupado;
           if (conservar && slot === elegido) {

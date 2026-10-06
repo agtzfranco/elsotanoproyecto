@@ -14,6 +14,15 @@
   font-style: normal;
   font-display: swap;
 }
+/* Blaak Black: títulos grandes (como las letras del logo). Rango de peso
+   amplio para que se use con el 600 de los títulos sin engrosar el respaldo. */
+@font-face {
+  font-family: "Blaak";
+  src: url("fonts/Blaak-Black.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
 
 /* =========================================
    VARIABLES Y RESET - ESTILO B/N ALTO CONTRASTE
@@ -3334,5 +3343,155 @@ html {
   }
   .admin-form {
     padding: 1.1rem;
+  }
+}
+
+
+/* =========================================
+   MARCA: PALETA Y TIPOGRAFÍA
+   Carbón #282828 · Menta #D7E5E2 · Crema #FBFBE8 · Papel #F2F0E9
+   Blaak Black en títulos grandes; Founders Grotesk Semibold en botones,
+   menú y subtítulos; Founders Grotesk Regular en el texto.
+   Mientras no estén los archivos de las fuentes se ve Helvetica.
+   ========================================= */
+:root {
+  --carbon: #282828;
+  --menta: #d7e5e2;
+  --crema: #fbfbe8;
+  --papel: #f2f0e9;
+  --font-display: "Blaak", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  /* El azul marino no es de la paleta: todo lo que lo usaba pasa a carbón. */
+  --ink-blue: var(--carbon);
+}
+h1,
+h2 {
+  font-family: var(--font-display);
+}
+
+/* Botones: el color entra de izquierda a derecha al pasar el mouse */
+.btn,
+.nav-links a:not(.btn) {
+  --barrido: var(--menta);
+  background-image: linear-gradient(var(--barrido), var(--barrido));
+  background-repeat: no-repeat;
+  background-position: left center;
+  background-size: 0% 100%;
+  transition:
+    background-size 0.35s cubic-bezier(0.65, 0, 0.35, 1),
+    color 0.25s ease,
+    border-color 0.25s ease;
+}
+.btn:hover,
+.btn:focus-visible,
+.nav-links a:not(.btn):hover,
+.nav-links a:not(.btn):focus-visible {
+  background-size: 100% 100%;
+  transform: none;
+  box-shadow: none;
+}
+.btn-full,
+.ubicacion-info .btn,
+.nav-links a:not(.btn) {
+  background-color: var(--carbon);
+  border-color: var(--carbon);
+  color: var(--papel);
+}
+.btn-full:hover,
+.btn-full:focus-visible,
+.ubicacion-info .btn:hover,
+.ubicacion-info .btn:focus-visible,
+.nav-links a:not(.btn):hover,
+.nav-links a:not(.btn):focus-visible {
+  background-color: var(--carbon);
+  border-color: var(--carbon);
+  color: var(--carbon);
+}
+/* Dentro de las tarjetas (que pasan a menta) el barrido es crema */
+.service-card .btn-full {
+  --barrido: var(--crema);
+}
+.btn-outline {
+  --barrido: var(--carbon);
+  border-color: var(--carbon);
+  color: var(--carbon);
+}
+.btn-outline:hover,
+.btn-outline:focus-visible {
+  background-color: transparent;
+  color: var(--papel);
+}
+.rental .btn:hover,
+.rental .btn:focus-visible {
+  background-color: var(--papel);
+  border-color: var(--menta);
+  color: var(--carbon);
+}
+.nav-links a.activo:not(.btn) {
+  background-color: var(--papel);
+  color: var(--carbon);
+}
+.btn:disabled {
+  background-size: 0% 100%;
+}
+
+/* Fotos de servicios: acercamiento lento, como cámara */
+.service-card .card-img img {
+  transition:
+    transform 1.2s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.4s ease;
+}
+.service-card:hover .card-img img {
+  transform: scale(1.05);
+}
+
+/* Calendario: días y horarios entran en cascada; la elección hace "clic" */
+@keyframes entra-suave {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+@keyframes clic {
+  40% {
+    transform: scale(0.92);
+  }
+}
+.cal-day.entra,
+.slot.entra {
+  animation: entra-suave 0.35s ease both;
+  animation-delay: calc(var(--i, 0) * 14ms);
+}
+.cal-day.selected,
+.slot.elegido {
+  animation: clic 0.25s ease;
+}
+
+/* Cambio de página con fundido suave (navegadores que lo soportan) */
+@view-transition {
+  navigation: auto;
+}
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.3s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn,
+  .nav-links a:not(.btn),
+  .service-card .card-img img {
+    transition: none;
+  }
+  .service-card:hover .card-img img {
+    transform: none;
+  }
+  .cal-day.entra,
+  .slot.entra,
+  .cal-day.selected,
+  .slot.elegido {
+    animation: none;
+  }
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none;
   }
 }
