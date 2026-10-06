@@ -68,27 +68,6 @@ document.addEventListener("DOMContentLoaded", () => {
     );
     seccionesNav.forEach((s) => navObserver.observe(s));
   }
-
-  // 4. Botón fijo RESERVAR en celular: aparece al pasar la portada y se
-  // esconde mientras se ven los servicios o el footer.
-  const reservarFijo = document.querySelector(".reservar-fijo");
-  const zonas = ["#inicio", "#servicios", "footer"]
-    .map((s) => document.querySelector(s))
-    .filter(Boolean);
-  if (reservarFijo && zonas.length) {
-    const enVista = new Set();
-    const zonaObserver = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) enVista.add(entry.target);
-        else enVista.delete(entry.target);
-      });
-      const visible = enVista.size === 0;
-      reservarFijo.classList.toggle("visible", visible);
-      reservarFijo.setAttribute("aria-hidden", visible ? "false" : "true");
-      reservarFijo.tabIndex = visible ? 0 : -1;
-    });
-    zonas.forEach((z) => zonaObserver.observe(z));
-  }
 });
 
 // 3. Galería de fotos en las tarjetas (display a pantalla completa)
