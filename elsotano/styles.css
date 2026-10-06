@@ -1387,7 +1387,7 @@ h2 {
   --bg-card: #f2f0e9; /* papel claro para tarjetas */
   --bg-input: #fbfaf6; /* papel casi blanco para inputs */
   --text-primary: #171512; /* tinta negra */
-  --text-secondary: #6e675c; /* gris cálido */
+  --text-secondary: #635d52; /* gris cálido */
   --accent: #171512;
   --accent-hover: #000000;
   --error: #a3251c; /* rojo tinta para errores */
@@ -2884,5 +2884,56 @@ html {
 @media (prefers-reduced-motion: reduce) {
   .reservar-fijo {
     transition: none;
+  }
+}
+
+/* Celular: intro de sección alineada a la izquierda junto a su línea */
+@media (max-width: 640px) {
+  .section-intro {
+    text-align: left;
+  }
+  .nosotros-panel .ubicacion-mapa {
+    min-height: 240px;
+  }
+}
+
+/* Menú: marca la sección en la que estás */
+.nav-links a.activo:not(.btn) {
+  background-color: #f2f0e9;
+  color: #111;
+}
+
+/* Quien pide menos movimiento ve todo de inmediato, sin animaciones */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .reveal-init,
+  .service-card.reveal-init,
+  .nosotros-ilustraciones img.reveal-init,
+  .reveal-init > .titulo-texto,
+  .reveal-init > .titulo-texto > span {
+    opacity: 1 !important;
+    transform: none !important;
+    clip-path: none !important;
+    transition: none !important;
+  }
+}
+
+/* Celular: versiones más ligeras de los fondos */
+@media (max-width: 768px) {
+  .nosotros-panel {
+    background-image: url("IMG/textura-manchas-m.jpg");
+  }
+  .services-grid {
+    background-image: url("IMG/textura-servicios-m.jpg");
+  }
+  .hero {
+    background:
+      linear-gradient(rgba(242, 240, 233, 0.72), rgba(242, 240, 233, 0.82)),
+      url("IMG/hero-cables-m.jpg") center / cover no-repeat;
+  }
+  #booking::before {
+    background-image: url("IMG/fondo-reservas-m.png");
   }
 }
