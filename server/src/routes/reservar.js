@@ -130,12 +130,22 @@ router.post("/", async (req, res) => {
     return res.json({ ok: false, error: ERROR_OCUPADO });
   }
 
+  // Las reservas quedan confirmadas al momento: el horario ya se validó y la
+  // función de la base no deja que dos personas tomen el mismo espacio.
+  const { error: errorConfirmar } = await supabase
+    .from("reservaciones")
+    .update({ estado: "confirmada" })
+    .eq("id", id);
+  if (errorConfirmar) {
+    console.error("No se pudo marcar la reserva como confirmada:", errorConfirmar.message);
+  }
+
   limite.registrar(req);
   const enlace = `${urlSitio(req)}/mis-reservas.html?token=${token}`;
   avisos.reservaNueva(fila, enlace);
   res.json({
     ok: true,
-    mensaje: "¡Reserva registrada! Te contactaremos para confirmarla.",
+    mensaje: "¡Reserva confirmada! Te esperamos.",
     enlace,
     correo: correoConfigurado(),
   });
