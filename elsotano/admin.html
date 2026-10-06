@@ -34,7 +34,7 @@
       <div class="container">
         <h2>PANEL <span>ADMINISTRATIVO</span></h2>
         <p class="section-intro">
-          Revisa, cancela o bloquea horarios. Las reservas se confirman solas y
+          Revisa, cancela, agrega reservas a mano o bloquea horarios. Las reservas se confirman solas y
           todo se refleja al instante en el calendario público.
         </p>
         <p id="statLine" class="disp-estado"></p>
@@ -61,6 +61,70 @@
 
         <div id="adminMsg" class="disp-estado"></div>
         <div id="adminList" class="reservas-list"></div>
+
+        <div class="confirm-card admin-block">
+          <h3 class="step-title">
+            <span class="step-num">+</span> RESERVA MANUAL
+          </h3>
+          <p class="section-intro">
+            Para quien llega en persona o escribe por Instagram. Se confirma al
+            momento y ocupa el horario en el calendario.
+          </p>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="manServicio">Servicio</label>
+              <select id="manServicio">
+                <option value="sala-ensayo">Sala de Ensayo</option>
+                <option value="grabacion">Estudio de Grabación</option>
+                <option value="podcast">Producción de Podcast</option>
+                <option value="fotografia">Sesiones de Fotografía</option>
+                <option value="equipo">Renta de Equipo (día completo)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="manFecha">Fecha</label>
+              <input type="date" id="manFecha" />
+            </div>
+          </div>
+          <div class="form-row" id="manHorario">
+            <div class="form-group">
+              <label for="manHora">Hora de inicio</label>
+              <select id="manHora"></select>
+            </div>
+            <div class="form-group">
+              <label for="manDur">Duración</label>
+              <select id="manDur"></select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="manNombre">Nombre del cliente</label>
+              <input type="text" id="manNombre" maxlength="100" autocomplete="off" />
+            </div>
+            <div class="form-group">
+              <label for="manTelefono">Teléfono (opcional)</label>
+              <input type="tel" id="manTelefono" maxlength="30" autocomplete="off" />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="manEmail">Correo (opcional)</label>
+              <input type="email" id="manEmail" maxlength="150" autocomplete="off" />
+            </div>
+            <div class="form-group">
+              <label for="manNotas">Notas</label>
+              <input type="text" id="manNotas" maxlength="1000" placeholder="Vino por Instagram, paga en efectivo..." />
+            </div>
+          </div>
+          <p class="disp-estado">
+            Si pones correo, le llega la confirmación con su enlace para ver o
+            cancelar.
+          </p>
+          <button id="btnReservaManual" class="btn btn-full">
+            GUARDAR RESERVA
+          </button>
+          <p id="manMsg" class="disp-estado" role="status"></p>
+        </div>
 
         <div class="confirm-card admin-block">
           <h3 class="step-title">
@@ -116,6 +180,6 @@
     </section>
 
     <script src="auth.js?v=3"></script>
-    <script src="admin.js?v=3"></script>
+    <script src="admin.js?v=4"></script>
   </body>
 </html>

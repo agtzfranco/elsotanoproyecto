@@ -79,6 +79,14 @@ export const avisos = {
       asunto: `Nueva reserva: ${NOMBRES_SERVICIO[r.servicio] || r.servicio} ${fechaCorta(r.fecha)}`,
       html: plantilla("Nueva reserva", `${detalleReserva(r)}<p>Ya quedó confirmada. Si necesitas cancelarla, hazlo desde el panel administrativo.</p>`),
     });
+    this.confirmacionCliente(r, enlace);
+  },
+  // Reserva hecha a mano por el staff: el staff ya la conoce, así que solo se
+  // avisa al cliente, y solo si dejó correo.
+  reservaManual(r, enlace) {
+    this.confirmacionCliente(r, enlace);
+  },
+  confirmacionCliente(r, enlace) {
     enviarCorreo({
       para: r.email,
       asunto: "Tu reserva en El Sótano está confirmada",

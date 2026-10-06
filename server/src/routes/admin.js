@@ -1,7 +1,9 @@
 import { Router } from "express";
 import { supabase } from "../supabaseClient.js";
 import { requireAdmin } from "../middleware/auth.js";
-import { avisos } from "../lib/correo.js";
+import { avisos, correoConfigurado } from "../lib/correo.js";
+import { urlSitio } from "../lib/tokens.js";
+import { crearReserva } from "../lib/reservaNueva.js";
 import {
   HORA_APERTURA,
   HORA_CIERRE,
@@ -62,6 +64,18 @@ router.post("/", async (req, res) => {
       else avisos.reservaCanceladaPorStaff(r);
     }
     return res.json({ ok: Boolean(r), error: r ? undefined : "La reserva ya cambió de estado. Recarga la página." });
+  }
+
+  // Reserva manual del staff (llegó en persona, escribió por DM...). Usa las
+  // mismas reglas que la web y ocupa el horario en el calendario público.
+  if (accion === "crear") {
+    const r = await crearReserva(req.body, { staff: true });
+    if (!r.ok) {
+      return res.status(r.status ?? 200).json({ ok: false, error: r.error });
+    }
+    const enlace = `${urlSitio(req)}/mis-reservas/${r.token}`;
+    if (r.fila.email) avisos.reservaManual(r.fila, enlace);
+    return res.json({ ok: true, enlace, correo: Boolean(r.fila.email) && correoConfigurado() });
   }
 
   if (accion === "bloquear") {

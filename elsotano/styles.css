@@ -1591,6 +1591,9 @@ body::after {
 .admin-block {
   margin-top: 3rem;
 }
+.admin-block .form-row[hidden] {
+  display: none;
+}
 @media (max-width: 768px) {
   .admin-bar {
     flex-direction: column;
