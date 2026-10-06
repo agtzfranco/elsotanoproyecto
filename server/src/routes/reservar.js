@@ -141,7 +141,7 @@ router.post("/", async (req, res) => {
   }
 
   limite.registrar(req);
-  const enlace = `${urlSitio(req)}/mis-reservas.html?token=${token}`;
+  const enlace = `${urlSitio(req)}/mis-reservas?token=${token}`;
   avisos.reservaNueva(fila, enlace);
   res.json({
     ok: true,

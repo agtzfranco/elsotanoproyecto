@@ -1,7 +1,8 @@
 document.addEventListener("DOMContentLoaded", () => {
   const params = new URLSearchParams(window.location.search);
-  let next = (params.get("next") || "admin.html").replace(/[^\w\-./]/g, "").replace(/^[./]+/, "");
-  if (!next.endsWith(".html")) next = "admin.html";
+  // Solo páginas propias del sitio (p. ej. "admin"), nunca otro dominio.
+  let next = (params.get("next") || "admin").replace(/\.html$/, "");
+  if (!/^[a-z-]+$/.test(next)) next = "admin";
 
   // Si ya hay sesión, no lo dejes en el login
   fetch("/api/usuario", { credentials: "include" })

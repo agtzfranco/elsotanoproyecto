@@ -2930,15 +2930,90 @@ html {
 
 /* Enlace discreto al panel del staff, junto al © */
 .copyright .acceso-staff {
+  display: inline-flex;
+  vertical-align: middle;
+  margin-left: 0.4rem;
+  padding: 0.35rem;
   color: inherit;
-  text-decoration: none;
+  opacity: 0.35;
+  transition: opacity 0.2s;
+}
+.copyright .acceso-staff svg {
+  width: 13px;
+  height: 13px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
 }
 .copyright .acceso-staff:hover,
 .copyright .acceso-staff:focus-visible {
-  text-decoration: underline;
+  opacity: 1;
 }
 
 /* Reservar: al terminar solo queda el resumen y el aviso de confirmación */
 .confirm-card.reserva-hecha > :not(#confirmSummary):not(#confirmMsg) {
   display: none !important;
+}
+
+/* Disco del logo: gira como tocadiscos al pasar el mouse (o al tocarlo) */
+@keyframes disco-girar {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.disco-gira {
+  border-radius: 50%;
+}
+.disco-gira:hover,
+.logo-link:focus-visible .disco-gira {
+  animation: disco-girar 1.8s linear infinite;
+}
+.disco-cargando {
+  width: 22px;
+  height: 22px;
+  vertical-align: middle;
+  margin-right: 0.5rem;
+  animation: disco-girar 1.2s linear infinite;
+}
+
+/* Botones para agregar la reserva al calendario */
+.agregar-calendario {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem 0.75rem;
+  margin-top: 1rem;
+}
+.agregar-calendario span {
+  width: 100%;
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+.agregar-calendario a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 1rem;
+  border: 1px solid var(--border);
+  color: var(--text-primary) !important;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: background 0.2s, color 0.2s;
+}
+.agregar-calendario a:hover {
+  background: var(--text-primary);
+  color: var(--bg-card) !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .disco-gira:hover,
+  .logo-link:focus-visible .disco-gira,
+  .disco-cargando {
+    animation: none;
+  }
 }

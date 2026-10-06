@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", () => {
     .then((u) => {
       if (!u.usuario) {
         window.location.href =
-          "login.html?next=" + encodeURIComponent("admin.html");
+          "login?next=" + encodeURIComponent("admin");
         return;
       }
       if (u.usuario.rol !== "admin") {
