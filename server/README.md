@@ -51,14 +51,16 @@ Con eso se envían estos avisos:
 - La renta de equipo se reserva por evento: ocupa desde la hora de inicio
   hasta el cierre (23:00).
 
-## 3. Crear el usuario admin inicial
+## 3. Cuenta del staff (admin)
 
-```bash
-npm run seed:admin
-```
+Pon `ADMIN_EMAIL` y `ADMIN_PASSWORD` (mínimo 8 caracteres; opcional
+`ADMIN_NOMBRE`) en las variables de entorno y reinicia el servidor. Al
+arrancar, si ese correo no existe se crea como admin; si ya existe, se le pone
+esa contraseña. Sirve también para recuperar el acceso: cambia
+`ADMIN_PASSWORD` en Render y vuelve a desplegar. Luego entra en `login.html`.
 
-Usa `ADMIN_EMAIL` / `ADMIN_PASSWORD` (definidos en `.env`) para iniciar sesión
-en `admin.html`. Cambia la contraseña o borra el usuario después.
+En local también puedes usar `npm run seed:admin` con los mismos valores en
+`.env`.
 
 ## 4. Levantar el servidor
 

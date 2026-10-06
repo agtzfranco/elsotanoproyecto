@@ -69,12 +69,15 @@ document.addEventListener("DOMContentLoaded", () => {
     if (fE === "bloqueo") rows = rows.filter((r) => r.servicio === "bloqueo");
     else if (fE) rows = rows.filter((r) => r.estado === fE);
 
-    const pend = all.filter(
-      (r) => r.estado === "pendiente" && r.fecha >= hoyISO,
+    const proximas = all.filter(
+      (r) =>
+        r.servicio !== "bloqueo" &&
+        r.estado !== "cancelada" &&
+        r.fecha >= hoyISO,
     ).length;
-    $("statLine").textContent = pend
-      ? `⚠ ${pend} reserva(s) pendiente(s) por confirmar.`
-      : "✔ No hay pendientes.";
+    $("statLine").textContent = proximas
+      ? `${proximas} reserva(s) próxima(s).`
+      : "No hay reservas próximas.";
 
     list.innerHTML = "";
     if (!rows.length) {

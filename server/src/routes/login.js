@@ -6,7 +6,7 @@ import { setSessionCookie } from "../middleware/auth.js";
 const router = Router();
 
 router.post("/", async (req, res) => {
-  const email = String(req.body?.email ?? "").trim();
+  const email = String(req.body?.email ?? "").trim().toLowerCase();
   const password = String(req.body?.password ?? "");
 
   const { data: user, error } = await supabase
