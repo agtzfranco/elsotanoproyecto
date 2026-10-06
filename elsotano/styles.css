@@ -2960,3 +2960,13 @@ html {
 .login-card {
   box-shadow: none;
 }
+
+/* Enlace discreto al panel del staff, junto al © */
+.copyright .acceso-staff {
+  color: inherit;
+  text-decoration: none;
+}
+.copyright .acceso-staff:hover,
+.copyright .acceso-staff:focus-visible {
+  text-decoration: underline;
+}
