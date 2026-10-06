@@ -69,6 +69,14 @@ app.get(/^\/([\w-]+)\.html$/, (req, res) => {
   res.redirect(301, `/${pagina}${consulta}`);
 });
 
+// El panel solo se entrega a una sesión de admin; a los demás los manda al
+// login sin enseñar ni un segundo de la página.
+app.get("/admin", (req, res) => {
+  if (req.usuario?.rol !== "admin") return res.redirect("/login");
+  res.set("Cache-Control", "no-store");
+  res.sendFile(path.join(FRONTEND_DIR, "admin.html"));
+});
+
 // Sirve el sitio estático (antes servido directamente por Apache/XAMPP).
 app.use(express.static(FRONTEND_DIR, { extensions: ["html"] }));
 

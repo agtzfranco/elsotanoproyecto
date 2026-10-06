@@ -20,53 +20,42 @@
               class="logo-img"
             />
           </a>
-          <ul class="nav-links">
-            <li><a href="/#servicios">Servicios</a></li>
-            <li><a href="/#equipo">Equipo</a></li>
-            <li id="user-area"></li>
-          </ul>
-          <button class="mobile-menu-btn" aria-label="Abrir menú">☰</button>
+          <div class="admin-nav">
+            <a href="/" class="admin-ver-sitio">VER SITIO</a>
+            <button id="logoutBtn" class="btn btn-nav">SALIR</button>
+          </div>
         </nav>
       </div>
     </header>
 
     <section id="admin">
       <div class="container">
-        <h2>PANEL <span>ADMINISTRATIVO</span></h2>
-        <p class="section-intro">
-          Revisa, cancela, agrega reservas a mano o bloquea horarios. Las reservas se confirman solas y
-          todo se refleja al instante en el calendario público.
-        </p>
-        <p id="statLine" class="disp-estado"></p>
+        <h2>PANEL</h2>
+        <p id="hoyLinea" class="admin-hoy"></p>
 
-        <div class="admin-bar">
-          <div class="form-group">
-            <label for="filtroFecha">Filtrar por fecha</label>
-            <input type="date" id="filtroFecha" />
-          </div>
-          <div class="form-group">
-            <label for="filtroEstado">Estado</label>
-            <select id="filtroEstado">
-              <option value="">Todas</option>
-              <option value="confirmada">Confirmadas</option>
-              <option value="cancelada">Canceladas</option>
-              <option value="bloqueo">Bloqueos</option>
-            </select>
-          </div>
-          <label class="ver-pasadas">
-            <input type="checkbox" id="verPasadas" /> Mostrar pasadas
-          </label>
-          <button id="btnLimpiarFiltros" class="btn btn-nav">LIMPIAR FILTROS</button>
+        <div class="admin-resumen">
+          <button class="admin-dato" data-rango="hoy">
+            <strong id="numHoy">–</strong><span>Hoy</span>
+          </button>
+          <button class="admin-dato" data-rango="manana">
+            <strong id="numManana">–</strong><span>Mañana</span>
+          </button>
+          <button class="admin-dato" data-rango="semana">
+            <strong id="numSemana">–</strong><span>Próximos 7 días</span>
+          </button>
+          <button class="admin-dato" data-rango="proximas">
+            <strong id="numProximas">–</strong><span>Todas las próximas</span>
+          </button>
         </div>
 
-        <div id="adminMsg" class="disp-estado"></div>
-        <div id="adminList" class="reservas-list"></div>
+        <div class="admin-acciones">
+          <button class="admin-abrir" data-abre="formManual" aria-expanded="false">+ RESERVA MANUAL</button>
+          <button class="admin-abrir" data-abre="formBloqueo" aria-expanded="false">BLOQUEAR HORARIO</button>
+        </div>
 
-        <div class="confirm-card admin-block">
-          <h3 class="step-title">
-            <span class="step-num">+</span> RESERVA MANUAL
-          </h3>
-          <p class="section-intro">
+        <div class="admin-form" id="formManual" hidden>
+          <h3>RESERVA MANUAL</h3>
+          <p class="admin-nota">
             Para quien llega en persona o escribe por Instagram. Se confirma al
             momento y ocupa el horario en el calendario.
           </p>
@@ -116,7 +105,7 @@
               <input type="text" id="manNotas" maxlength="1000" placeholder="Vino por Instagram, paga en efectivo..." />
             </div>
           </div>
-          <p class="disp-estado">
+          <p class="admin-nota">
             Si pones correo, le llega la confirmación con su enlace para ver o
             cancelar.
           </p>
@@ -126,10 +115,12 @@
           <p id="manMsg" class="disp-estado" role="status"></p>
         </div>
 
-        <div class="confirm-card admin-block">
-          <h3 class="step-title">
-            <span class="step-num">!</span> BLOQUEAR HORARIO
-          </h3>
+        <div class="admin-form" id="formBloqueo" hidden>
+          <h3>BLOQUEAR HORARIO</h3>
+          <p class="admin-nota">
+            Cierra ese horario en todos los servicios: nadie lo podrá reservar
+            desde la web.
+          </p>
           <div class="form-row">
             <div class="form-group">
               <label for="blqFecha">Fecha</label>
@@ -137,37 +128,20 @@
             </div>
             <div class="form-group">
               <label for="blqHora">Hora de inicio</label>
-              <select id="blqHora">
-                <option value="11">11:00</option>
-                <option value="12">12:00</option>
-                <option value="13">13:00</option>
-                <option value="14">14:00</option>
-                <option value="15">15:00</option>
-                <option value="16">16:00</option>
-                <option value="17">17:00</option>
-                <option value="18">18:00</option>
-                <option value="19">19:00</option>
-                <option value="20">20:00</option>
-                <option value="21">21:00</option>
-                <option value="22">22:00</option>
-              </select>
+              <select id="blqHora"></select>
             </div>
           </div>
           <div class="form-row">
             <div class="form-group">
               <label for="blqDur">Duración</label>
-              <select id="blqDur">
-                <option value="1" selected>1 hora</option>
-                <option value="2">2 horas</option>
-                <option value="3">3 horas</option>
-                <option value="4">4 horas</option>
-              </select>
+              <select id="blqDur"></select>
             </div>
             <div class="form-group">
               <label for="blqMotivo">Motivo</label>
               <input
                 type="text"
                 id="blqMotivo"
+                maxlength="300"
                 placeholder="Mantenimiento, evento privado..."
               />
             </div>
@@ -175,11 +149,40 @@
           <button id="btnBloquear" class="btn btn-full">
             BLOQUEAR HORARIO
           </button>
+          <p id="blqMsg" class="disp-estado" role="status"></p>
         </div>
+
+        <div class="admin-bar">
+          <div class="form-group admin-buscar">
+            <label for="buscar">Buscar</label>
+            <input type="search" id="buscar" placeholder="Nombre, correo o teléfono" autocomplete="off" />
+          </div>
+          <div class="form-group">
+            <label for="filtroFecha">Día</label>
+            <input type="date" id="filtroFecha" />
+          </div>
+          <div class="form-group">
+            <label for="filtroEstado">Mostrar</label>
+            <select id="filtroEstado">
+              <option value="">Activas</option>
+              <option value="confirmada">Solo reservas</option>
+              <option value="bloqueo">Solo bloqueos</option>
+              <option value="cancelada">Canceladas</option>
+              <option value="todas">Todo</option>
+            </select>
+          </div>
+        </div>
+        <div class="admin-rango">
+          <span id="rangoTexto"></span>
+          <button id="btnPasadas" class="admin-link">Ver pasadas</button>
+          <button id="btnLimpiarFiltros" class="admin-link" hidden>Quitar filtros</button>
+        </div>
+
+        <div id="adminMsg" class="disp-estado" role="status"></div>
+        <div id="adminList" class="admin-lista"></div>
       </div>
     </section>
 
-    <script src="auth.js?v=3"></script>
-    <script src="admin.js?v=4"></script>
+    <script src="admin.js?v=5"></script>
   </body>
 </html>
