@@ -3517,3 +3517,61 @@ h2 {
     animation: none;
   }
 }
+
+/* =========================================
+   AVISO DE PRIVACIDAD
+   ========================================= */
+#privacidad {
+  padding: 4rem 0;
+}
+.aviso {
+  max-width: 760px;
+  margin: 2.5rem auto 0;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border);
+  padding: 2.5rem;
+  font-family: var(--font-body);
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+.aviso h3 {
+  font-size: 1.05rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-primary);
+  margin: 2rem 0 0.6rem;
+}
+.aviso p,
+.aviso ul {
+  margin-bottom: 0.75rem;
+}
+.aviso ul {
+  padding-left: 1.25rem;
+}
+.aviso strong {
+  color: var(--text-primary);
+}
+.aviso a {
+  color: var(--text-primary);
+}
+.aviso-fecha {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.por-llenar {
+  background-color: #d7e5e2; /* menta: marca lo que falta llenar */
+  color: var(--text-primary);
+  padding: 0 0.25rem;
+}
+.form-hint a {
+  color: inherit;
+}
+@media (max-width: 768px) {
+  #privacidad {
+    padding: 2.5rem 0;
+  }
+  .aviso {
+    padding: 1.5rem;
+  }
+}

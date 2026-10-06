@@ -225,6 +225,48 @@ document.addEventListener("DOMContentLoaded", () => {
     render();
   });
 
+  /* ---------- respaldo en Excel ---------- */
+  // Descarga TODAS las reservas (pasadas, futuras y canceladas) en un CSV
+  // que Excel abre directo. Sirve como respaldo fuera de Supabase.
+  $("btnExportar").addEventListener("click", () => {
+    if (!listo) return;
+    const celda = (v) => {
+      let t = String(v ?? "");
+      // Evita que Excel interprete un texto del cliente como fórmula.
+      if (/^[=+\-@]/.test(t)) t = "'" + t;
+      return `"${t.replace(/"/g, '""')}"`;
+    };
+    const hora = (h) => String(h || "").slice(0, 5);
+    const filas = [
+      ["Folio", "Fecha", "Inicio", "Fin", "Horas", "Servicio", "Nombre", "Teléfono", "Correo", "Notas", "Estado"],
+      ...[...all]
+        .sort((a, b) => (a.fecha + a.hora_inicio).localeCompare(b.fecha + b.hora_inicio))
+        .map((r) => [
+          r.id,
+          r.fecha,
+          hora(r.hora_inicio),
+          hora(r.hora_fin),
+          r.duracion_horas,
+          NOMBRES[r.servicio] || r.servicio,
+          r.nombre,
+          r.telefono,
+          r.email,
+          r.mensaje,
+          r.servicio === "bloqueo" ? "bloqueo" : r.estado,
+        ]),
+    ];
+    // El BOM inicial hace que Excel respete acentos y la ñ.
+    const csv = "\ufeff" + filas.map((f) => f.map(celda).join(",")).join("\r\n");
+    const url = URL.createObjectURL(new Blob([csv], { type: "text/csv;charset=utf-8" }));
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `reservas-el-sotano-${hoyISO}.csv`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  });
+
   // Al volver a la pestaña se recarga, por si entró una reserva nueva.
   document.addEventListener("visibilitychange", () => {
     if (!document.hidden && listo) cargar();
