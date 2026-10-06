@@ -3045,3 +3045,294 @@ html {
   cursor: pointer;
   text-decoration: underline;
 }
+
+/* =========================================
+   PANEL DE STAFF (/admin)
+   ========================================= */
+.admin-nav {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+.admin-ver-sitio {
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #111;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+#admin {
+  padding: 2.5rem 0 4rem;
+}
+#admin .container {
+  max-width: 980px;
+}
+#admin h2 {
+  margin-bottom: 0.25rem;
+}
+.admin-hoy {
+  text-align: center;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 0.85rem;
+  margin-bottom: 2rem;
+}
+.admin-resumen {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+.admin-dato {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.2rem;
+  padding: 0.9rem 1rem;
+  background: transparent;
+  border: 1px solid #111;
+  color: #111;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+}
+.admin-dato strong {
+  font-size: 2rem;
+  line-height: 1;
+}
+.admin-dato span {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.admin-dato:hover,
+.admin-dato.activo {
+  background: #111;
+  color: #f2f0e9;
+}
+.admin-acciones {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+.admin-abrir {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  background: #111;
+  color: #f2f0e9;
+  border: 1px solid #111;
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+}
+.admin-abrir:hover,
+.admin-abrir[aria-expanded="true"] {
+  background: #f2f0e9;
+  color: #111;
+}
+.admin-form {
+  border: 1px solid #111;
+  background: #e4e1d6;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+}
+.admin-form[hidden],
+.admin-form .form-row[hidden] {
+  display: none;
+}
+.admin-form h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.4rem;
+}
+.admin-nota {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin-bottom: 1.25rem;
+}
+.admin-form .admin-nota:not(:first-of-type) {
+  margin: 0 0 1rem;
+}
+#admin .admin-bar {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 0.75rem;
+  max-width: none;
+  margin: 0 0 0.75rem;
+}
+#admin .admin-bar .form-group {
+  min-width: 0;
+}
+#admin .admin-bar input,
+#admin .admin-bar select,
+.admin-form input,
+.admin-form select {
+  width: 100%;
+  border-width: 1px;
+}
+.admin-rango {
+  display: flex;
+  align-items: baseline;
+  gap: 1.25rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #111;
+  margin-bottom: 0.5rem;
+}
+.admin-rango span {
+  flex: 1;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 0.85rem;
+}
+.admin-link {
+  background: none;
+  border: none;
+  padding: 0.35rem 0;
+  font: inherit;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  color: #111;
+  cursor: pointer;
+}
+.admin-link[hidden] {
+  display: none;
+}
+.admin-link:disabled {
+  opacity: 0.4;
+  cursor: wait;
+}
+.admin-cancelar {
+  color: var(--error);
+}
+.admin-dia {
+  margin: 1.75rem 0 0.5rem;
+  font-size: 0.9rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.admin-dia::first-letter {
+  text-transform: uppercase;
+}
+.admin-grupo {
+  border: 1px solid #111;
+}
+.admin-row {
+  display: grid;
+  grid-template-columns: 7.5rem 1fr auto;
+  gap: 1.25rem;
+  align-items: start;
+  padding: 1rem 1.25rem;
+  background: rgba(255, 255, 255, 0.35);
+}
+.admin-row + .admin-row {
+  border-top: 1px solid rgba(17, 17, 17, 0.2);
+}
+.admin-hora strong {
+  display: block;
+  font-size: 1.5rem;
+  line-height: 1.1;
+}
+.admin-hora span {
+  display: block;
+}
+.admin-hora span,
+.admin-servicio,
+.admin-contacto,
+.admin-notas {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+.admin-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  min-width: 0;
+}
+.admin-servicio {
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-weight: 700;
+  color: #111;
+}
+.admin-servicio em {
+  font-style: normal;
+  margin-left: 0.4rem;
+  padding: 0.05rem 0.4rem;
+  border: 1px solid var(--error);
+  color: var(--error);
+  font-size: 0.7rem;
+}
+.admin-cliente {
+  font-size: 1.15rem;
+}
+.admin-contacto {
+  overflow-wrap: anywhere;
+}
+.admin-contacto a {
+  color: inherit;
+  text-underline-offset: 2px;
+}
+.admin-notas {
+  font-style: italic;
+}
+.admin-row.es-bloqueo {
+  background: repeating-linear-gradient(
+    -45deg,
+    rgba(17, 17, 17, 0.05) 0 8px,
+    transparent 8px 16px
+  );
+}
+.admin-row.es-cancelada .admin-hora,
+.admin-row.es-cancelada .admin-cliente {
+  text-decoration: line-through;
+  opacity: 0.5;
+}
+.admin-vacio {
+  padding: 2.5rem 0;
+  text-align: center;
+  color: var(--text-secondary);
+}
+@media (max-width: 768px) {
+  .admin-ver-sitio {
+    display: none;
+  }
+  .admin-resumen {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  #admin .admin-bar {
+    grid-template-columns: 1fr 1fr;
+  }
+  #admin .admin-bar .admin-buscar {
+    grid-column: 1 / -1;
+  }
+  .admin-acciones {
+    flex-direction: column;
+  }
+  .admin-row {
+    grid-template-columns: 4.25rem 1fr;
+    gap: 0.75rem;
+    padding: 0.9rem 0.9rem;
+  }
+  .admin-hora strong {
+    font-size: 1.2rem;
+  }
+  .admin-botones {
+    grid-column: 2;
+  }
+  .admin-botones .admin-link {
+    min-height: 44px;
+  }
+  .admin-form {
+    padding: 1.1rem;
+  }
+}
