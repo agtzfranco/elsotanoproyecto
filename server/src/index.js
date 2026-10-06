@@ -13,6 +13,7 @@ import disponibilidadRouter from "./routes/disponibilidad.js";
 import reservarRouter from "./routes/reservar.js";
 import reservasRouter from "./routes/reservas.js";
 import adminRouter from "./routes/admin.js";
+import { asegurarAdmin } from "./lib/adminInicial.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const FRONTEND_DIR = path.resolve(__dirname, "../../elsotano");
@@ -44,3 +45,4 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`El Sótano server escuchando en http://localhost:${PORT}`);
 });
+asegurarAdmin().catch((e) => console.error("Cuenta admin:", e.message));
