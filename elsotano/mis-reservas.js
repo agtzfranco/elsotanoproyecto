@@ -7,7 +7,11 @@ document.addEventListener("DOMContentLoaded", () => {
     equipo: "Renta de Equipo",
   };
   const list = document.getElementById("reservasList");
-  const token = new URLSearchParams(window.location.search).get("token") || "";
+  // Link limpio: /mis-reservas/<token> (antes /mis-reservas?token=...)
+  const token =
+    decodeURIComponent(window.location.pathname.split("/")[2] || "") ||
+    new URLSearchParams(window.location.search).get("token") ||
+    "";
 
   function fechaLarga(iso) {
     const [y, m, d] = iso.split("-").map(Number);
