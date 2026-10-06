@@ -46,6 +46,29 @@ document.addEventListener("DOMContentLoaded", () => {
     imageObserver.observe(el);
   });
 
+  // 5. Menú: marca Servicios o Equipo mientras esa sección está en pantalla
+  const enlacesNav = [...document.querySelectorAll(".nav-links a[href*='#']")];
+  const seccionesNav = enlacesNav
+    .map((a) => document.getElementById(a.hash.slice(1)))
+    .filter(Boolean);
+  if (seccionesNav.length) {
+    const navObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const enlace = enlacesNav.find(
+            (a) => a.hash === "#" + entry.target.id,
+          );
+          if (!enlace) return;
+          enlace.classList.toggle("activo", entry.isIntersecting);
+          if (entry.isIntersecting) enlace.setAttribute("aria-current", "true");
+          else enlace.removeAttribute("aria-current");
+        });
+      },
+      { rootMargin: "-45% 0px -50% 0px" },
+    );
+    seccionesNav.forEach((s) => navObserver.observe(s));
+  }
+
   // 4. Botón fijo RESERVAR en celular: aparece al pasar la portada y se
   // esconde mientras se ven los servicios o el footer.
   const reservarFijo = document.querySelector(".reservar-fijo");

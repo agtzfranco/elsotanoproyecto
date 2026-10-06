@@ -29,7 +29,7 @@
     <header>
       <div class="container">
         <nav>
-          <a href="#" class="logo-link">
+          <a href="#inicio" class="logo-link" aria-label="El Sótano, ir al inicio">
             <!-- Asegúrate de que 'logo.png' sea la ruta correcta a tu archivo -->
             <img
               src="IMG/ElSotano3offblack.png"
@@ -74,11 +74,15 @@
         <div class="nosotros-ilustraciones">
           <img
             src="IMG/ilustracion-sala.jpg"
+                srcset="IMG/ilustracion-sala-m.jpg 900w, IMG/ilustracion-sala.jpg 1800w"
+                sizes="(max-width: 768px) 100vw, 50vw"
             alt="Ilustración de la sala de ensayo de El Sótano"
             loading="lazy"
           />
           <img
             src="IMG/ilustracion-estudio.jpg"
+                srcset="IMG/ilustracion-estudio-m.jpg 900w, IMG/ilustracion-estudio.jpg 1800w"
+                sizes="(max-width: 768px) 100vw, 50vw"
             alt="Ilustración del estudio de fotografía de El Sótano"
             loading="lazy"
           />
@@ -232,6 +236,8 @@
               <span class="galeria-badge">VER FOTOS · 6</span>
               <img
                 src="IMG/5.jpg"
+                srcset="IMG/5-m.jpg 900w, IMG/5.jpg 1800w"
+                sizes="(max-width: 768px) 100vw, 50vw"
                 alt="Sala de ensayo de El Sótano"
                 loading="lazy"
               />
@@ -283,6 +289,8 @@
             <div class="card-img">
               <img
                 src="IMG/estudio-grabacion.jpg"
+                srcset="IMG/estudio-grabacion-m.jpg 900w, IMG/estudio-grabacion.jpg 1800w"
+                sizes="(max-width: 768px) 100vw, 50vw"
                 alt="Estudio de grabación de El Sótano"
                 loading="lazy"
               />
@@ -309,6 +317,8 @@
             <div class="card-img">
               <img
                 src="IMG/4.jpg"
+                srcset="IMG/4-m.jpg 900w, IMG/4.jpg 1800w"
+                sizes="(max-width: 768px) 100vw, 50vw"
                 alt="Producción de podcast en El Sótano"
                 loading="lazy"
               />
@@ -340,6 +350,8 @@
               <span class="galeria-badge">VER FOTOS · 4</span>
               <img
                 src="IMG/fotografia-sombrilla.jpg"
+                srcset="IMG/fotografia-sombrilla-m.jpg 900w, IMG/fotografia-sombrilla.jpg 1800w"
+                sizes="(max-width: 768px) 100vw, 50vw"
                 style="object-position: center 45%"
                 alt="Sombrilla reflectora Godox en el estudio de fotografía de El Sótano"
                 loading="lazy"
@@ -451,7 +463,9 @@
   </div>
   <div class="insta-grid">
     <div class="tile tile-poster"><span>GUÍA RÁPIDA<br>DE EL SÓTANO</span></div>
-    <img class="tile" src="IMG/5.jpg" alt="Ensayo en El Sótano" loading="lazy" />
+    <img class="tile" src="IMG/5.jpg"
+                srcset="IMG/5-m.jpg 900w, IMG/5.jpg 1800w"
+                sizes="(max-width: 768px) 100vw, 50vw" alt="Ensayo en El Sótano" loading="lazy" />
     <img class="tile" src="IMG/sala-ensayo.jpg" alt="Sala de ensayo" loading="lazy" />
     <div class="tile tile-poster invert"><span>¿QUÉ EQUIPO INCLUYE<br>LA SALA DE ENSAYO?</span></div>
     <img class="tile" src="IMG/6.jpg" alt="Banda en vivo" loading="lazy" />
@@ -524,6 +538,6 @@
     <a href="#servicios" class="reservar-fijo" aria-hidden="true" tabindex="-1">RESERVAR</a>
 
     <!-- Enlace al archivo JavaScript externo -->
-    <script src="script.js?v=4"></script>
+    <script src="script.js?v=5"></script>
   </body>
 </html>
