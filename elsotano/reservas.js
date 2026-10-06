@@ -340,6 +340,8 @@ document.addEventListener("DOMContentLoaded", () => {
     $("duracionGroup").style.display = s.porDia ? "none" : "block";
     actualizarDuraciones();
     $("stepConfirm").hidden = false;
+    document.querySelector("#stepConfirm .confirm-card").classList.remove("reserva-hecha");
+    $("confirmTitulo").textContent = "CONFIRMA TU RESERVA";
     $("confirmMsg").textContent = "";
     const reg = window.REGLAMENTOS && window.REGLAMENTOS[s.id];
     $("reglamentoBox").hidden = !reg;
@@ -477,6 +479,9 @@ document.addEventListener("DOMContentLoaded", () => {
           msg.appendChild(link);
           $("mensaje").value = "";
           state.hora = null;
+          // Ya quedó: se esconde el formulario y queda solo el resumen y el aviso.
+          document.querySelector("#stepConfirm .confirm-card").classList.add("reserva-hecha");
+          $("confirmTitulo").textContent = "RESERVA CONFIRMADA";
           cargarSlots();
         } else {
           msg.style.color = "var(--error)";

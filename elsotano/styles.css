@@ -2970,3 +2970,8 @@ html {
 .copyright .acceso-staff:focus-visible {
   text-decoration: underline;
 }
+
+/* Reservar: al terminar solo queda el resumen y el aviso de confirmación */
+.confirm-card.reserva-hecha > :not(#confirmSummary):not(#confirmMsg) {
+  display: none !important;
+}
