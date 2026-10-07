@@ -3854,3 +3854,27 @@ h2 {
 .rental .rental-note {
   border-color: var(--acento-renta);
 }
+
+/* Sala de ensayo: explicación del monitoreo personal (mismo desplegable) */
+.services-grid .card-gear + .card-monitoreo {
+  margin-top: -0.25rem;
+}
+.gear-texto p {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: var(--text-secondary);
+  margin-bottom: 0.9rem;
+}
+.gear-texto strong {
+  color: var(--text-primary);
+}
+.gear-texto h5 {
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-primary);
+  margin: 1.1rem 0 0.35rem;
+}
