@@ -110,7 +110,7 @@ document.addEventListener("DOMContentLoaded", () => {
     $("numSemana").textContent = cuenta(RANGOS.semana.pasa);
     $("numProximas").textContent = cuenta(RANGOS.proximas.pasa);
     document.querySelectorAll(".admin-dato").forEach((b) =>
-      b.classList.toggle("activo", !fF && b.dataset.rango === rango),
+      b.classList.toggle("activo", vista === "lista" && !fF && b.dataset.rango === rango),
     );
 
     let rows = all.filter((r) => (fF ? r.fecha === fF : RANGOS[rango].pasa(r.fecha)));
@@ -213,7 +213,9 @@ document.addEventListener("DOMContentLoaded", () => {
     b.addEventListener("click", () => {
       rango = b.dataset.rango;
       $("filtroFecha").value = "";
-      render();
+      // Desde la vista de semana, los contadores llevan a esa lista.
+      if (vista === "semana") cambiarVista("lista");
+      else render();
     }),
   );
   $("btnPasadas").addEventListener("click", () => {
@@ -331,8 +333,8 @@ document.addEventListener("DOMContentLoaded", () => {
     });
     $("vistaLista").hidden = v !== "lista";
     $("vistaSemana").hidden = v !== "semana";
+    render();
     if (v === "semana") renderSemana();
-    else render();
   }
   document.querySelectorAll(".admin-vista button").forEach((b) =>
     b.addEventListener("click", () => cambiarVista(b.dataset.vista)),
