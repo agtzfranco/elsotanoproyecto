@@ -152,6 +152,12 @@
           <p id="blqMsg" class="disp-estado" role="status"></p>
         </div>
 
+        <div class="admin-vista" role="group" aria-label="Cómo ver las reservas">
+          <button data-vista="lista" class="activo" aria-pressed="true">LISTA</button>
+          <button data-vista="semana" aria-pressed="false">SEMANA</button>
+        </div>
+
+        <div id="vistaLista">
         <div class="admin-bar">
           <div class="form-group admin-buscar">
             <label for="buscar">Buscar</label>
@@ -181,9 +187,23 @@
 
         <div id="adminMsg" class="disp-estado" role="status"></div>
         <div id="adminList" class="admin-lista"></div>
+        </div>
+
+        <div id="vistaSemana" hidden>
+          <div class="semana-nav">
+            <button id="semAnterior" class="semana-flecha" aria-label="Semana anterior">←</button>
+            <strong id="semTitulo"></strong>
+            <button id="semSiguiente" class="semana-flecha" aria-label="Semana siguiente">→</button>
+            <button id="semHoy" class="admin-link">Esta semana</button>
+          </div>
+          <div class="semana-scroll">
+            <div id="semGrid" class="semana-grid"></div>
+          </div>
+          <p class="admin-nota semana-ayuda">Toca una reserva para ver sus datos, moverla o cancelarla.</p>
+        </div>
       </div>
     </section>
 
-    <script src="admin.js?v=6"></script>
+    <script src="admin.js?v=7"></script>
   </body>
 </html>

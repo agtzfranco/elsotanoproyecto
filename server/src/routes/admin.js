@@ -5,8 +5,10 @@ import { avisos, correoConfigurado } from "../lib/correo.js";
 import { urlSitio } from "../lib/tokens.js";
 import { crearReserva } from "../lib/reservaNueva.js";
 import {
+  SERVICIOS,
   HORA_APERTURA,
   HORA_CIERRE,
+  ahoraLocal,
   esFechaValida,
   parseHora,
   parseEntero,
@@ -76,6 +78,73 @@ router.post("/", async (req, res) => {
     const enlace = `${urlSitio(req)}/mis-reservas/${r.token}`;
     if (r.fila.email) avisos.reservaManual(r.fila, enlace);
     return res.json({ ok: true, enlace, correo: Boolean(r.fila.email) && correoConfigurado() });
+  }
+
+  // Cambiar fecha u hora de una reserva. El cliente conserva su mismo enlace
+  // y, si dejó correo, recibe el nuevo horario.
+  if (accion === "mover") {
+    const id = parseEntero(req.body?.id);
+    const fecha = String(req.body?.fecha ?? "");
+    if (!Number.isInteger(id)) {
+      return res.json({ ok: false, error: "Reserva no válida." });
+    }
+    const { data: actual, error: errorLeer } = await supabase
+      .from("reservaciones")
+      .select(CAMPOS)
+      .eq("id", id)
+      .maybeSingle();
+    if (errorLeer) {
+      return res.status(500).json({ ok: false, error: "No se pudo conectar a la base de datos." });
+    }
+    if (!actual || actual.estado === "cancelada" || actual.servicio === "bloqueo") {
+      return res.json({ ok: false, error: "Esa reserva ya no se puede mover. Recarga la página." });
+    }
+    if (!esFechaValida(fecha)) {
+      return res.json({ ok: false, error: "Fecha no válida." });
+    }
+    if (fecha < ahoraLocal().fecha) {
+      return res.json({ ok: false, error: "Esa fecha ya pasó." });
+    }
+    const porDia = SERVICIOS[actual.servicio]?.porDia;
+    const horaNum = porDia ? HORA_APERTURA : parseHora(req.body?.hora);
+    const dur = porDia ? HORA_CIERRE - HORA_APERTURA : parseEntero(req.body?.duracion);
+    if (!Number.isInteger(horaNum) || !Number.isInteger(dur) || dur < 1 ||
+        horaNum < HORA_APERTURA || horaNum + dur > HORA_CIERRE) {
+      return res.json({ ok: false, error: "Fuera del horario 11:00–23:00." });
+    }
+    const nuevo = { fecha, hora_inicio: horaSql(horaNum), hora_fin: horaSql(horaNum + dur), duracion_horas: dur };
+
+    // Mismo criterio que reservar_si_libre: choca con otra reserva activa del
+    // mismo servicio o con un bloqueo del staff (sin contarse a sí misma).
+    const { data: choques, error: errorChoque } = await supabase
+      .from("reservaciones")
+      .select("id")
+      .eq("fecha", fecha)
+      .neq("estado", "cancelada")
+      .neq("id", id)
+      .in("servicio", [actual.servicio, "bloqueo"])
+      .lt("hora_inicio", nuevo.hora_fin)
+      .gt("hora_fin", nuevo.hora_inicio)
+      .limit(1);
+    if (errorChoque) {
+      return res.status(500).json({ ok: false, error: "No se pudo conectar a la base de datos." });
+    }
+    if (choques?.length) {
+      return res.json({ ok: false, error: "Ese horario ya está ocupado o bloqueado. Elige otro." });
+    }
+
+    const { data, error } = await supabase
+      .from("reservaciones")
+      .update(nuevo)
+      .eq("id", id)
+      .neq("estado", "cancelada")
+      .select(CAMPOS);
+    if (error) {
+      return res.status(500).json({ ok: false, error: "No se pudo mover la reserva." });
+    }
+    const r = (data ?? [])[0];
+    if (r && r.email) avisos.reservaMovida(r);
+    return res.json({ ok: Boolean(r), correo: Boolean(r?.email) && correoConfigurado(), error: r ? undefined : "La reserva ya cambió. Recarga la página." });
   }
 
   if (accion === "bloquear") {

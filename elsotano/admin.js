@@ -45,6 +45,7 @@ document.addEventListener("DOMContentLoaded", () => {
         all = data.reservas || [];
         listo = true;
         render();
+        if (vista === "semana") renderSemana();
       })
       .catch(() => (msg.textContent = "No se pudo conectar con el servidor."));
   }
@@ -169,10 +170,15 @@ document.addEventListener("DOMContentLoaded", () => {
         </div>
         <div class="admin-botones">
           ${r.estado === "pendiente" ? `<button class="admin-link" data-accion="confirmar" data-id="${esc(r.id)}">Confirmar</button>` : ""}
+          ${cancelada || esBloqueo ? "" : `<button class="admin-link" data-mover="${esc(r.id)}">Cambiar fecha u hora</button>`}
           ${cancelada ? "" : `<button class="admin-link admin-cancelar" data-accion="cancelar" data-id="${esc(r.id)}">${esBloqueo ? "Quitar bloqueo" : "Cancelar"}</button>`}
         </div>`;
       grupo.appendChild(row);
     });
+
+    list.querySelectorAll("button[data-mover]").forEach((b) =>
+      b.addEventListener("click", () => abrirMover(b)),
+    );
 
     list.querySelectorAll("button[data-accion]").forEach((b) => {
       b.addEventListener("click", () => {
@@ -224,6 +230,220 @@ document.addEventListener("DOMContentLoaded", () => {
     rango = "proximas";
     render();
   });
+
+  /* ---------- vista de semana ---------- */
+  // Cuadrícula lunes a domingo, 11:00 a 23:00, para ver de un vistazo qué
+  // está ocupado y qué está libre. Al tocar una reserva se abre ese día en
+  // la lista, donde están los botones.
+  let vista = "lista";
+  const CORTOS = {
+    "sala-ensayo": "Ensayo",
+    grabacion: "Grabación",
+    podcast: "Podcast",
+    fotografia: "Fotografía",
+    equipo: "Renta de equipo",
+    bloqueo: "Bloqueo",
+  };
+  const iso = (f) =>
+    `${f.getFullYear()}-${String(f.getMonth() + 1).padStart(2, "0")}-${String(f.getDate()).padStart(2, "0")}`;
+  const lunesDe = (f) => new Date(f.getFullYear(), f.getMonth(), f.getDate() - ((f.getDay() + 6) % 7));
+  let semana = lunesDe(d);
+
+  function renderSemana() {
+    const dias = Array.from({ length: 7 }, (_, i) =>
+      new Date(semana.getFullYear(), semana.getMonth(), semana.getDate() + i),
+    );
+    const mes = (f) => f.toLocaleDateString("es-MX", { month: "long" });
+    const ini = dias[0];
+    const fin = dias[6];
+    $("semTitulo").textContent =
+      mes(ini) === mes(fin)
+        ? `${ini.getDate()} – ${fin.getDate()} de ${mes(fin)}`
+        : `${ini.getDate()} de ${mes(ini)} – ${fin.getDate()} de ${mes(fin)}`;
+    $("semHoy").hidden = iso(semana) === iso(lunesDe(d));
+
+    const grid = $("semGrid");
+    let html = `<div class="sem-esquina"></div>`;
+    dias.forEach((f) => {
+      const hoy = iso(f) === hoyISO;
+      html += `<div class="sem-dia${hoy ? " es-hoy" : ""}"><span>${f.toLocaleDateString("es-MX", { weekday: "short" }).replace(".", "")}</span><strong>${f.getDate()}</strong></div>`;
+    });
+
+    // Fila de "todo el día" para la renta de equipo.
+    html += `<div class="sem-hora sem-hora-dia">Día</div>`;
+    dias.forEach((f) => {
+      const enDia = all.filter((r) => r.fecha === iso(f) && r.servicio === "equipo" && r.estado !== "cancelada");
+      html += `<div class="sem-todo-dia">${enDia
+        .map((r) => `<button class="sem-evento sem-chip" data-fecha="${esc(r.fecha)}" title="${esc(r.nombre)}">${esc(CORTOS.equipo)} · ${esc(r.nombre)}</button>`)
+        .join("")}</div>`;
+    });
+
+    html += `<div class="sem-horas">${Array.from({ length: 12 }, (_, i) => `<span>${11 + i}:00</span>`).join("")}</div>`;
+    dias.forEach((f) => {
+      const fecha = iso(f);
+      const eventos = all
+        .filter((r) => r.fecha === fecha && r.servicio !== "equipo" && r.estado !== "cancelada")
+        .map((r) => ({ r, a: parseInt(r.hora_inicio, 10), b: parseInt(r.hora_fin, 10) }))
+        .sort((x, y) => x.a - y.a || y.b - x.b);
+      // Reservas a la misma hora (servicios distintos) van lado a lado.
+      const carriles = [];
+      eventos.forEach((e) => {
+        let c = carriles.findIndex((fin) => fin <= e.a);
+        if (c === -1) c = carriles.push(0) - 1;
+        carriles[c] = e.b;
+        e.carril = c;
+      });
+      const n = Math.max(1, carriles.length);
+      html += `<div class="sem-col${fecha === hoyISO ? " es-hoy" : ""}${fecha < hoyISO ? " es-pasado" : ""}">${eventos
+        .map(({ r, a, b, carril }) => {
+          const bloqueo = r.servicio === "bloqueo";
+          return `<button class="sem-evento${bloqueo ? " es-bloqueo" : ""}" data-fecha="${esc(r.fecha)}"
+            style="top:calc(${a - 11} * var(--sem-h));height:calc(${b - a} * var(--sem-h) - 3px);left:calc(${carril} * 100% / ${n});width:calc(100% / ${n} - 3px)">
+            <span>${esc(r.hora_inicio.slice(0, 5))}–${esc(r.hora_fin.slice(0, 5))}</span>
+            <strong>${esc(CORTOS[r.servicio] || r.servicio)}</strong>
+            ${bloqueo ? (r.mensaje ? `<em>${esc(r.mensaje)}</em>` : "") : `<em>${esc(r.nombre)}</em>`}
+          </button>`;
+        })
+        .join("")}</div>`;
+    });
+    grid.innerHTML = html;
+    // En celular la semana no cabe: se abre ya desplazada hasta hoy.
+    const colHoy = grid.querySelector(".sem-dia.es-hoy");
+    const caja = grid.parentElement;
+    caja.scrollLeft = colHoy ? colHoy.offsetLeft - grid.querySelector(".sem-esquina").offsetWidth : 0;
+
+    grid.querySelectorAll(".sem-evento").forEach((b) =>
+      b.addEventListener("click", () => {
+        $("filtroFecha").value = b.dataset.fecha;
+        $("filtroEstado").value = "";
+        $("buscar").value = "";
+        cambiarVista("lista");
+      }),
+    );
+  }
+
+  function cambiarVista(v) {
+    vista = v;
+    document.querySelectorAll(".admin-vista button").forEach((b) => {
+      const activo = b.dataset.vista === v;
+      b.classList.toggle("activo", activo);
+      b.setAttribute("aria-pressed", String(activo));
+    });
+    $("vistaLista").hidden = v !== "lista";
+    $("vistaSemana").hidden = v !== "semana";
+    if (v === "semana") renderSemana();
+    else render();
+  }
+  document.querySelectorAll(".admin-vista button").forEach((b) =>
+    b.addEventListener("click", () => cambiarVista(b.dataset.vista)),
+  );
+  $("semAnterior").addEventListener("click", () => {
+    semana = new Date(semana.getFullYear(), semana.getMonth(), semana.getDate() - 7);
+    renderSemana();
+  });
+  $("semSiguiente").addEventListener("click", () => {
+    semana = new Date(semana.getFullYear(), semana.getMonth(), semana.getDate() + 7);
+    renderSemana();
+  });
+  $("semHoy").addEventListener("click", () => {
+    semana = lunesDe(d);
+    renderSemana();
+  });
+
+  /* ---------- cambiar fecha u hora ---------- */
+  // Abre, dentro de la misma fila, un mini formulario con la reserva actual
+  // ya seleccionada. Al guardar, el servidor revisa que el nuevo horario
+  // esté libre y le avisa al cliente.
+  function abrirMover(boton) {
+    const fila = boton.closest(".admin-row");
+    const abierto = fila.querySelector(".admin-mover");
+    document.querySelectorAll(".admin-mover").forEach((f) => f.remove());
+    if (abierto) return;
+    const r = all.find((x) => String(x.id) === boton.dataset.mover);
+    if (!r) return;
+    const porDia = r.servicio === "equipo";
+    const ini = parseInt(r.hora_inicio, 10);
+    const caja = document.createElement("div");
+    caja.className = "admin-mover";
+    caja.innerHTML = `
+      <div class="form-group">
+        <label>Nueva fecha</label>
+        <input type="date" class="mv-fecha" min="${hoyISO}" value="${esc(r.fecha)}" />
+      </div>
+      ${porDia ? "" : `
+      <div class="form-group">
+        <label>Hora de inicio</label>
+        <select class="mv-hora"></select>
+      </div>
+      <div class="form-group">
+        <label>Duración</label>
+        <select class="mv-dur"></select>
+      </div>`}
+      <div class="admin-mover-botones">
+        <button class="btn mv-guardar">GUARDAR CAMBIO</button>
+        <button class="admin-link mv-cerrar">Cerrar</button>
+      </div>
+      <p class="disp-estado mv-msg" role="status"></p>`;
+    fila.appendChild(caja);
+
+    const selHora = caja.querySelector(".mv-hora");
+    const selDur = caja.querySelector(".mv-dur");
+    if (selHora) {
+      for (let h = 11; h < 23; h++) selHora.add(new Option(`${h}:00`, h));
+      selHora.value = String(ini);
+      const duraciones = (previa) => {
+        const inicio = Number(selHora.value);
+        selDur.innerHTML = "";
+        for (let n = 1; inicio + n <= 23; n++) {
+          selDur.add(new Option(`${n} hora${n > 1 ? "s" : ""} (hasta ${inicio + n}:00)`, n));
+        }
+        selDur.value = String(Math.min(previa, 23 - inicio));
+      };
+      duraciones(Number(r.duracion_horas) || 1);
+      selHora.addEventListener("change", () => duraciones(Number(selDur.value) || 1));
+    }
+
+    caja.querySelector(".mv-cerrar").addEventListener("click", () => caja.remove());
+    caja.querySelector(".mv-guardar").addEventListener("click", () => {
+      const guardar = caja.querySelector(".mv-guardar");
+      const aviso = caja.querySelector(".mv-msg");
+      const fecha = caja.querySelector(".mv-fecha").value;
+      if (!fecha) {
+        aviso.textContent = "Elige la nueva fecha.";
+        return;
+      }
+      guardar.disabled = true;
+      aviso.textContent = "Guardando…";
+      fetch("/api/admin", {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          accion: "mover",
+          id: r.id,
+          fecha,
+          hora: selHora ? selHora.value : 11,
+          duracion: selDur ? selDur.value : 12,
+        }),
+      })
+        .then((x) => x.json())
+        .then((d) => {
+          if (!d.ok) {
+            guardar.disabled = false;
+            aviso.textContent = d.error || "No se pudo mover la reserva.";
+            return;
+          }
+          msg.textContent = d.correo
+            ? `✓ Reserva de ${r.nombre} movida. Le avisamos por correo.`
+            : `✓ Reserva de ${r.nombre} movida.`;
+          cargar();
+        })
+        .catch(() => {
+          guardar.disabled = false;
+          aviso.textContent = "No se pudo conectar con el servidor.";
+        });
+    });
+  }
 
   /* ---------- respaldo en Excel ---------- */
   // Descarga TODAS las reservas (pasadas, futuras y canceladas) en un CSV
