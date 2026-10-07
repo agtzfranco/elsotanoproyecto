@@ -47,7 +47,7 @@ Con eso se envían estos avisos:
 - Cada reserva recibe un enlace secreto (`/mis-reservas?token=...`) que
   llega por correo y también se muestra al terminar de reservar. Con él se
   consulta o cancela la reserva mientras no haya empezado.
-- Solo el staff inicia sesión (`/login`) para entrar a `/admin`.
+- Solo el staff (rol admin) inicia sesión, en una ruta secreta, para entrar a `/admin`.
 - La renta de equipo se reserva por evento: ocupa desde la hora de inicio
   hasta el cierre (23:00).
 
@@ -57,7 +57,13 @@ Pon `ADMIN_EMAIL` y `ADMIN_PASSWORD` (mínimo 8 caracteres; opcional
 `ADMIN_NOMBRE`) en las variables de entorno y reinicia el servidor. Al
 arrancar, si ese correo no existe se crea como admin; si ya existe, se le pone
 esa contraseña. Sirve también para recuperar el acceso: cambia
-`ADMIN_PASSWORD` en Render y vuelve a desplegar. Luego entra en `/login`.
+`ADMIN_PASSWORD` en Render y vuelve a desplegar.
+
+El login no está en `/login`: vive en la ruta que pongas en `STAFF_PATH`
+(mínimo 12 letras, números, `-` o `_`), p. ej. `https://<sitio>/<STAFF_PATH>`.
+`/login` y `/admin` responden 404 a quien no tenga sesión de staff. Sin
+`STAFF_PATH` el login está apagado. Tras 5 intentos fallidos desde una misma
+conexión (o 10 con el mismo correo) se bloquea 15 minutos.
 
 En local también puedes usar `npm run seed:admin` con los mismos valores en
 `.env`.

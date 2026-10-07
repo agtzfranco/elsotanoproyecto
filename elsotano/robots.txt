@@ -1,5 +1,4 @@
 User-agent: *
 Disallow: /admin
-Disallow: /login
 Disallow: /mis-reservas
 Sitemap: https://elsotano.onrender.com/sitemap.xml

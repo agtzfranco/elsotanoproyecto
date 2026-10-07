@@ -27,8 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
     .then((r) => r.json())
     .then((u) => {
       if (!u.usuario) {
-        window.location.href =
-          "login";
+        window.location.href = "/";
         return;
       }
       if (u.usuario.rol !== "admin") {

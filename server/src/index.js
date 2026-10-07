@@ -61,6 +61,35 @@ app.get("/mis-reservas/:token", (req, res) => {
   res.sendFile(path.join(FRONTEND_DIR, "mis-reservas.html"));
 });
 
+// El login del staff vive en una ruta secreta (variable STAFF_PATH en Render).
+// /login, /login.html y /admin responden 404 a quien no tenga sesión, como si
+// no existieran. Sin STAFF_PATH válida el login no se sirve en ninguna ruta.
+const STAFF_PATH = String(process.env.STAFF_PATH ?? "").trim().replace(/^\/+|\/+$/g, "");
+const staffPathValida = /^[A-Za-z0-9_-]{12,}$/.test(STAFF_PATH);
+if (!staffPathValida) {
+  console.warn("STAFF_PATH falta o es muy corta (mínimo 12 letras/números): el login del staff está apagado.");
+}
+// Misma respuesta que cualquier dirección que no existe.
+function noExiste(_req, res) {
+  res.status(404).type("text").send("Not Found");
+}
+app.get(["/login", "/login.html"], noExiste);
+if (staffPathValida) {
+  app.get(`/${STAFF_PATH}`, (_req, res) => {
+    res.set("Cache-Control", "no-store");
+    res.set("X-Robots-Tag", "noindex, nofollow");
+    res.set("Referrer-Policy", "no-referrer");
+    res.sendFile(path.join(FRONTEND_DIR, "login.html"));
+  });
+}
+
+// El panel solo se entrega a una sesión de admin; a los demás, 404.
+app.get(["/admin", "/admin.html"], (req, res) => {
+  if (req.usuario?.rol !== "admin") return noExiste(req, res);
+  res.set("Cache-Control", "no-store");
+  res.sendFile(path.join(FRONTEND_DIR, "admin.html"));
+});
+
 // Links limpios: /reservas en vez de /reservas.html. Los links viejos
 // (correos ya enviados, favoritos) se redirigen a la versión sin .html.
 app.get(/^\/([\w-]+)\.html$/, (req, res) => {
@@ -69,16 +98,9 @@ app.get(/^\/([\w-]+)\.html$/, (req, res) => {
   res.redirect(301, `/${pagina}${consulta}`);
 });
 
-// El panel solo se entrega a una sesión de admin; a los demás los manda al
-// login sin enseñar ni un segundo de la página.
-app.get("/admin", (req, res) => {
-  if (req.usuario?.rol !== "admin") return res.redirect("/login");
-  res.set("Cache-Control", "no-store");
-  res.sendFile(path.join(FRONTEND_DIR, "admin.html"));
-});
-
 // Sirve el sitio estático (antes servido directamente por Apache/XAMPP).
 app.use(express.static(FRONTEND_DIR, { extensions: ["html"] }));
+app.use(noExiste);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

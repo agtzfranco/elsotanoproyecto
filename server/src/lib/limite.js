@@ -12,12 +12,13 @@ export function crearLimite({ maximo, ventanaMs }) {
   }
 
   return {
-    excedido(req) {
-      return vigentes(req.ip, Date.now()).length >= maximo;
+    // clave: por defecto la IP; se puede contar por otra cosa (p. ej. correo).
+    excedido(req, clave = req.ip) {
+      return vigentes(clave, Date.now()).length >= maximo;
     },
-    registrar(req) {
+    registrar(req, clave = req.ip) {
       const ahora = Date.now();
-      registros.set(req.ip, [...vigentes(req.ip, ahora), ahora]);
+      registros.set(clave, [...vigentes(clave, ahora), ahora]);
       if (registros.size > 5000) {
         for (const ip of registros.keys()) vigentes(ip, ahora);
       }
