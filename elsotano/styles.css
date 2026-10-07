@@ -2370,6 +2370,11 @@ header {
 .logo-img {
   height: 76px;
 }
+/* Logo de letras (reservas): mismo ancho que el logo de inicio (70px) */
+.logo-img.logo-escalera {
+  width: 70px;
+  height: auto;
+}
 
 /* Renta de equipo por día: un solo botón de día completo */
 .slot.slot-dia {
