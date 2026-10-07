@@ -1984,7 +1984,7 @@ p,
 
 /* Renta de equipo: recuadro con textura negra (como la guía impresa) */
 .rental {
-  background: #111 url("IMG/textura-negra.jpg") center / 400px auto repeat;
+  background: #111 url("IMG/textura-negra.webp") center / 400px auto repeat;
   color: #f2f0e9;
   padding: 2.5rem;
   border: 2px solid var(--text-primary);
@@ -2314,7 +2314,7 @@ h6,
 
 /* Sobre nosotros: recuadro con textura de manchas detrás de ilustraciones y mapa */
 .nosotros-panel {
-  background: #111 url("IMG/textura-manchas.jpg") center / cover no-repeat;
+  background: #111 url("IMG/textura-manchas.webp") center / cover no-repeat;
   border: 2px solid var(--text-primary);
   padding: 2.5rem;
   margin: 3rem 0 4rem;
@@ -2341,7 +2341,7 @@ h6,
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 2rem;
   padding: 2.25rem;
-  background: #000 url("IMG/textura-servicios.jpg") center / cover no-repeat;
+  background: #000 url("IMG/textura-servicios.webp") center / cover no-repeat;
   border: 2px solid var(--text-primary);
 }
 .services-grid .service-card {
@@ -2429,7 +2429,7 @@ h2 {
   padding: 3rem 1.5rem;
   background:
     linear-gradient(rgba(237, 235, 228, 0.72), rgba(237, 235, 228, 0.82)),
-    url("IMG/hero-cables.jpg") center / cover no-repeat;
+    url("IMG/hero-cables.webp") center / cover no-repeat;
 }
 .hero-content h1 { font-size: clamp(2.25rem, 5.5vw, 4rem); margin-bottom: 1rem; }
 
@@ -2729,12 +2729,12 @@ header {
 .hero {
   background:
     linear-gradient(rgba(242, 240, 233, 0.72), rgba(242, 240, 233, 0.82)),
-    url("IMG/hero-cables.jpg") center / cover no-repeat;
+    url("IMG/hero-cables.webp") center / cover no-repeat;
 }
 
 /* Reservas: ilustración de la sala de ensayo de fondo, tenue */
 #booking {
-  background: url("IMG/fondo-reservas.png") center 4rem / min(1300px, 140%) auto no-repeat;
+  background: url("IMG/fondo-reservas.webp") center 4rem / min(1300px, 140%) auto no-repeat;
   min-height: calc(100vh - 100px);
 }
 #booking .booking-calendar-wrap,
@@ -2786,7 +2786,7 @@ header {
   inset: 0;
   z-index: -1;
   pointer-events: none;
-  background: url("IMG/fondo-reservas.png") center / cover no-repeat;
+  background: url("IMG/fondo-reservas.webp") center / cover no-repeat;
 }
 
 /* Footer: menos espacio entre los enlaces y el © */
@@ -2905,7 +2905,7 @@ html {
     background-image: url("IMG/textura-manchas-m.jpg");
   }
   .services-grid {
-    background-image: url("IMG/textura-servicios-m.jpg");
+    background-image: url("IMG/textura-servicios-m.webp");
   }
   .hero {
     background:
@@ -3574,4 +3574,257 @@ h2 {
   .aviso {
     padding: 1.5rem;
   }
+}
+
+/* =========================================
+   PANEL: CAMBIAR FECHA U HORA Y VISTA DE SEMANA
+   ========================================= */
+.admin-mover {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+  padding: 1rem;
+  background: #e4e1d6;
+  border: 1px solid #111;
+}
+.admin-mover .form-group {
+  min-width: 0;
+  margin: 0;
+}
+.admin-mover input,
+.admin-mover select {
+  width: 100%;
+  border-width: 1px;
+}
+.admin-mover-botones {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+.admin-mover .mv-msg {
+  grid-column: 1 / -1;
+  margin: 0;
+}
+.admin-mover .mv-msg:empty {
+  display: none;
+}
+#vistaLista[hidden],
+#vistaSemana[hidden] {
+  display: none;
+}
+.admin-vista {
+  display: inline-flex;
+  border: 1px solid #111;
+  margin-bottom: 1.25rem;
+}
+.admin-vista button {
+  padding: 0.55rem 1.25rem;
+  background: transparent;
+  border: none;
+  font: inherit;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #111;
+  cursor: pointer;
+}
+.admin-vista button + button {
+  border-left: 1px solid #111;
+}
+.admin-vista button.activo {
+  background: var(--carbon, #282828);
+  color: #f2f0e9;
+}
+.semana-nav {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+.semana-nav strong {
+  min-width: 13rem;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 0.9rem;
+}
+.semana-flecha {
+  width: 2.75rem;
+  height: 2.75rem;
+  background: transparent;
+  border: 1px solid #111;
+  font: inherit;
+  font-size: 1.1rem;
+  color: #111;
+  cursor: pointer;
+}
+.semana-flecha:hover {
+  background: var(--menta, #d7e5e2);
+}
+.semana-scroll {
+  overflow-x: auto;
+  border: 1px solid #111;
+}
+.semana-grid {
+  --sem-h: 3rem;
+  display: grid;
+  grid-template-columns: 3.5rem repeat(7, minmax(6.5rem, 1fr));
+  min-width: 52rem;
+  background: rgba(255, 255, 255, 0.35);
+}
+.sem-esquina,
+.sem-dia {
+  border-bottom: 1px solid #111;
+  padding: 0.5rem 0.25rem;
+}
+.sem-dia {
+  text-align: center;
+  border-left: 1px solid rgba(17, 17, 17, 0.2);
+}
+.sem-dia span {
+  display: block;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-secondary);
+}
+.sem-dia strong {
+  font-size: 1.25rem;
+}
+.sem-dia.es-hoy strong {
+  display: inline-block;
+  min-width: 2rem;
+  background: var(--carbon, #282828);
+  color: #f2f0e9;
+}
+.sem-hora-dia,
+.sem-todo-dia {
+  border-bottom: 1px solid rgba(17, 17, 17, 0.2);
+  min-height: 2.25rem;
+}
+.sem-hora-dia {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  padding: 0.6rem 0.4rem;
+}
+.sem-todo-dia {
+  border-left: 1px solid rgba(17, 17, 17, 0.2);
+  padding: 3px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.sem-horas span {
+  display: block;
+  height: var(--sem-h);
+  padding: 0.15rem 0.4rem;
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+}
+.sem-col {
+  position: relative;
+  height: calc(12 * var(--sem-h));
+  border-left: 1px solid rgba(17, 17, 17, 0.2);
+  background-image: linear-gradient(rgba(17, 17, 17, 0.12) 1px, transparent 1px);
+  background-size: 100% var(--sem-h);
+}
+.sem-col.es-hoy {
+  background-color: rgba(215, 229, 226, 0.45);
+}
+.sem-col.es-pasado {
+  opacity: 0.55;
+}
+.sem-evento {
+  position: absolute;
+  margin: 1.5px;
+  padding: 0.25rem 0.4rem;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.05rem;
+  background: var(--carbon, #282828);
+  color: #f2f0e9;
+  border: none;
+  font: inherit;
+  font-size: 0.72rem;
+  line-height: 1.2;
+  text-align: left;
+  cursor: pointer;
+}
+.sem-evento span {
+  opacity: 0.8;
+}
+.sem-evento strong {
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.sem-evento em {
+  font-style: normal;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+.sem-evento:hover {
+  background: #000;
+}
+.sem-evento.es-bloqueo {
+  color: #111;
+  border: 1px solid #111;
+  background: repeating-linear-gradient(-45deg, rgba(17, 17, 17, 0.12) 0 6px, #f2f0e9 6px 12px);
+}
+.sem-chip {
+  position: static;
+  margin: 0;
+  width: 100%;
+  display: block;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.semana-ayuda {
+  margin-top: 0.75rem;
+}
+@media (max-width: 768px) {
+  .admin-mover {
+    grid-template-columns: 1fr 1fr;
+  }
+  .admin-mover .form-group:first-child {
+    grid-column: 1 / -1;
+  }
+  .admin-vista {
+    display: flex;
+  }
+  .admin-vista button {
+    flex: 1;
+    min-height: 44px;
+  }
+  .semana-nav {
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+  .semana-nav strong {
+    min-width: 0;
+    flex: 1;
+  }
+}
+.sem-evento span,
+.sem-evento strong {
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+/* La columna de horas se queda fija al desplazar la semana en celular */
+.sem-esquina,
+.sem-hora-dia,
+.sem-horas {
+  position: sticky;
+  left: 0;
+  z-index: 2;
+  background: #efede6;
+  border-right: 1px solid rgba(17, 17, 17, 0.2);
 }

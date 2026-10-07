@@ -112,6 +112,13 @@ export const avisos = {
       html: plantilla(`Hola, ${r.nombre}`, `<p>El staff canceló esta reserva. Si tienes dudas, contáctanos para reprogramarla.</p>${detalleReserva({ ...r, nombre: "", telefono: "", email: "", mensaje: "" })}`),
     });
   },
+  reservaMovida(r) {
+    enviarCorreo({
+      para: r.email,
+      asunto: "Cambió el horario de tu reserva en El Sótano",
+      html: plantilla(`Hola, ${r.nombre}`, `<p>Tu reserva cambió de fecha u hora. Este es el nuevo horario:</p>${detalleReserva({ ...r, nombre: "", telefono: "", email: "", mensaje: "" })}<p>El enlace de tu primer correo sigue sirviendo para ver o cancelar tu reserva.</p>`),
+    });
+  },
   reservaCanceladaPorCliente(r) {
     enviarCorreo({
       para: process.env.CORREO_STAFF,
