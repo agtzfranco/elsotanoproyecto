@@ -3856,7 +3856,8 @@ h2 {
 }
 
 /* Sala de ensayo: explicación del monitoreo personal (mismo desplegable) */
-.services-grid .card-gear + .card-monitoreo {
+.services-grid .card-gear + .card-monitoreo,
+.services-grid .card-gear + .card-extras {
   margin-top: -0.25rem;
 }
 .gear-texto p {
@@ -3890,4 +3891,9 @@ h2 {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+.gear-texto a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 2px;
 }
