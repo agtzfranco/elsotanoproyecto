@@ -3839,3 +3839,18 @@ h2 {
     display: none;
   }
 }
+
+/* Renta de equipo: títulos, cantidades y recuadros en crema de la paleta */
+.rental {
+  --acento-renta: var(--crema, #fbfbe8);
+}
+.rental .rental-box h3,
+.rental .rental-box h4,
+.rental .rental-list b {
+  color: var(--acento-renta);
+}
+.rental .rental-photo,
+.rental .rental-box,
+.rental .rental-note {
+  border-color: var(--acento-renta);
+}
