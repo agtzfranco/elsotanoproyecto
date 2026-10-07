@@ -92,7 +92,7 @@ export const avisos = {
       asunto: "Tu reserva en El Sótano está confirmada",
       html: plantilla(
         `Hola, ${r.nombre}`,
-        `<p>Tu reserva quedó confirmada. Te esperamos.</p>${detalleReserva({ ...r, nombre: "", telefono: "", email: "" })}
+        `<p>Ya quedó tu reserva. Nos vemos en El Sótano.</p>${detalleReserva({ ...r, nombre: "", telefono: "", email: "" })}
 <p><a href="${escaparHtml(enlace)}" style="display:inline-block;padding:10px 18px;background:#111;color:#fff;text-decoration:none">Ver o cancelar mi reserva</a></p>
 <p style="color:#666;font-size:13px">Guarda este correo: el enlace es la única forma de consultar o cancelar tu reserva en línea.</p>`,
       ),
@@ -102,7 +102,7 @@ export const avisos = {
     enviarCorreo({
       para: r.email,
       asunto: "Tu reserva en El Sótano está confirmada",
-      html: plantilla(`¡Listo, ${r.nombre}!`, `<p>Tu reserva quedó confirmada. Te esperamos.</p>${detalleReserva({ ...r, nombre: "", telefono: "", email: "", mensaje: "" })}`),
+      html: plantilla(`¡Listo, ${r.nombre}!`, `<p>Ya quedó tu reserva. Nos vemos en El Sótano.</p>${detalleReserva({ ...r, nombre: "", telefono: "", email: "", mensaje: "" })}`),
     });
   },
   reservaCanceladaPorStaff(r) {

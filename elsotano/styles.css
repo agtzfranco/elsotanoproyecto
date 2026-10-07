@@ -3878,3 +3878,16 @@ h2 {
   color: var(--text-primary);
   margin: 1.1rem 0 0.35rem;
 }
+
+/* Renta de equipo: foto principal real */
+.rental .rental-photo-foto {
+  display: block;
+  padding: 0;
+  overflow: hidden;
+}
+.rental .rental-photo-foto img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
