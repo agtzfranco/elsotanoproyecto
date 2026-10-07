@@ -3884,3 +3884,30 @@ h2 {
   text-decoration: underline;
   text-underline-offset: 2px;
 }
+
+/* =========================================
+   CALENDARIO: HOVER EN TONOS MENTA
+   Tonos derivados de la menta de la marca, un poco más vivos y oscuros,
+   con el texto en carbón. El día y la hora elegidos siguen en negro.
+   ========================================= */
+:root {
+  --menta-viva: #a9cec6;
+  --menta-honda: #93c2b8;
+  --menta-tinta: #4f8379;
+}
+.cal-day:hover:not(:disabled):not(.selected) {
+  background: var(--menta-viva);
+  color: var(--carbon);
+}
+.slots-panel .slot.libre:hover:not(.elegido) {
+  background: var(--menta-honda);
+  border-color: var(--menta-tinta);
+  color: var(--carbon);
+}
+.cal-day,
+.slots-panel .slot {
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+}
