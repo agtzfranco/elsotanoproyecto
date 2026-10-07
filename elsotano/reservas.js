@@ -19,21 +19,12 @@ document.addEventListener("DOMContentLoaded", () => {
       nota: "Ej. qué quieres grabar y cuántas canciones",
     },
     {
-      id: "podcast",
-      nombre: "Producción de Podcast",
-      img: "IMG/3.jpg",
-      precio: 800,
-      precioLabel: "Desde $800 <span>MXN / hora</span>",
-      desc: "Audio o audio + video con microfonía profesional.",
-      nota: "Ej. solo audio o audio + video",
-    },
-    {
       id: "fotografia",
-      nombre: "Sesiones de Fotografía",
+      nombre: "Renta de Estudio Fotográfico",
       img: "IMG/fotografiaelsotano.jpg",
       precio: 350,
       precioLabel: "$350 <span>MXN / hora</span>",
-      desc: "Fondos intercambiables e iluminación profesional.",
+      desc: "Estudio con fondos intercambiables e iluminación profesional.",
       nota: "Ej. tipo de sesión y fondo que te gustaría",
     },
     {
