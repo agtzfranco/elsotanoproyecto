@@ -3839,3 +3839,18 @@ h2 {
     display: none;
   }
 }
+
+/* Renta de equipo: acento salmón sobre la textura negra */
+.rental {
+  --salmon: #e9967a;
+}
+.rental .rental-box h3,
+.rental .rental-box h4,
+.rental .rental-list b {
+  color: var(--salmon);
+}
+.rental .rental-photo,
+.rental .rental-box,
+.rental .rental-note {
+  border-color: var(--salmon);
+}
