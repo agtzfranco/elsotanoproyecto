@@ -161,11 +161,11 @@ document.addEventListener("DOMContentLoaded", () => {
     window.scrollTo(0, 0); // la página abre arriba: título + calendario
   } else {
     // Sin servicio elegido: el cliente elige en la página de inicio
-    window.location.replace("/#servicios");
+    window.location.replace("/servicios");
   }
 
   btnCambiar.addEventListener("click", () => {
-    window.location.href = "/#servicios";
+    window.location.href = "/servicios";
   });
 
   /* ---------- PASO 2: calendario ---------- */

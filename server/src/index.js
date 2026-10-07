@@ -49,7 +49,7 @@ app.get("/reservas", (req, res, next) => {
   res.redirect(301, `/reservas/${encodeURIComponent(String(servicio))}`);
 });
 app.get("/reservas/:servicio", (req, res) => {
-  if (!SERVICIOS[req.params.servicio]) return res.redirect("/#servicios");
+  if (!SERVICIOS[req.params.servicio]) return res.redirect("/servicios");
   res.sendFile(path.join(FRONTEND_DIR, "reservas.html"));
 });
 app.get("/mis-reservas", (req, res, next) => {
@@ -59,6 +59,11 @@ app.get("/mis-reservas", (req, res, next) => {
 });
 app.get("/mis-reservas/:token", (req, res) => {
   res.sendFile(path.join(FRONTEND_DIR, "mis-reservas.html"));
+});
+
+// Secciones de la página de inicio con link limpio: /servicios y /equipo.
+app.get(["/servicios", "/equipo"], (_req, res) => {
+  res.sendFile(path.join(FRONTEND_DIR, "index.html"));
 });
 
 // El login del staff vive en una ruta secreta (variable STAFF_PATH en Render).
