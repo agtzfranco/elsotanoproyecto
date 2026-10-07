@@ -146,3 +146,40 @@ document.addEventListener("DOMContentLoaded", () => {
     inicioX = null;
   });
 });
+
+// 4. Links limpios para las secciones: /servicios y /equipo en vez de /#servicios.
+// Los enlaces siguen con href="#..." (funcionan sin JS); aquí se cambia la
+// dirección que se ve en el navegador y se baja a la sección.
+document.addEventListener("DOMContentLoaded", () => {
+  const SECCIONES = ["servicios", "equipo"];
+  const irA = (id, suave) => {
+    const destino = SECCIONES.includes(id) && document.getElementById(id);
+    if (destino) destino.scrollIntoView({ behavior: suave ? "smooth" : "auto" });
+    else window.scrollTo({ top: 0, behavior: suave ? "smooth" : "auto" });
+  };
+  const rutaDe = (id) => (SECCIONES.includes(id) ? `/${id}` : "/");
+
+  document.querySelectorAll('a[href^="#"]').forEach((a) => {
+    const id = a.getAttribute("href").slice(1);
+    if (id && id !== "inicio" && !SECCIONES.includes(id)) return;
+    a.addEventListener("click", (e) => {
+      e.preventDefault();
+      irA(id, true);
+      if (location.pathname !== rutaDe(id)) history.pushState(null, "", rutaDe(id));
+    });
+  });
+
+  // Al abrir /servicios o un link viejo /#servicios, baja a la sección.
+  const inicial = location.pathname.replace(/^\/+|\/+$/g, "") || location.hash.slice(1);
+  if (SECCIONES.includes(inicial)) {
+    if (location.hash) history.replaceState(null, "", rutaDe(inicial));
+    irA(inicial, false);
+    // Las fotos que cargan después pueden mover la página: se vuelve a ajustar.
+    window.addEventListener("load", () => {
+      if (location.pathname === rutaDe(inicial)) irA(inicial, false);
+    });
+  }
+  window.addEventListener("popstate", () => {
+    irA(location.pathname.replace(/^\/+|\/+$/g, ""), true);
+  });
+});

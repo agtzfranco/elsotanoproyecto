@@ -10,15 +10,6 @@ document.addEventListener("DOMContentLoaded", () => {
       nota: "Ej. necesitamos un micrófono extra o queremos grabar el ensayo",
     },
     {
-      id: "grabacion",
-      nombre: "Estudio de Grabación",
-      img: "IMG/estudio-grabacion.jpg",
-      precio: null,
-      precioLabel: 'Cotizar <span>por proyecto · <a href="https://wa.me/528117753009?text=Hola%2C%20quiero%20cotizar%20una%20grabaci%C3%B3n" target="_blank" rel="noopener">WhatsApp</a></span>',
-      desc: "Grabación, mezcla y masterización con asesoría técnica.",
-      nota: "Ej. qué quieres grabar y cuántas canciones",
-    },
-    {
       id: "fotografia",
       nombre: "Renta de Estudio Fotográfico",
       img: "IMG/fotografiaelsotano.jpg",
@@ -170,11 +161,11 @@ document.addEventListener("DOMContentLoaded", () => {
     window.scrollTo(0, 0); // la página abre arriba: título + calendario
   } else {
     // Sin servicio elegido: el cliente elige en la página de inicio
-    window.location.replace("/#servicios");
+    window.location.replace("/servicios");
   }
 
   btnCambiar.addEventListener("click", () => {
-    window.location.href = "/#servicios";
+    window.location.href = "/servicios";
   });
 
   /* ---------- PASO 2: calendario ---------- */
