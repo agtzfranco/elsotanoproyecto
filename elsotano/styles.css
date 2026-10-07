@@ -3897,3 +3897,11 @@ h2 {
   text-decoration: underline;
   text-underline-offset: 2px;
 }
+
+/* Enlaces de WhatsApp para cotizar */
+.price span a,
+.service-features a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}

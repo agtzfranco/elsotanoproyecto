@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
       nombre: "Estudio de Grabación",
       img: "IMG/estudio-grabacion.jpg",
       precio: null,
-      precioLabel: "Cotizar <span>por proyecto</span>",
+      precioLabel: 'Cotizar <span>por proyecto · <a href="https://wa.me/528117753009?text=Hola%2C%20quiero%20cotizar%20una%20grabaci%C3%B3n" target="_blank" rel="noopener">WhatsApp</a></span>',
       desc: "Grabación, mezcla y masterización con asesoría técnica.",
       nota: "Ej. qué quieres grabar y cuántas canciones",
     },
