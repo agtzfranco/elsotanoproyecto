@@ -3828,3 +3828,14 @@ h2 {
   background: #efede6;
   border-right: 1px solid rgba(17, 17, 17, 0.2);
 }
+
+/* En celular el calendario se explica solo: sin la frase de "selecciona una fecha" */
+@media (max-width: 768px) {
+  .solo-escritorio {
+    display: none;
+  }
+  /* Mientras no hay fecha elegida, el panel de horarios no deja hueco */
+  .slots-panel:has(.solo-escritorio) {
+    display: none;
+  }
+}
