@@ -27,7 +27,7 @@ router.post("/", async (req, res) => {
   avisos.reservaNueva(r.fila, enlace);
   res.json({
     ok: true,
-    mensaje: "¡Reserva confirmada! Te esperamos.",
+    mensaje: "¡Listo, ya quedó tu reserva! Nos vemos en El Sótano.",
     enlace,
     correo: correoConfigurado(),
   });
