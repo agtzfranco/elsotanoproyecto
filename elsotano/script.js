@@ -4,17 +4,21 @@ document.addEventListener("DOMContentLoaded", () => {
   const navLinks = document.querySelector(".nav-links");
 
   if (mobileMenuBtn && navLinks) {
-    mobileMenuBtn.addEventListener("click", () => {
-      navLinks.classList.toggle("active");
-      mobileMenuBtn.textContent = navLinks.classList.contains("active")
-        ? "✕"
-        : "☰";
-    });
-    navLinks.querySelectorAll("a").forEach((link) => {
-      link.addEventListener("click", () => {
-        navLinks.classList.remove("active");
-        mobileMenuBtn.textContent = "☰";
-      });
+    const ponerMenu = (abierto) => {
+      navLinks.classList.toggle("active", abierto);
+      mobileMenuBtn.classList.toggle("abierto", abierto);
+      mobileMenuBtn.setAttribute("aria-expanded", abierto);
+      mobileMenuBtn.setAttribute("aria-label", abierto ? "Cerrar menú" : "Abrir menú");
+      document.body.classList.toggle("menu-abierto", abierto);
+    };
+    mobileMenuBtn.addEventListener("click", () =>
+      ponerMenu(!navLinks.classList.contains("active")),
+    );
+    navLinks
+      .querySelectorAll("a")
+      .forEach((link) => link.addEventListener("click", () => ponerMenu(false)));
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") ponerMenu(false);
     });
   }
 

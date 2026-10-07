@@ -3911,3 +3911,173 @@ h2 {
     border-color 0.2s ease,
     color 0.2s ease;
 }
+
+/* =========================================
+   MENÚ DE CELULAR
+   Tres puntos que se vuelven una ✕; el menú abre a pantalla completa
+   en menta, con los enlaces grandes y numerados.
+   ========================================= */
+.mobile-menu-btn span {
+  display: block;
+}
+@media (max-width: 768px) {
+  .mobile-menu-btn {
+    display: flex;
+    position: relative;
+    z-index: 2;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    width: 48px;
+    height: 48px;
+    padding: 0;
+    border: none;
+    background: transparent;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .mobile-menu-btn span {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--carbon);
+    transition:
+      transform 0.35s cubic-bezier(0.65, 0, 0.35, 1),
+      width 0.35s cubic-bezier(0.65, 0, 0.35, 1),
+      border-radius 0.35s ease,
+      opacity 0.2s ease;
+  }
+  /* Abierto: el punto de en medio se va y los de los lados forman la ✕ */
+  .mobile-menu-btn.abierto {
+    gap: 0;
+  }
+  .mobile-menu-btn.abierto span {
+    position: absolute;
+    width: 26px;
+    height: 2.5px;
+    border-radius: 0;
+  }
+  .mobile-menu-btn.abierto span:nth-child(1) {
+    transform: rotate(45deg);
+  }
+  .mobile-menu-btn.abierto span:nth-child(2) {
+    opacity: 0;
+  }
+  .mobile-menu-btn.abierto span:nth-child(3) {
+    transform: rotate(-45deg);
+  }
+
+  .nav-links,
+  .nav-links.active {
+    display: flex;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    height: calc(100dvh - 100%);
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    gap: 0;
+    padding: 2.5rem 1.5rem 2rem;
+    margin: 0;
+    background-color: var(--menta);
+    border: none;
+    counter-reset: menu;
+    overflow-y: auto;
+    visibility: hidden;
+    clip-path: inset(0 0 100% 0);
+    transition:
+      clip-path 0.45s cubic-bezier(0.65, 0, 0.35, 1),
+      visibility 0s linear 0.45s;
+  }
+  .nav-links.active {
+    visibility: visible;
+    clip-path: inset(0 0 0 0);
+    transition:
+      clip-path 0.45s cubic-bezier(0.65, 0, 0.35, 1),
+      visibility 0s;
+  }
+  .nav-links li {
+    border-bottom: 2px solid var(--carbon);
+    opacity: 0;
+    transform: translateY(14px);
+    transition:
+      opacity 0.3s ease,
+      transform 0.3s ease;
+  }
+  .nav-links li:first-child {
+    border-top: 2px solid var(--carbon);
+  }
+  .nav-links.active li {
+    opacity: 1;
+    transform: none;
+    transition-delay: calc(0.15s + var(--n, 0) * 0.08s);
+  }
+  .nav-links li:nth-child(2) {
+    --n: 1;
+  }
+  .nav-links li:nth-child(3) {
+    --n: 2;
+  }
+  .nav-links a:not(.btn),
+  .nav-links a:not(.btn):hover,
+  .nav-links a:not(.btn):focus-visible,
+  .nav-links a.activo:not(.btn) {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    padding: 1.1rem 0;
+    background: none;
+    border: none;
+    color: var(--carbon);
+    font-family: var(--font-display);
+    font-size: 2.6rem;
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: 0;
+    text-transform: uppercase;
+  }
+  .nav-links a:not(.btn)::before {
+    counter-increment: menu;
+    content: counter(menu, decimal-leading-zero);
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+  }
+  .nav-links a:not(.btn)::after {
+    content: "→";
+    margin-left: auto;
+    font-family: var(--font-body);
+    font-size: 1.6rem;
+    font-weight: 400;
+    transition: transform 0.25s ease;
+  }
+  .nav-links a:not(.btn):active::after {
+    transform: translateX(6px);
+  }
+  /* Firma al pie del menú */
+  .nav-links::after {
+    content: "El Sótano · Monterrey, N.L.";
+    margin-top: auto;
+    padding-top: 2rem;
+    font-family: var(--font-body);
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--carbon);
+    opacity: 0.7;
+  }
+  body.menu-abierto {
+    overflow: hidden;
+  }
+}
+@media (max-width: 768px) and (prefers-reduced-motion: reduce) {
+  .nav-links,
+  .nav-links.active,
+  .nav-links li,
+  .mobile-menu-btn span {
+    transition: none;
+  }
+}
