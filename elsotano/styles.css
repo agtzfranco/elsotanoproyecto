@@ -3840,17 +3840,17 @@ h2 {
   }
 }
 
-/* Renta de equipo: acento salmón sobre la textura negra */
+/* Renta de equipo: títulos, cantidades y recuadros en crema de la paleta */
 .rental {
-  --salmon: #e9967a;
+  --acento-renta: var(--crema, #fbfbe8);
 }
 .rental .rental-box h3,
 .rental .rental-box h4,
 .rental .rental-list b {
-  color: var(--salmon);
+  color: var(--acento-renta);
 }
 .rental .rental-photo,
 .rental .rental-box,
 .rental .rental-note {
-  border-color: var(--salmon);
+  border-color: var(--acento-renta);
 }
