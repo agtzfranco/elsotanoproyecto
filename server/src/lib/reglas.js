@@ -10,7 +10,7 @@ export const SERVICIOS = {
   "sala-ensayo": { nombre: "Sala de Ensayo" },
   grabacion: { nombre: "Estudio de Grabación" },
   podcast: { nombre: "Producción de Podcast" },
-  fotografia: { nombre: "Sesiones de Fotografía" },
+  fotografia: { nombre: "Renta de Estudio Fotográfico" },
   // La renta de equipo es por día: ocupa el día completo, de la apertura al cierre.
   equipo: { nombre: "Renta de Equipo", porDia: true },
 };

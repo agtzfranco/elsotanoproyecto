@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", () => {
     "sala-ensayo": "Sala de Ensayo",
     grabacion: "Estudio de Grabación",
     podcast: "Producción de Podcast",
-    fotografia: "Sesiones de Fotografía",
+    fotografia: "Renta de Estudio Fotográfico",
     equipo: "Renta de Equipo",
     bloqueo: "BLOQUEO DE STAFF",
   };
