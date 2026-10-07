@@ -2941,27 +2941,6 @@ html {
 }
 
 /* Enlace discreto al panel del staff, junto al © */
-.copyright .acceso-staff {
-  display: inline-flex;
-  vertical-align: middle;
-  margin-left: 0.4rem;
-  padding: 0.35rem;
-  color: inherit;
-  opacity: 0.35;
-  transition: opacity 0.2s;
-}
-.copyright .acceso-staff svg {
-  width: 13px;
-  height: 13px;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 2;
-}
-.copyright .acceso-staff:hover,
-.copyright .acceso-staff:focus-visible {
-  opacity: 1;
-}
-
 /* Reservar: al terminar solo queda el resumen y el aviso de confirmación */
 .confirm-card.reserva-hecha > :not(#confirmSummary):not(#confirmMsg) {
   display: none !important;
