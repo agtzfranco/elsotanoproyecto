@@ -3,7 +3,7 @@
 // páginas públicas; el panel, el login y "mis reservas" no se cuentan.
 // Si algún día cambia el código de la cuenta, solo se cambia aquí.
 (function () {
-  var CUENTA = "elsotanomx";
+  var CUENTA = "andresgtzf09";
   // Las pruebas en la computadora no cuentan como visitas.
   if (location.hostname === "localhost" || location.hostname === "127.0.0.1") return;
   var s = document.createElement("script");
