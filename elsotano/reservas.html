@@ -163,7 +163,7 @@
               CONFIRMAR RESERVA
             </button>
             <small class="form-hint" style="margin-top: 1rem">
-              * Al confirmar aceptas el horario de 11:00 a 23:00, la política
+              * Al confirmar aceptas el horario de <!--c:reserva.horario-->11:00 a 23:00<!--/c-->, la política
               de cancelación y el
               <a href="/aviso-de-privacidad" target="_blank">aviso de privacidad</a>.
             </small>
@@ -175,7 +175,9 @@
     <script src="menu.js"></script>
     <script src="auth.js?v=3"></script>
     <script src="reglamentos.js"></script>
-    <script src="reservas.js?v=17"></script>
+    <!-- Precios y horarios del panel de Contenido (los pone el servidor) -->
+    <!--c:datos--><!--/c-->
+    <script src="reservas.js?v=18"></script>
     <script src="visitas.js"></script>
   </body>
 </html>

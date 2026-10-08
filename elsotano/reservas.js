@@ -1,4 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
+  // Precios y horarios editables desde el panel (los pone el servidor en la
+  // página). Si no llegan, se quedan los de aquí abajo.
+  const CONTENIDO = window.CONTENIDO || {};
   const SERVICIOS = [
     {
       id: "sala-ensayo",
@@ -29,6 +32,18 @@ document.addEventListener("DOMContentLoaded", () => {
       nota: "Ej. tipo de evento y dirección",
     },
   ];
+  SERVICIOS.forEach((s) => {
+    const precio = CONTENIDO.precios?.[s.id];
+    if (Number.isInteger(precio)) {
+      s.precio = precio;
+      s.precioLabel = `$${precio.toLocaleString("en-US")} <span>MXN / ${s.porDia ? "día" : "hora"}</span>`;
+    }
+    const h = CONTENIDO.horarios?.[s.id];
+    const valido = h && Number.isInteger(h.apertura) && Number.isInteger(h.cierre) && h.cierre > h.apertura;
+    s.apertura = valido ? h.apertura : 11;
+    s.cierre = valido ? h.cierre : 23;
+  });
+  const hh = (h) => `${String(h).padStart(2, "0")}:00`;
   const MESES = [
     "ENERO",
     "FEBRERO",
@@ -311,7 +326,8 @@ document.addEventListener("DOMContentLoaded", () => {
       : `Disponibilidad para: ${fechaTexto(state.fecha)} · Ese día ya está ocupado`;
     const b = document.createElement("button");
     b.className = "slot slot-dia " + (libre ? "libre elegido" : "ocupado");
-    b.textContent = libre ? "DÍA COMPLETO · 11:00 – 23:00" : "NO DISPONIBLE";
+    const s = state.servicio;
+    b.textContent = libre ? `DÍA COMPLETO · ${hh(s.apertura)} – ${hh(s.cierre)}` : "NO DISPONIBLE";
     b.disabled = !libre;
     grid.appendChild(b);
     if (!libre) {
@@ -323,7 +339,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (!hecha) $("stepConfirm").hidden = true;
       return;
     }
-    state.hora = "11:00";
+    state.hora = hh(s.apertura);
     if (!conservar) mostrarConfirmacion();
   }
 
@@ -409,11 +425,11 @@ document.addEventListener("DOMContentLoaded", () => {
   function pintarResumen() {
     const s = state.servicio;
     const horaNum = parseInt(state.hora, 10);
-    const dur = s.porDia ? 23 - horaNum : parseInt($("duracion").value, 10);
+    const dur = s.porDia ? s.cierre - horaNum : parseInt($("duracion").value, 10);
     const fin = horaNum + dur;
     let total = "SE COTIZARÁ";
-    if (s.porDia) total = "$9,000 MXN";
-    else if (s.precio) total = `$${(s.precio * dur).toLocaleString()} MXN`;
+    if (s.porDia) total = `$${s.precio.toLocaleString("en-US")} MXN`;
+    else if (s.precio) total = `$${(s.precio * dur).toLocaleString("en-US")} MXN`;
     // Precio fijo: TOTAL; "desde" o por cotizar: TOTAL ESTIMADO
     const precioFijo = s.precio && !/^Desde/i.test(s.precioLabel);
     const etiquetaTotal = precioFijo ? "TOTAL" : "TOTAL ESTIMADO";
@@ -421,14 +437,14 @@ document.addEventListener("DOMContentLoaded", () => {
     $("confirmSummary").innerHTML = `
       <div class="summary-row"><span>SERVICIO</span><strong>${s.nombre}</strong></div>
       <div class="summary-row"><span>FECHA</span><strong>${fechaLarga(state.fecha)}</strong></div>
-      <div class="summary-row"><span>HORARIO</span><strong>${s.porDia ? "Día completo (11:00 – 23:00)" : `${state.hora} – ${String(fin).padStart(2, "0")}:00`}</strong></div>
+      <div class="summary-row"><span>HORARIO</span><strong>${s.porDia ? `Día completo (${hh(s.apertura)} – ${hh(s.cierre)})` : `${state.hora} – ${String(fin).padStart(2, "0")}:00`}</strong></div>
       <div class="summary-row"><span>${etiquetaTotal}</span><strong>${total}</strong></div>`;
 
     const msg = $("confirmMsg");
-    if (fin > 23) {
+    if (fin > s.cierre) {
       msg.style.color = "var(--error)";
       msg.textContent =
-        "La duración excede el cierre (23:00). Reduce horas o elige otra hora.";
+        `La duración excede el cierre (${hh(s.cierre)}). Reduce horas o elige otra hora.`;
     } else {
       msg.textContent = "";
       msg.style.color = "var(--text-secondary)";
@@ -445,8 +461,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const s = state.servicio;
     if (!state.hora) return;
     const horaNum = parseInt(state.hora, 10);
-    const dur = s.porDia ? 23 - horaNum : parseInt($("duracion").value, 10);
-    if (horaNum + dur > 23) return;
+    const dur = s.porDia ? s.cierre - horaNum : parseInt($("duracion").value, 10);
+    if (horaNum + dur > s.cierre) return;
 
     const contacto = {
       nombre: $("resNombre").value.trim(),

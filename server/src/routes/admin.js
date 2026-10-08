@@ -6,14 +6,13 @@ import { urlSitio } from "../lib/tokens.js";
 import { crearReserva } from "../lib/reservaNueva.js";
 import {
   SERVICIOS,
-  HORA_APERTURA,
-  HORA_CIERRE,
   ahoraLocal,
   esFechaValida,
   parseHora,
   parseEntero,
   horaSql,
 } from "../lib/reglas.js";
+import { horarioDe, obtenerContenido, horarioGeneral, hora24 } from "../lib/contenido.js";
 
 const router = Router();
 const CAMPOS = "id, servicio, fecha, hora_inicio, hora_fin, duracion_horas, nombre, telefono, email, mensaje, estado";
@@ -106,11 +105,12 @@ router.post("/", async (req, res) => {
       return res.json({ ok: false, error: "Esa fecha ya pasó." });
     }
     const porDia = SERVICIOS[actual.servicio]?.porDia;
-    const horaNum = porDia ? HORA_APERTURA : parseHora(req.body?.hora);
-    const dur = porDia ? HORA_CIERRE - HORA_APERTURA : parseEntero(req.body?.duracion);
+    const { apertura, cierre } = await horarioDe(actual.servicio);
+    const horaNum = porDia ? apertura : parseHora(req.body?.hora);
+    const dur = porDia ? cierre - apertura : parseEntero(req.body?.duracion);
     if (!Number.isInteger(horaNum) || !Number.isInteger(dur) || dur < 1 ||
-        horaNum < HORA_APERTURA || horaNum + dur > HORA_CIERRE) {
-      return res.json({ ok: false, error: "Fuera del horario 11:00–23:00." });
+        horaNum < apertura || horaNum + dur > cierre) {
+      return res.json({ ok: false, error: `Fuera del horario ${hora24(apertura)}–${hora24(cierre)}.` });
     }
     const nuevo = { fecha, hora_inicio: horaSql(horaNum), hora_fin: horaSql(horaNum + dur), duracion_horas: dur };
 
@@ -149,7 +149,9 @@ router.post("/", async (req, res) => {
 
   if (accion === "bloquear") {
     const fecha = String(req.body?.fecha ?? "");
-    const horaNum = parseHora(req.body?.hora ?? HORA_APERTURA);
+    // Un bloqueo cierra todos los servicios: vale el rango más amplio.
+    const { apertura, cierre } = horarioGeneral(await obtenerContenido());
+    const horaNum = parseHora(req.body?.hora ?? apertura);
     const dur = parseEntero(req.body?.duracion ?? 1);
     const motivo = String(req.body?.motivo ?? "").trim().slice(0, 300) || "Bloqueo del staff";
 
@@ -160,8 +162,8 @@ router.post("/", async (req, res) => {
       return res.json({ ok: false, error: "Fecha no válida." });
     }
     if (!Number.isInteger(horaNum) || !Number.isInteger(dur) || dur < 1 ||
-        horaNum < HORA_APERTURA || horaNum + dur > HORA_CIERRE) {
-      return res.json({ ok: false, error: "Fuera del horario 11:00–23:00." });
+        horaNum < apertura || horaNum + dur > cierre) {
+      return res.json({ ok: false, error: `Fuera del horario ${hora24(apertura)}–${hora24(cierre)}.` });
     }
 
     const { error } = await supabase.from("reservaciones").insert({

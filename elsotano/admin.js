@@ -9,6 +9,17 @@ document.addEventListener("DOMContentLoaded", () => {
   };
   let all = [];
   let listo = false;
+  // Horario de cada servicio, editable en Contenido. Mientras carga (o si
+  // falla) se usa el de siempre: 11:00 a 23:00.
+  let HORARIOS = {};
+  const horarioDe = (servicio) => {
+    const h = HORARIOS[servicio];
+    if (h) return h;
+    const hs = Object.values(HORARIOS);
+    return hs.length
+      ? { apertura: Math.min(...hs.map((x) => x.apertura)), cierre: Math.max(...hs.map((x) => x.cierre)) }
+      : { apertura: 11, cierre: 23 };
+  };
   const $ = (id) => document.getElementById(id);
   const msg = $("adminMsg");
 
@@ -36,6 +47,14 @@ document.addEventListener("DOMContentLoaded", () => {
       }
       cargar();
     });
+  fetch("/api/contenido", { credentials: "include" })
+    .then((r) => r.json())
+    .then((c) => {
+      HORARIOS = c.horarios || {};
+      prepararHorarios();
+      if (vista === "semana") renderSemana();
+    })
+    .catch(() => {});
 
   function cargar() {
     fetch("/api/admin?accion=reservas", { credentials: "include" })
@@ -233,7 +252,8 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   /* ---------- vista de semana ---------- */
-  // Cuadrícula lunes a domingo, 11:00 a 23:00, para ver de un vistazo qué
+  // Cuadrícula lunes a domingo, de la hora que abre el primer servicio a la
+  // que cierra el último, para ver de un vistazo qué
   // está ocupado y qué está libre. Al tocar una reserva se abre ese día en
   // la lista, donde están los botones.
   let vista = "lista";
@@ -279,7 +299,9 @@ document.addEventListener("DOMContentLoaded", () => {
         .join("")}</div>`;
     });
 
-    html += `<div class="sem-horas">${Array.from({ length: 12 }, (_, i) => `<span>${11 + i}:00</span>`).join("")}</div>`;
+    const { apertura, cierre } = horarioDe("bloqueo");
+    const filas = cierre - apertura;
+    html += `<div class="sem-horas">${Array.from({ length: filas }, (_, i) => `<span>${apertura + i}:00</span>`).join("")}</div>`;
     dias.forEach((f) => {
       const fecha = iso(f);
       const eventos = all
@@ -295,11 +317,11 @@ document.addEventListener("DOMContentLoaded", () => {
         e.carril = c;
       });
       const n = Math.max(1, carriles.length);
-      html += `<div class="sem-col${fecha === hoyISO ? " es-hoy" : ""}${fecha < hoyISO ? " es-pasado" : ""}">${eventos
+      html += `<div class="sem-col${fecha === hoyISO ? " es-hoy" : ""}${fecha < hoyISO ? " es-pasado" : ""}" style="height:calc(${filas} * var(--sem-h))">${eventos
         .map(({ r, a, b, carril }) => {
           const bloqueo = r.servicio === "bloqueo";
           return `<button class="sem-evento${bloqueo ? " es-bloqueo" : ""}" data-fecha="${esc(r.fecha)}"
-            style="top:calc(${a - 11} * var(--sem-h));height:calc(${b - a} * var(--sem-h) - 3px);left:calc(${carril} * 100% / ${n});width:calc(100% / ${n} - 3px)">
+            style="top:calc(${a - apertura} * var(--sem-h));height:calc(${b - a} * var(--sem-h) - 3px);left:calc(${carril} * 100% / ${n});width:calc(100% / ${n} - 3px)">
             <span>${esc(r.hora_inicio.slice(0, 5))}–${esc(r.hora_fin.slice(0, 5))}</span>
             <strong>${esc(CORTOS[r.servicio] || r.servicio)}</strong>
             ${bloqueo ? (r.mensaje ? `<em>${esc(r.mensaje)}</em>` : "") : `<em>${esc(r.nombre)}</em>`}
@@ -390,15 +412,16 @@ document.addEventListener("DOMContentLoaded", () => {
     const selHora = caja.querySelector(".mv-hora");
     const selDur = caja.querySelector(".mv-dur");
     if (selHora) {
-      for (let h = 11; h < 23; h++) selHora.add(new Option(`${h}:00`, h));
+      const { apertura, cierre } = horarioDe(r.servicio);
+      for (let h = apertura; h < cierre; h++) selHora.add(new Option(`${h}:00`, h));
       selHora.value = String(ini);
       const duraciones = (previa) => {
         const inicio = Number(selHora.value);
         selDur.innerHTML = "";
-        for (let n = 1; inicio + n <= 23; n++) {
+        for (let n = 1; inicio + n <= cierre; n++) {
           selDur.add(new Option(`${n} hora${n > 1 ? "s" : ""} (hasta ${inicio + n}:00)`, n));
         }
-        selDur.value = String(Math.min(previa, 23 - inicio));
+        selDur.value = String(Math.min(previa, cierre - inicio));
       };
       duraciones(Number(r.duracion_horas) || 1);
       selHora.addEventListener("change", () => duraciones(Number(selDur.value) || 1));
@@ -423,8 +446,8 @@ document.addEventListener("DOMContentLoaded", () => {
           accion: "mover",
           id: r.id,
           fecha,
-          hora: selHora ? selHora.value : 11,
-          duracion: selDur ? selDur.value : 12,
+          hora: selHora ? selHora.value : horarioDe(r.servicio).apertura,
+          duracion: selDur ? selDur.value : 1,
         }),
       })
         .then((x) => x.json())
@@ -514,26 +537,41 @@ document.addEventListener("DOMContentLoaded", () => {
     );
   });
 
-  /* ---------- reserva manual ---------- */
-  for (let h = 11; h < 23; h++) {
-    $("manHora").add(new Option(`${h}:00`, h));
+  /* ---------- horas de los formularios ---------- */
+  // Llena un <select> de horas de inicio con el horario dado, conservando la
+  // hora elegida si sigue dentro.
+  function opcionesHora(sel, { apertura, cierre }) {
+    const previa = Number(sel.value);
+    sel.innerHTML = "";
+    for (let h = apertura; h < cierre; h++) sel.add(new Option(`${h}:00`, h));
+    sel.value = String(previa >= apertura && previa < cierre ? previa : apertura);
   }
+  function prepararHorarios() {
+    opcionesHora($("manHora"), horarioDe($("manServicio").value));
+    opcionesDuracion();
+    opcionesHora($("blqHora"), horarioDe("bloqueo"));
+    duracionBloqueo();
+  }
+
+  /* ---------- reserva manual ---------- */
   function opcionesDuracion() {
     const inicio = Number($("manHora").value);
+    const { cierre } = horarioDe($("manServicio").value);
     const previa = Number($("manDur").value) || 1;
     $("manDur").innerHTML = "";
-    for (let n = 1; inicio + n <= 23; n++) {
+    for (let n = 1; inicio + n <= cierre; n++) {
       $("manDur").add(new Option(`${n} hora${n > 1 ? "s" : ""} (hasta ${inicio + n}:00)`, n));
     }
-    $("manDur").value = String(Math.min(previa, 23 - inicio));
+    $("manDur").value = String(Math.min(previa, cierre - inicio));
   }
   function horarioSegunServicio() {
     // La renta de equipo es por día completo: no lleva hora ni duración.
     $("manHorario").hidden = $("manServicio").value === "equipo";
+    opcionesHora($("manHora"), horarioDe($("manServicio").value));
+    opcionesDuracion();
   }
   $("manFecha").value = hoyISO;
   $("manFecha").min = hoyISO;
-  opcionesDuracion();
   $("manHora").addEventListener("change", opcionesDuracion);
   $("manServicio").addEventListener("change", horarioSegunServicio);
 
@@ -575,22 +613,22 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   /* ---------- bloquear horario ---------- */
-  for (let h = 11; h < 23; h++) {
-    $("blqHora").add(new Option(`${h}:00`, h));
-  }
   function duracionBloqueo() {
     const inicio = Number($("blqHora").value);
+    const { apertura, cierre } = horarioDe("bloqueo");
     const previa = Number($("blqDur").value) || 1;
     $("blqDur").innerHTML = "";
-    for (let n = 1; inicio + n <= 23; n++) {
-      const texto = inicio === 11 && n === 12 ? "Todo el día (11:00 a 23:00)" : `${n} hora${n > 1 ? "s" : ""} (hasta ${inicio + n}:00)`;
+    for (let n = 1; inicio + n <= cierre; n++) {
+      const texto = inicio === apertura && inicio + n === cierre
+        ? `Todo el día (${apertura}:00 a ${cierre}:00)`
+        : `${n} hora${n > 1 ? "s" : ""} (hasta ${inicio + n}:00)`;
       $("blqDur").add(new Option(texto, n));
     }
-    $("blqDur").value = String(Math.min(previa, 23 - inicio));
+    $("blqDur").value = String(Math.min(previa, cierre - inicio));
   }
   $("blqFecha").value = hoyISO;
   $("blqFecha").min = hoyISO;
-  duracionBloqueo();
+  prepararHorarios();
   $("blqHora").addEventListener("change", duracionBloqueo);
 
   $("btnBloquear").addEventListener("click", () => {

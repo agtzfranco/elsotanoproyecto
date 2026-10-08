@@ -4,8 +4,6 @@ import { supabase } from "../supabaseClient.js";
 import { nuevoToken } from "./tokens.js";
 import {
   SERVICIOS,
-  HORA_APERTURA,
-  HORA_CIERRE,
   DURACION_MAXIMA,
   DIAS_MAXIMOS_ANTICIPACION,
   ahoraLocal,
@@ -15,6 +13,7 @@ import {
   parseEntero,
   horaSql,
 } from "./reglas.js";
+import { horarioDe, hora24 } from "./contenido.js";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 export const ERROR_OCUPADO = "Ese horario ya fue reservado o está bloqueado. Elige otro.";
@@ -38,10 +37,13 @@ export async function crearReserva(body, { staff = false } = {}) {
     return { ok: false, error: "Solo se puede reservar con hasta un año de anticipación." };
   }
 
-  // La renta de equipo es por día: siempre ocupa de la apertura al cierre.
-  const horaNum = infoServicio.porDia ? HORA_APERTURA : parseHora(hora);
-  if (!Number.isInteger(horaNum) || horaNum < HORA_APERTURA || horaNum >= HORA_CIERRE) {
-    return { ok: false, error: "El horario debe estar entre 11:00 y 23:00." };
+  // Cada servicio tiene su horario (editable desde el panel). La renta de
+  // equipo es por día: siempre ocupa de la apertura al cierre.
+  const { apertura, cierre } = await horarioDe(String(servicio));
+  const fueraDeHorario = `El horario debe estar entre ${hora24(apertura)} y ${hora24(cierre)}.`;
+  const horaNum = infoServicio.porDia ? apertura : parseHora(hora);
+  if (!Number.isInteger(horaNum) || horaNum < apertura || horaNum >= cierre) {
+    return { ok: false, error: fueraDeHorario };
   }
   if (!staff && fecha === ahora.fecha && horaNum <= ahora.hora) {
     return {
@@ -53,14 +55,14 @@ export async function crearReserva(body, { staff = false } = {}) {
   }
 
   const duracion = infoServicio.porDia
-    ? HORA_CIERRE - HORA_APERTURA
+    ? cierre - apertura
     : parseEntero(body?.duracion ?? 1);
   if (!Number.isInteger(duracion) || duracion < 1 || (!infoServicio.porDia && duracion > DURACION_MAXIMA)) {
     return { ok: false, error: `La duración debe ser de 1 a ${DURACION_MAXIMA} horas.` };
   }
   const horaFinNum = horaNum + duracion;
-  if (horaFinNum > HORA_CIERRE) {
-    return { ok: false, error: "El horario debe estar entre 11:00 y 23:00." };
+  if (horaFinNum > cierre) {
+    return { ok: false, error: fueraDeHorario };
   }
 
   const nombre = String(body?.nombre ?? "").trim().slice(0, 100);

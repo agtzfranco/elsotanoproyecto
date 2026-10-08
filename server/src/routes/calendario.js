@@ -1,10 +1,5 @@
 import { Router } from "express";
-import {
-  SERVICIOS,
-  HORA_APERTURA,
-  HORA_CIERRE,
-  esFechaValida,
-} from "../lib/reglas.js";
+import { SERVICIOS, esFechaValida } from "../lib/reglas.js";
 
 const router = Router();
 
@@ -29,8 +24,8 @@ router.get("/", (req, res) => {
   if (
     !servicio ||
     !esFechaValida(fecha) ||
-    !(hora >= HORA_APERTURA && hora < HORA_CIERRE) ||
-    !(dur >= 1 && hora + dur <= HORA_CIERRE)
+    !(hora >= 0 && hora < 24) ||
+    !(dur >= 1 && hora + dur <= 24)
   ) {
     return res.status(400).send("Datos no válidos");
   }
