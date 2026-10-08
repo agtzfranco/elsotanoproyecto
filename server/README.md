@@ -21,6 +21,11 @@ Editor (una sola vez). Agrega el enlace secreto de cada reserva y la función
 `reservar_si_libre`, que impide que dos personas reserven el mismo horario al
 mismo tiempo. Sin ella el servidor no puede registrar reservas.
 
+Para el editor de contenido del panel (`/admin/contenido`) ejecuta también
+`../supabase/migrations/003_contenido.sql`. Mientras no exista la tabla, el
+sitio muestra los precios y horarios de siempre; solo no se pueden guardar
+cambios.
+
 ## 2. Configurar el servidor
 
 ```bash

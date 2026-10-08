@@ -1,12 +1,7 @@
 import { Router } from "express";
 import { supabase } from "../supabaseClient.js";
-import {
-  SERVICIOS,
-  HORA_APERTURA,
-  HORA_CIERRE,
-  ahoraLocal,
-  esFechaValida,
-} from "../lib/reglas.js";
+import { SERVICIOS, ahoraLocal, esFechaValida } from "../lib/reglas.js";
+import { horarioDe } from "../lib/contenido.js";
 
 const router = Router();
 
@@ -35,13 +30,16 @@ router.get("/", async (req, res) => {
     return res.status(500).json({ error: "No se pudo conectar a la base de datos" });
   }
 
+  // Cada servicio tiene su horario, editable desde el panel.
+  const { apertura, cierre } = await horarioDe(servicio);
+
   // Las horas que ya pasaron (o días anteriores) se muestran como ocupadas.
   const ahora = ahoraLocal();
   const horaMinima =
-    fecha < ahora.fecha ? HORA_CIERRE : fecha === ahora.fecha ? ahora.hora + 1 : 0;
+    fecha < ahora.fecha ? cierre : fecha === ahora.fecha ? ahora.hora + 1 : 0;
 
   const slots = [];
-  for (let hora = HORA_APERTURA; hora < HORA_CIERRE; hora++) {
+  for (let hora = apertura; hora < cierre; hora++) {
     const inicioSlot = hora;
     const finSlot = hora + 1;
     const ocupado =

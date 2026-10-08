@@ -101,3 +101,14 @@ revoke execute on function reservar_si_libre(bigint, text, date, time, time, int
 alter table reservaciones drop constraint if exists reservaciones_horario_valido;
 alter table reservaciones add constraint reservaciones_horario_valido
   check (hora_fin > hora_inicio) not valid;
+
+-- ---------------------------------------------------------------
+-- Contenido editable desde el panel (precios, horarios, textos, fotos)
+-- (mismo contenido que migrations/003_contenido.sql)
+-- ---------------------------------------------------------------
+create table if not exists contenido (
+  clave text primary key,
+  valor jsonb not null,
+  actualizado_en timestamptz not null default now()
+);
+alter table contenido enable row level security;

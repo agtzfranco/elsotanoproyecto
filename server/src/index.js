@@ -14,6 +14,8 @@ import reservarRouter from "./routes/reservar.js";
 import reservasRouter from "./routes/reservas.js";
 import adminRouter from "./routes/admin.js";
 import calendarioRouter from "./routes/calendario.js";
+import contenidoRouter from "./routes/contenido.js";
+import { enviarPagina } from "./lib/paginas.js";
 import { asegurarAdmin, confirmarPendientes } from "./lib/adminInicial.js";
 import { SERVICIOS } from "./lib/reglas.js";
 
@@ -40,6 +42,11 @@ app.use("/api/reservar", reservarRouter);
 app.use("/api/reservas", reservasRouter);
 app.use("/api/admin", adminRouter);
 app.use("/api/calendario", calendarioRouter);
+app.use("/api/contenido", contenidoRouter);
+
+// Páginas con precios y horarios editables desde el panel.
+const paginaInicio = enviarPagina(path.join(FRONTEND_DIR, "index.html"));
+const paginaReservas = enviarPagina(path.join(FRONTEND_DIR, "reservas.html"));
 
 // Links limpios con ruta: /reservas/sala-ensayo y /mis-reservas/<token>.
 // Los links viejos con ?servicio= o ?token= se redirigen a la ruta nueva.
@@ -48,10 +55,11 @@ app.get("/reservas", (req, res, next) => {
   if (!servicio) return next();
   res.redirect(301, `/reservas/${encodeURIComponent(String(servicio))}`);
 });
-app.get("/reservas/:servicio", (req, res) => {
+app.get("/reservas/:servicio", (req, res, next) => {
   if (!SERVICIOS[req.params.servicio]) return res.redirect("/servicios");
-  res.sendFile(path.join(FRONTEND_DIR, "reservas.html"));
+  return paginaReservas(req, res, next);
 });
+app.get("/reservas", paginaReservas);
 app.get("/mis-reservas", (req, res, next) => {
   const token = req.query.token;
   if (!token) return next();
@@ -62,9 +70,7 @@ app.get("/mis-reservas/:token", (req, res) => {
 });
 
 // Secciones de la página de inicio con link limpio: /servicios y /equipo.
-app.get(["/servicios", "/equipo"], (_req, res) => {
-  res.sendFile(path.join(FRONTEND_DIR, "index.html"));
-});
+app.get(["/", "/servicios", "/equipo"], paginaInicio);
 
 // El login del staff vive en una ruta secreta (variable STAFF_PATH en Render).
 // /login, /login.html y /admin responden 404 a quien no tenga sesión, como si
@@ -93,6 +99,12 @@ app.get(["/admin", "/admin.html"], (req, res) => {
   if (req.usuario?.rol !== "admin") return noExiste(req, res);
   res.set("Cache-Control", "no-store");
   res.sendFile(path.join(FRONTEND_DIR, "admin.html"));
+});
+// Editor de contenido (precios, horarios...): mismo candado que el panel.
+app.get(["/admin/contenido", "/admin-contenido", "/admin-contenido.html"], (req, res) => {
+  if (req.usuario?.rol !== "admin") return noExiste(req, res);
+  res.set("Cache-Control", "no-store");
+  res.sendFile(path.join(FRONTEND_DIR, "admin-contenido.html"));
 });
 
 // Links limpios: /reservas en vez de /reservas.html. Los links viejos
