@@ -215,6 +215,9 @@ document.addEventListener("DOMContentLoaded", () => {
       // Desde la vista de semana, los contadores llevan a esa lista.
       if (vista === "semana") cambiarVista("lista");
       else render();
+      // La lista queda más abajo: se baja hasta ella para que se note el cambio.
+      const suave = !matchMedia("(prefers-reduced-motion: reduce)").matches;
+      $("vistaLista").scrollIntoView({ behavior: suave ? "smooth" : "auto", block: "start" });
     }),
   );
   $("btnPasadas").addEventListener("click", () => {
