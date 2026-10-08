@@ -3589,6 +3589,27 @@ h2 {
 .admin-mover .mv-msg:empty {
   display: none;
 }
+.admin-exportar {
+  margin-bottom: 1rem;
+}
+.admin-exportar[hidden] {
+  display: none;
+}
+.admin-exportar .exp-nota {
+  margin: 0;
+  align-self: end;
+}
+@media (max-width: 768px) {
+  .admin-exportar {
+    grid-template-columns: 1fr 1fr;
+  }
+  .admin-mover.admin-exportar .form-group:first-child {
+    grid-column: auto;
+  }
+  .admin-exportar .exp-nota {
+    grid-column: 1 / -1;
+  }
+}
 #vistaLista[hidden],
 #vistaSemana[hidden] {
   display: none;

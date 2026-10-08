@@ -182,7 +182,23 @@
           <span id="rangoTexto"></span>
           <button id="btnPasadas" class="admin-link">Ver pasadas</button>
           <button id="btnLimpiarFiltros" class="admin-link" hidden>Quitar filtros</button>
-          <button id="btnExportar" class="admin-link" title="Descarga todas las reservas en un archivo que abre Excel">Descargar Excel</button>
+          <button id="btnExportar" class="admin-link" aria-expanded="false" aria-controls="exportarCaja" title="Descarga las reservas en un archivo que abre Excel">Descargar Excel</button>
+        </div>
+        <div id="exportarCaja" class="admin-mover admin-exportar" hidden>
+          <div class="form-group">
+            <label for="expDesde">Desde</label>
+            <input type="date" id="expDesde" />
+          </div>
+          <div class="form-group">
+            <label for="expHasta">Hasta</label>
+            <input type="date" id="expHasta" />
+          </div>
+          <p class="admin-nota exp-nota">Por fecha de la reserva. Deja ambas vacías para descargar todo.</p>
+          <div class="admin-mover-botones">
+            <button id="expDescargar" class="btn">DESCARGAR</button>
+            <button id="expCerrar" class="admin-link">Cerrar</button>
+          </div>
+          <p id="expMsg" class="disp-estado mv-msg" role="status"></p>
         </div>
 
         <div id="adminMsg" class="disp-estado" role="status"></div>
@@ -204,6 +220,6 @@
       </div>
     </section>
 
-    <script src="admin.js?v=8"></script>
+    <script src="admin.js?v=9"></script>
   </body>
 </html>
