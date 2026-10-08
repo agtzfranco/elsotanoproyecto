@@ -26,7 +26,26 @@ async function leerHtml(ruta) {
 const escapar = (t) =>
   String(t).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
 
-// Valores (ya en HTML seguro) que se ponen en cada marca.
+// Cambia la foto original (lo que hay entre las marcas) por la que subió el
+// staff, conservando clases, alt y demás atributos. Si la original era un
+// recuadro vacío ("FOTO 1"), se vuelve una <img> con su misma clase.
+function fotoHtml(original, f) {
+  const nuevos = `src="${f.chica}" srcset="${f.chica} 800w, ${f.grande} 1600w"`;
+  const html = original.replace(/<source\b[^>]*>\s*/g, "");
+  if (/<img\b/.test(html)) {
+    return html.replace(/<img\b[\s\S]*?\/?>/, (img) => {
+      let t = img.replace(/\s(src|srcset|width|height)="[^"]*"/g, "");
+      if (!/\ssizes="/.test(t)) t = t.replace(/^<img/, '<img sizes="(max-width: 768px) 100vw, 50vw"');
+      return t.replace(/^<img/, `<img ${nuevos}`);
+    });
+  }
+  const clase = /class="([^"]*)"/.exec(html)?.[1] ?? "";
+  const alt = /aria-label="([^"]*)"/.exec(html)?.[1] ?? "";
+  return `<img class="${clase}" ${nuevos} sizes="(max-width: 768px) 50vw, 25vw" alt="${alt}" loading="lazy" />`;
+}
+
+// Valores (ya en HTML seguro) que se ponen en cada marca. Una función
+// recibe el contenido original de la marca.
 function valores(c, servicio) {
   const v = {
     "atencion.dias": escapar(c.atencion.dias),
@@ -46,6 +65,9 @@ function valores(c, servicio) {
       v[`texto.${clave}`] = escapar(valor);
     }
   }
+  for (const [clave, f] of Object.entries(c.fotos ?? {})) {
+    v[`foto.${clave}`] = (original) => fotoHtml(original, f);
+  }
   const h = c.horarios[servicio];
   if (h) v["reserva.horario"] = `${hora24(h.apertura)} a ${hora24(h.cierre)}`;
   return v;
@@ -53,7 +75,7 @@ function valores(c, servicio) {
 
 export function rellenar(html, v) {
   return html.replace(/<!--c:([\w.-]+)-->([\s\S]*?)<!--\/c-->/g, (todo, clave, porDefecto) =>
-    clave in v ? v[clave] : porDefecto,
+    !(clave in v) ? porDefecto : typeof v[clave] === "function" ? v[clave](porDefecto) : v[clave],
   );
 }
 

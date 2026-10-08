@@ -233,13 +233,13 @@
               data-galeria="IMG/ensayo-bateria.webp|Sala de ensayo;IMG/ensayo-sala.webp|Sala de ensayo;IMG/ensayo-champion-rincon.webp|Amplificador de guitarra Fender Champion 100;IMG/ensayo-champion.webp|Fender Champion 100;IMG/ensayo-bajo.webp|Amplificador de bajo Fender;IMG/ensayo-mezcladora.webp|Mezcladora Behringer Xenyx X1832USB"
             >
               <span class="galeria-badge">VER FOTOS · 6</span>
-              <img
+              <!--c:foto.servicio.sala--><img
                 src="IMG/5-900.webp"
                 srcset="IMG/5-600.webp 600w, IMG/5-900.webp 900w, IMG/5-1200.webp 1200w, IMG/5.webp 1800w"
                 sizes="(max-width: 768px) 100vw, 50vw"
                 alt="Sala de ensayo de El Sótano"
                 loading="lazy"
-              />
+              /><!--/c-->
             </div>
             <div class="card-content">
               <h3><!--c:texto.servicio.sala.titulo-->Sala de Ensayo<!--/c--></h3>
@@ -353,14 +353,14 @@
               data-galeria="IMG/fotografia-sombrilla.webp|Sombrilla reflectora Godox;IMG/fotografia-flash.webp|Flash de estudio Godox SK400II;IMG/fotografia-tripie.webp|Tripié para cámara;IMG/fotografia-ilustracion.webp|Estudio de fotografía El Sótano"
             >
               <span class="galeria-badge">VER FOTOS · 4</span>
-              <img
+              <!--c:foto.servicio.fotografia--><img
                 src="IMG/fotografia-sombrilla-900.webp"
                 srcset="IMG/fotografia-sombrilla-600.webp 600w, IMG/fotografia-sombrilla-900.webp 900w, IMG/fotografia-sombrilla-1200.webp 1200w, IMG/fotografia-sombrilla.webp 1400w"
                 sizes="(max-width: 768px) 100vw, 50vw"
                 style="object-position: center 45%"
                 alt="Sombrilla reflectora Godox en el estudio de fotografía de El Sótano"
                 loading="lazy"
-              />
+              /><!--/c-->
             </div>
             <div class="card-content">
               <h3><!--c:texto.servicio.fotografia.titulo-->Renta de Estudio Fotográfico<!--/c--></h3>
@@ -403,13 +403,13 @@
 
           <div class="service-card">
             <div class="card-img">
-              <img
+              <!--c:foto.servicio.grabacion--><img
                 src="IMG/estudio-grabacion-900.webp"
                 srcset="IMG/estudio-grabacion-600.webp 600w, IMG/estudio-grabacion-900.webp 900w, IMG/estudio-grabacion-1200.webp 1200w, IMG/estudio-grabacion.webp 1600w"
                 sizes="(max-width: 768px) 100vw, 50vw"
                 alt="Estudio de grabación de El Sótano"
                 loading="lazy"
-              />
+              /><!--/c-->
             </div>
             <div class="card-content">
               <h3><!--c:texto.servicio.grabacion.titulo-->Estudio de Grabación<!--/c--></h3>
@@ -433,11 +433,11 @@
 
           <div class="service-card card-cotiza">
             <div class="card-img">
-              <img
+              <!--c:foto.servicio.cotiza--><img
                 src="IMG/cotiza-proyecto.webp"
                 alt="Sala de El Sótano con guitarras, bajos y amplificadores Fender"
                 loading="lazy"
-              />
+              /><!--/c-->
             </div>
             <div class="card-content">
               <h3><!--c:texto.servicio.cotiza.titulo-->Cotiza tu proyecto<!--/c--></h3>
@@ -473,21 +473,20 @@
         <!--/c--></p>
 
         <!-- RENTA DE EQUIPO: 4 fotos arriba, foto grande + lista, nota y precio.
-             Para poner una foto, cambia cada <div class="rental-photo"> por:
-             <img class="rental-photo" src="IMG/archivo.jpg" alt="..." loading="lazy" /> -->
+             Las fotos se suben desde el panel (EDITAR PÁGINA > FOTOS). -->
         <div class="rental">
           <div class="rental-strip">
-            <div class="rental-photo" role="img" aria-label="Foto de equipo 1"><span>FOTO 1</span></div>
-            <div class="rental-photo" role="img" aria-label="Foto de equipo 2"><span>FOTO 2</span></div>
-            <div class="rental-photo" role="img" aria-label="Foto de equipo 3"><span>FOTO 3</span></div>
-            <div class="rental-photo" role="img" aria-label="Foto de equipo 4"><span>FOTO 4</span></div>
+            <!--c:foto.equipo.1--><div class="rental-photo" role="img" aria-label="Foto de equipo 1"><span>FOTO 1</span></div><!--/c-->
+            <!--c:foto.equipo.2--><div class="rental-photo" role="img" aria-label="Foto de equipo 2"><span>FOTO 2</span></div><!--/c-->
+            <!--c:foto.equipo.3--><div class="rental-photo" role="img" aria-label="Foto de equipo 3"><span>FOTO 3</span></div><!--/c-->
+            <!--c:foto.equipo.4--><div class="rental-photo" role="img" aria-label="Foto de equipo 4"><span>FOTO 4</span></div><!--/c-->
           </div>
 
           <div class="rental-main">
-            <picture class="rental-photo rental-photo-large rental-photo-foto">
+            <!--c:foto.equipo.principal--><picture class="rental-photo rental-photo-large rental-photo-foto">
               <source srcset="IMG/equipo-principal.webp" type="image/webp" />
               <img src="IMG/equipo-principal.jpg" alt="Equipo de El Sótano montado: bocinas Behringer, monitores, amplificadores Fender, batería y mezcladora" loading="lazy" width="806" height="537" />
-            </picture>
+            </picture><!--/c-->
             <div class="rental-box">
               <h3>Renta de equipo</h3>
               <h4>Consola, PA y monitoreo:</h4>

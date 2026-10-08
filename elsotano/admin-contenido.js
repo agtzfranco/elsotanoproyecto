@@ -83,6 +83,103 @@ document.addEventListener("DOMContentLoaded", () => {
   ).join("");
   const CAMPOS = TEXTOS.flatMap(([, campos]) => campos);
 
+  // Fotos: [clave, nombre, foto original (null = recuadro vacío)]
+  const FOTOS = [
+    ["servicio.sala", "Sala de Ensayo", "IMG/5-600.webp"],
+    ["servicio.fotografia", "Estudio Fotográfico", "IMG/fotografia-sombrilla-600.webp"],
+    ["servicio.grabacion", "Estudio de Grabación", "IMG/estudio-grabacion-600.webp"],
+    ["servicio.cotiza", "Cotiza tu proyecto", "IMG/cotiza-proyecto.webp"],
+    ["equipo.principal", "Renta de equipo · foto grande", "IMG/equipo-principal.webp"],
+    ["equipo.1", "Renta de equipo · foto 1", null],
+    ["equipo.2", "Renta de equipo · foto 2", null],
+    ["equipo.3", "Renta de equipo · foto 3", null],
+    ["equipo.4", "Renta de equipo · foto 4", null],
+  ];
+  const idFoto = (clave) => "f-" + clave.replace(/\./g, "-");
+  $("listaFotos").innerHTML = FOTOS.map(
+    ([clave, nombre]) => `
+    <div class="contenido-foto" id="${idFoto(clave)}">
+      <div class="contenido-foto-img"></div>
+      <strong>${nombre}</strong>
+      <label class="btn btn-full contenido-subir">
+        CAMBIAR FOTO
+        <input type="file" accept="image/*" data-foto="${clave}" hidden />
+      </label>
+      <button class="admin-link contenido-quitar" data-quitar="${clave}" hidden>Volver a la original</button>
+      <p class="contenido-foto-msg" role="status"></p>
+    </div>`,
+  ).join("");
+
+  function pintarFotos(fotos) {
+    FOTOS.forEach(([clave, nombre, original]) => {
+      const caja = $(idFoto(clave));
+      const subida = fotos?.[clave];
+      const src = subida ? subida.chica : original;
+      caja.querySelector(".contenido-foto-img").innerHTML = src
+        ? `<img src="${src}" alt="${nombre}" loading="lazy" />`
+        : "<span>SIN FOTO</span>";
+      caja.querySelector(".contenido-quitar").hidden = !subida;
+      caja.querySelector(".contenido-quitar").textContent = original ? "Volver a la original" : "Quitar foto";
+    });
+  }
+
+  function avisoFoto(clave, texto, error) {
+    const p = $(idFoto(clave)).querySelector(".contenido-foto-msg");
+    p.textContent = texto;
+    p.classList.toggle("es-error", Boolean(error));
+  }
+
+  document.querySelectorAll("[data-foto]").forEach((input) =>
+    input.addEventListener("change", () => {
+      const clave = input.dataset.foto;
+      const archivo = input.files[0];
+      input.value = "";
+      if (!archivo) return;
+      if (archivo.size > 12 * 1024 * 1024) {
+        avisoFoto(clave, "La foto pesa más de 12 MB. Elige otra.", true);
+        return;
+      }
+      const caja = $(idFoto(clave));
+      caja.classList.add("subiendo");
+      avisoFoto(clave, "Subiendo…");
+      fetch(`/api/contenido/foto?lugar=${encodeURIComponent(clave)}`, {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/octet-stream" },
+        body: archivo,
+      })
+        .then((r) => r.json().catch(() => ({ ok: false })))
+        .then((d) => {
+          if (!d.ok) return avisoFoto(clave, d.error || "No se pudo subir la foto.", true);
+          pintarFotos(d.contenido.fotos);
+          avisoFoto(clave, "✓ Foto guardada. Ya se ve en la página.");
+        })
+        .catch(() => avisoFoto(clave, "No se pudo conectar con el servidor.", true))
+        .finally(() => caja.classList.remove("subiendo"));
+    }),
+  );
+
+  document.querySelectorAll("[data-quitar]").forEach((b) =>
+    b.addEventListener("click", () => {
+      const clave = b.dataset.quitar;
+      b.disabled = true;
+      fetch("/api/contenido", {
+        method: "PUT",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ fotos: { [clave]: null } }),
+      })
+        .then((r) => r.json().catch(() => ({ ok: false })))
+        .then((d) => {
+          if (!d.ok) return avisoFoto(clave, d.error || "No se pudo quitar la foto.", true);
+          pintarFotos(d.contenido.fotos);
+          avisoFoto(clave, "✓ Listo.");
+        })
+        .catch(() => avisoFoto(clave, "No se pudo conectar con el servidor.", true))
+        .finally(() => (b.disabled = false));
+    }),
+  );
+
   // Pestañas
   document.querySelectorAll("[data-pestana]").forEach((b) =>
     b.addEventListener("click", () => {
@@ -93,6 +190,9 @@ document.addEventListener("DOMContentLoaded", () => {
       });
       $("pestanaPrecios").hidden = b.dataset.pestana !== "precios";
       $("pestanaTextos").hidden = b.dataset.pestana !== "textos";
+      $("pestanaFotos").hidden = b.dataset.pestana !== "fotos";
+      // Las fotos se guardan solas: ahí no hace falta el botón de guardar.
+      $("zonaGuardar").hidden = b.dataset.pestana === "fotos";
     }),
   );
 
@@ -115,6 +215,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const v = c.textos?.[clave];
       $(idTexto(clave)).value = tipo === "lista" ? (v || []).join("\n") : v ?? "";
     });
+    pintarFotos(c.fotos);
   }
 
   function leer() {
