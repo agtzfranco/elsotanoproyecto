@@ -447,10 +447,35 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   /* ---------- respaldo en Excel ---------- */
-  // Descarga TODAS las reservas (pasadas, futuras y canceladas) en un CSV
-  // que Excel abre directo. Sirve como respaldo fuera de Supabase.
-  $("btnExportar").addEventListener("click", () => {
-    if (!listo) return;
+  // Descarga las reservas (pasadas, futuras y canceladas) en un CSV que Excel
+  // abre directo. "Desde" y "Hasta" filtran por fecha de la reserva; vacías,
+  // sale todo, como respaldo fuera de Supabase.
+  const expCaja = $("exportarCaja");
+  const expMsg = $("expMsg");
+  const abrirExportar = (abrir) => {
+    expCaja.hidden = !abrir;
+    $("btnExportar").setAttribute("aria-expanded", String(abrir));
+    expMsg.textContent = "";
+  };
+  $("btnExportar").addEventListener("click", () => abrirExportar(expCaja.hidden));
+  $("expCerrar").addEventListener("click", () => abrirExportar(false));
+  $("expDescargar").addEventListener("click", () => {
+    if (!listo) {
+      expMsg.textContent = "Las reservas aún se están cargando.";
+      return;
+    }
+    const desde = $("expDesde").value;
+    const hasta = $("expHasta").value;
+    if (desde && hasta && desde > hasta) {
+      expMsg.textContent = "La fecha «Desde» debe ser antes de «Hasta».";
+      return;
+    }
+    const elegidas = all.filter((r) => (!desde || r.fecha >= desde) && (!hasta || r.fecha <= hasta));
+    if (!elegidas.length) {
+      expMsg.textContent = "No hay reservas en esas fechas.";
+      return;
+    }
+    expMsg.textContent = "";
     const celda = (v) => {
       let t = String(v ?? "");
       // Evita que Excel interprete un texto del cliente como fórmula.
@@ -460,7 +485,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const hora = (h) => String(h || "").slice(0, 5);
     const filas = [
       ["Folio", "Fecha", "Inicio", "Fin", "Horas", "Servicio", "Nombre", "Teléfono", "Correo", "Notas", "Estado"],
-      ...[...all]
+      ...elegidas
         .sort((a, b) => (a.fecha + a.hora_inicio).localeCompare(b.fecha + b.hora_inicio))
         .map((r) => [
           r.id,
@@ -481,7 +506,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const url = URL.createObjectURL(new Blob([csv], { type: "text/csv;charset=utf-8" }));
     const a = document.createElement("a");
     a.href = url;
-    a.download = `reservas-el-sotano-${hoyISO}.csv`;
+    const tramo = desde || hasta ? `${desde || "inicio"}-a-${hasta || "hoy"}` : hoyISO;
+    a.download = `reservas-el-sotano-${tramo}.csv`;
     document.body.appendChild(a);
     a.click();
     a.remove();
