@@ -4154,3 +4154,28 @@ h2 {
     grid-column: 1 / -1;
   }
 }
+.contenido-pestana[hidden] {
+  display: none;
+}
+.contenido-texto {
+  margin-bottom: 1rem;
+}
+.contenido-texto:last-child {
+  margin-bottom: 0;
+}
+.admin-form .contenido-texto input,
+.admin-form .contenido-texto textarea {
+  width: 100%;
+  border: 1px solid #111;
+  line-height: 1.45;
+  resize: vertical;
+}
+@media (max-width: 768px) {
+  .contenido-editor .admin-vista {
+    display: flex;
+  }
+  .contenido-editor .admin-vista button {
+    flex: 1;
+    padding: 0.7rem 0.5rem;
+  }
+}

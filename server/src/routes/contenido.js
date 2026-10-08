@@ -17,7 +17,13 @@ router.get("/", async (_req, res) => {
 // Solo el staff con sesión puede cambiar el contenido.
 router.put("/", requireAdmin, async (req, res) => {
   const errores = [];
-  const nuevo = limpiarContenido(req.body ?? {}, errores);
+  // Lo que no venga en la petición se queda como está.
+  const actual = await obtenerContenido();
+  const cuerpo = req.body && typeof req.body === "object" ? req.body : {};
+  const nuevo = limpiarContenido(
+    { ...actual, ...cuerpo, textos: { ...actual.textos, ...cuerpo.textos } },
+    errores,
+  );
   if (errores.length) {
     return res.status(400).json({ ok: false, error: errores.join(" ") });
   }

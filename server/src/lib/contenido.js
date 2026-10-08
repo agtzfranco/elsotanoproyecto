@@ -2,6 +2,9 @@
 // `contenido` de Supabase, una fila por sección. Cualquier dato que falte, esté
 // vacío o no sea válido se reemplaza por el valor por defecto, así que un
 // error en la base nunca deja el sitio roto: se ve igual que antes del panel.
+import fs from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 import { supabase } from "../supabaseClient.js";
 import { HORA_APERTURA, HORA_CIERRE } from "./reglas.js";
 
@@ -25,6 +28,84 @@ export const POR_DEFECTO = {
 };
 
 export const PRECIO_MAXIMO = 1_000_000;
+
+// Textos editables de la página de inicio. Su valor por defecto es el que
+// está escrito en index.html entre <!--c:texto.clave--> y <!--/c--> (o
+// <!--c:lista.clave--> para las listas de puntos), así hay un solo lugar
+// donde vive el texto original. `max` es el límite de letras por texto (o
+// por punto, en las listas).
+export const CAMPOS_TEXTO = {
+  "inicio.titulo": { tipo: "texto", max: 60 },
+  "inicio.resaltado": { tipo: "texto", max: 30 },
+  "inicio.texto": { tipo: "texto", max: 400 },
+  "nosotros.texto": { tipo: "texto", max: 600 },
+  "servicio.sala.titulo": { tipo: "texto", max: 50 },
+  "servicio.sala.puntos": { tipo: "lista", max: 140 },
+  "servicio.fotografia.titulo": { tipo: "texto", max: 50 },
+  "servicio.fotografia.puntos": { tipo: "lista", max: 140 },
+  "servicio.grabacion.titulo": { tipo: "texto", max: 50 },
+  "servicio.grabacion.puntos": { tipo: "lista", max: 140 },
+  "servicio.cotiza.titulo": { tipo: "texto", max: 50 },
+  "servicio.cotiza.puntos": { tipo: "lista", max: 140 },
+  "equipo.intro": { tipo: "texto", max: 300 },
+  "equipo.nota": { tipo: "texto", max: 300 },
+  "pie.texto": { tipo: "texto", max: 300 },
+};
+export const PUNTOS_MAXIMOS = 10;
+
+const INDEX_HTML = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../../elsotano/index.html");
+const ENTIDADES = { "&amp;": "&", "&lt;": "<", "&gt;": ">", "&quot;": '"', "&#39;": "'", "&nbsp;": " " };
+const textoPlano = (html) =>
+  html
+    .replace(/<[^>]*>/g, "")
+    .replace(/&(amp|lt|gt|quot|#39|nbsp);/g, (e) => ENTIDADES[e])
+    .replace(/\s+/g, " ")
+    .trim();
+
+// Lee de index.html los textos originales (una sola vez).
+let textosOriginales = null;
+export function textosPorDefecto() {
+  if (textosOriginales) return textosOriginales;
+  const t = {};
+  try {
+    const html = fs.readFileSync(INDEX_HTML, "utf8");
+    for (const [, tipo, clave, dentro] of html.matchAll(/<!--c:(texto|lista)\.([\w.-]+)-->([\s\S]*?)<!--\/c-->/g)) {
+      if (CAMPOS_TEXTO[clave]?.tipo !== tipo) continue;
+      t[clave] =
+        tipo === "lista"
+          ? [...dentro.matchAll(/<li>([\s\S]*?)<\/li>/g)].map((m) => textoPlano(m[1])).filter(Boolean)
+          : textoPlano(dentro);
+    }
+  } catch (e) {
+    console.error("No se pudieron leer los textos de index.html:", e.message);
+  }
+  textosOriginales = t;
+  return t;
+}
+
+// Un texto vacío (o una lista sin puntos) vuelve al original.
+function limpiarTextos(crudo, errores) {
+  const originales = textosPorDefecto();
+  const t = { ...originales };
+  if (!crudo || typeof crudo !== "object") return t;
+  for (const [clave, campo] of Object.entries(CAMPOS_TEXTO)) {
+    const v = crudo[clave];
+    if (v === undefined || v === null) continue;
+    if (campo.tipo === "lista") {
+      const puntos = (Array.isArray(v) ? v : String(v).split("\n"))
+        .map((x) => String(x ?? "").replace(/\s+/g, " ").trim())
+        .filter(Boolean);
+      if (puntos.length > PUNTOS_MAXIMOS) errores.push(`Máximo ${PUNTOS_MAXIMOS} puntos por servicio.`);
+      if (puntos.some((x) => x.length > campo.max)) errores.push(`Cada punto puede tener hasta ${campo.max} letras.`);
+      if (puntos.length) t[clave] = puntos.slice(0, PUNTOS_MAXIMOS).map((x) => x.slice(0, campo.max));
+    } else {
+      const texto = String(v).replace(/\s+/g, " ").trim();
+      if (texto.length > campo.max) errores.push(`Un texto pasa del límite de ${campo.max} letras.`);
+      if (texto) t[clave] = texto.slice(0, campo.max);
+    }
+  }
+  return t;
+}
 
 const esEntero = (v, min, max) => Number.isInteger(v) && v >= min && v <= max;
 // "" y null no cuentan como 0.
@@ -72,10 +153,11 @@ export function limpiarContenido(crudo = {}, errores = []) {
     }
     Object.assign(c.atencion, limpio);
   }
+  c.textos = limpiarTextos(crudo.textos, errores);
   return c;
 }
 
-const SECCIONES = ["precios", "horarios", "atencion"];
+const SECCIONES = ["precios", "horarios", "atencion", "textos"];
 const VIGENCIA_MS = 30_000;
 let cache = null;
 let cacheEn = 0;
@@ -102,10 +184,19 @@ export async function obtenerContenido() {
   return cache;
 }
 
+// Textos que el staff cambió (distintos del original de index.html). Solo
+// esos se guardan, para que un ajuste futuro al HTML no quede tapado.
+export function textosCambiados(textos) {
+  const originales = textosPorDefecto();
+  return Object.fromEntries(
+    Object.entries(textos ?? {}).filter(([k, v]) => JSON.stringify(v) !== JSON.stringify(originales[k])),
+  );
+}
+
 export async function guardarContenido(nuevo) {
   const filas = SECCIONES.map((clave) => ({
     clave,
-    valor: nuevo[clave],
+    valor: clave === "textos" ? textosCambiados(nuevo.textos) : nuevo[clave],
     actualizado_en: new Date().toISOString(),
   }));
   const { error } = await supabase.from("contenido").upsert(filas, { onConflict: "clave" });

@@ -41,6 +41,61 @@ document.addEventListener("DOMContentLoaded", () => {
       </div>
     </div>`,
   ).join("");
+  // Textos de la página de inicio, en el orden en que aparecen.
+  // [clave, etiqueta, límite de letras, tipo]; "lista" = un punto por renglón.
+  const TEXTOS = [
+    ["INICIO", [
+      ["inicio.titulo", "Título", 60],
+      ["inicio.resaltado", "Palabra resaltada del título", 30],
+      ["inicio.texto", "Texto bajo el título", 400, "area"],
+    ]],
+    ["SOBRE NOSOTROS", [["nosotros.texto", "Texto", 600, "area"]]],
+    ...[
+      ["sala", "SALA DE ENSAYO"],
+      ["fotografia", "ESTUDIO FOTOGRÁFICO"],
+      ["grabacion", "ESTUDIO DE GRABACIÓN"],
+      ["cotiza", "COTIZA TU PROYECTO"],
+    ].map(([id, titulo]) => [`SERVICIOS · ${titulo}`, [
+      [`servicio.${id}.titulo`, "Nombre en la tarjeta", 50],
+      [`servicio.${id}.puntos`, "Puntos de la tarjeta (uno por renglón)", 140, "lista"],
+    ]]),
+    ["RENTA DE EQUIPO", [
+      ["equipo.intro", "Frase bajo el título", 300, "area"],
+      ["equipo.nota", "Nota bajo la lista de equipo", 300, "area"],
+    ]],
+    ["PIE DE PÁGINA", [["pie.texto", "Texto bajo el logo", 300, "area"]]],
+  ];
+  const idTexto = (clave) => "t-" + clave.replace(/\./g, "-");
+  $("listaTextos").innerHTML = TEXTOS.map(
+    ([titulo, campos]) => `
+    <div class="admin-form">
+      <h3>${titulo}</h3>
+      ${campos
+        .map(([clave, etiqueta, max, tipo]) => {
+          const id = idTexto(clave);
+          const campo = tipo
+            ? `<textarea id="${id}" rows="${tipo === "lista" ? 5 : 3}" ${tipo === "lista" ? "" : `maxlength="${max}"`}></textarea>`
+            : `<input type="text" id="${id}" maxlength="${max}" />`;
+          return `<div class="form-group contenido-texto"><label for="${id}">${etiqueta}</label>${campo}</div>`;
+        })
+        .join("")}
+    </div>`,
+  ).join("");
+  const CAMPOS = TEXTOS.flatMap(([, campos]) => campos);
+
+  // Pestañas
+  document.querySelectorAll("[data-pestana]").forEach((b) =>
+    b.addEventListener("click", () => {
+      document.querySelectorAll("[data-pestana]").forEach((o) => {
+        const activo = o === b;
+        o.classList.toggle("activo", activo);
+        o.setAttribute("aria-pressed", String(activo));
+      });
+      $("pestanaPrecios").hidden = b.dataset.pestana !== "precios";
+      $("pestanaTextos").hidden = b.dataset.pestana !== "textos";
+    }),
+  );
+
   document.querySelectorAll(".c-abre, #atAbre").forEach((sel) => llenarHoras(sel, 0, 23));
   document.querySelectorAll(".c-cierra, #atCierra").forEach((sel) => llenarHoras(sel, 1, 24));
 
@@ -56,6 +111,10 @@ document.addEventListener("DOMContentLoaded", () => {
     $("atDias").value = c.atencion?.dias ?? "";
     $("atAbre").value = String(c.atencion?.apertura ?? 11);
     $("atCierra").value = String(c.atencion?.cierre ?? 23);
+    CAMPOS.forEach(([clave, , , tipo]) => {
+      const v = c.textos?.[clave];
+      $(idTexto(clave)).value = tipo === "lista" ? (v || []).join("\n") : v ?? "";
+    });
   }
 
   function leer() {
@@ -72,6 +131,12 @@ document.addEventListener("DOMContentLoaded", () => {
       apertura: Number($("atAbre").value),
       cierre: Number($("atCierra").value),
     };
+    c.textos = Object.fromEntries(
+      CAMPOS.map(([clave, , , tipo]) => {
+        const v = $(idTexto(clave)).value;
+        return [clave, tipo === "lista" ? v.split("\n").map((x) => x.trim()).filter(Boolean) : v.trim()];
+      }),
+    );
     return c;
   }
 
@@ -86,6 +151,12 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!c.atencion.dias) return "Escribe los días del horario de atención.";
     if (c.atencion.cierre <= c.atencion.apertura)
       return "Horario de atención: la hora de cierre debe ser después de la de apertura.";
+    for (const [clave, etiqueta, max, tipo] of CAMPOS) {
+      if (tipo !== "lista") continue;
+      const puntos = c.textos[clave];
+      if (puntos.length > 10) return `${etiqueta}: máximo 10 puntos.`;
+      if (puntos.some((p) => p.length > max)) return `${etiqueta}: cada punto puede tener hasta ${max} letras.`;
+    }
     return "";
   }
 

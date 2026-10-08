@@ -6,6 +6,8 @@ import path from "node:path";
 import {
   obtenerContenido,
   SERVICIOS_EDITABLES,
+  CAMPOS_TEXTO,
+  textosCambiados,
   hora12,
   hora24,
   precioTexto,
@@ -31,10 +33,18 @@ function valores(c, servicio) {
     "atencion.horas": `${hora12(c.atencion.apertura)} – ${hora12(c.atencion.cierre)}`,
     "atencion.horas-span": `${hora12(c.atencion.apertura, true)} – ${hora12(c.atencion.cierre, true)}`,
     // JSON dentro de <script>: "<" escapado para que nadie pueda cerrar la etiqueta.
-    datos: `<script>window.CONTENIDO = ${JSON.stringify(c).replace(/</g, "\\u003c")};</script>`,
+    datos: `<script>window.CONTENIDO = ${JSON.stringify({ precios: c.precios, horarios: c.horarios }).replace(/</g, "\\u003c")};</script>`,
   };
   for (const id of Object.keys(SERVICIOS_EDITABLES)) {
     v[`precio.${id}`] = precioTexto(c.precios[id]);
+  }
+  // Solo los textos que cambió el staff; los demás se quedan como en el HTML.
+  for (const [clave, valor] of Object.entries(textosCambiados(c.textos))) {
+    if (CAMPOS_TEXTO[clave]?.tipo === "lista") {
+      v[`lista.${clave}`] = "\n" + valor.map((p) => `                <li>${escapar(p)}</li>`).join("\n") + "\n              ";
+    } else {
+      v[`texto.${clave}`] = escapar(valor);
+    }
   }
   const h = c.horarios[servicio];
   if (h) v["reserva.horario"] = `${hora24(h.apertura)} a ${hora24(h.cierre)}`;

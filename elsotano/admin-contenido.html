@@ -37,6 +37,7 @@
 
         <div class="admin-vista" role="group" aria-label="Qué editar">
           <button data-pestana="precios" class="activo" aria-pressed="true">PRECIOS Y HORARIOS</button>
+          <button data-pestana="textos" aria-pressed="false">TEXTOS</button>
         </div>
 
         <div id="pestanaPrecios" class="contenido-pestana">
@@ -63,14 +64,22 @@
             </div>
           </div>
 
-          <div class="contenido-guardar">
-            <button id="btnGuardar" class="btn btn-full" disabled>GUARDAR CAMBIOS</button>
-            <p id="guardarMsg" class="disp-estado" role="status"></p>
-          </div>
+        </div>
+
+        <div id="pestanaTextos" class="contenido-pestana" hidden>
+          <p class="admin-nota">
+            Si dejas un campo vacío, vuelve el texto original.
+          </p>
+          <div id="listaTextos"></div>
+        </div>
+
+        <div class="contenido-guardar">
+          <button id="btnGuardar" class="btn btn-full" disabled>GUARDAR CAMBIOS</button>
+          <p id="guardarMsg" class="disp-estado" role="status"></p>
         </div>
       </div>
     </section>
 
-    <script src="admin-contenido.js?v=1"></script>
+    <script src="admin-contenido.js?v=2"></script>
   </body>
 </html>
