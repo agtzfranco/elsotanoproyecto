@@ -83,6 +83,39 @@ export function textosPorDefecto() {
   return t;
 }
 
+// Fotos que el staff puede cambiar. En index.html cada una va entre
+// <!--c:foto.clave--> y <!--/c-->; lo de en medio es la foto original.
+export const CAMPOS_FOTO = [
+  "servicio.sala",
+  "servicio.fotografia",
+  "servicio.grabacion",
+  "servicio.cotiza",
+  "equipo.principal",
+  "equipo.1",
+  "equipo.2",
+  "equipo.3",
+  "equipo.4",
+];
+export const BUCKET_FOTOS = "fotos";
+
+// Solo se aceptan direcciones de nuestro propio bucket de Supabase.
+export function urlFotoValida(url) {
+  const base = `${String(process.env.SUPABASE_URL ?? "").replace(/\/+$/, "")}/storage/v1/object/public/${BUCKET_FOTOS}/`;
+  return typeof url === "string" && url.startsWith(base) && /^[\w.\-/]+$/.test(url.slice(base.length));
+}
+
+function limpiarFotos(crudo) {
+  const f = {};
+  if (!crudo || typeof crudo !== "object") return f;
+  for (const clave of CAMPOS_FOTO) {
+    const v = crudo[clave];
+    if (v && urlFotoValida(v.grande) && urlFotoValida(v.chica)) {
+      f[clave] = { grande: v.grande, chica: v.chica };
+    }
+  }
+  return f;
+}
+
 // Un texto vacío (o una lista sin puntos) vuelve al original.
 function limpiarTextos(crudo, errores) {
   const originales = textosPorDefecto();
@@ -154,10 +187,11 @@ export function limpiarContenido(crudo = {}, errores = []) {
     Object.assign(c.atencion, limpio);
   }
   c.textos = limpiarTextos(crudo.textos, errores);
+  c.fotos = limpiarFotos(crudo.fotos);
   return c;
 }
 
-const SECCIONES = ["precios", "horarios", "atencion", "textos"];
+const SECCIONES = ["precios", "horarios", "atencion", "textos", "fotos"];
 const VIGENCIA_MS = 30_000;
 let cache = null;
 let cacheEn = 0;

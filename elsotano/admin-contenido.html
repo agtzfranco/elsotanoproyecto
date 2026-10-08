@@ -38,6 +38,7 @@
         <div class="admin-vista" role="group" aria-label="Qué editar">
           <button data-pestana="precios" class="activo" aria-pressed="true">PRECIOS Y HORARIOS</button>
           <button data-pestana="textos" aria-pressed="false">TEXTOS</button>
+          <button data-pestana="fotos" aria-pressed="false">FOTOS</button>
         </div>
 
         <div id="pestanaPrecios" class="contenido-pestana">
@@ -73,13 +74,21 @@
           <div id="listaTextos"></div>
         </div>
 
-        <div class="contenido-guardar">
+        <div id="pestanaFotos" class="contenido-pestana" hidden>
+          <p class="admin-nota">
+            La foto se guarda al momento de elegirla. Se optimiza sola (WebP,
+            máximo 1600 px), así que puedes subirla directo del celular.
+          </p>
+          <div id="listaFotos" class="contenido-fotos"></div>
+        </div>
+
+        <div class="contenido-guardar" id="zonaGuardar">
           <button id="btnGuardar" class="btn btn-full" disabled>GUARDAR CAMBIOS</button>
           <p id="guardarMsg" class="disp-estado" role="status"></p>
         </div>
       </div>
     </section>
 
-    <script src="admin-contenido.js?v=2"></script>
+    <script src="admin-contenido.js?v=3"></script>
   </body>
 </html>
