@@ -3134,6 +3134,10 @@ html {
 .admin-form .form-row[hidden] {
   display: none;
 }
+/* Al bajar a la lista, que el header fijo no la tape. */
+#vistaLista {
+  scroll-margin-top: 9rem;
+}
 .admin-form h3 {
   font-size: 1.1rem;
   margin-bottom: 0.4rem;

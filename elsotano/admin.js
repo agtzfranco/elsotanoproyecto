@@ -215,6 +215,11 @@ document.addEventListener("DOMContentLoaded", () => {
       // Desde la vista de semana, los contadores llevan a esa lista.
       if (vista === "semana") cambiarVista("lista");
       else render();
+      // La lista queda debajo de los formularios: se cierran y se baja hasta
+      // ella para que se note el cambio.
+      cerrarFormularios();
+      const suave = !matchMedia("(prefers-reduced-motion: reduce)").matches;
+      $("vistaLista").scrollIntoView({ behavior: suave ? "smooth" : "auto", block: "start" });
     }),
   );
   $("btnPasadas").addEventListener("click", () => {
@@ -494,14 +499,17 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   /* ---------- abrir / cerrar formularios ---------- */
+  function cerrarFormularios() {
+    document.querySelectorAll(".admin-abrir").forEach((o) => {
+      o.setAttribute("aria-expanded", "false");
+      $(o.dataset.abre).hidden = true;
+    });
+  }
   document.querySelectorAll(".admin-abrir").forEach((b) =>
     b.addEventListener("click", () => {
       const form = $(b.dataset.abre);
       const abrir = form.hidden;
-      document.querySelectorAll(".admin-abrir").forEach((o) => {
-        o.setAttribute("aria-expanded", "false");
-        $(o.dataset.abre).hidden = true;
-      });
+      cerrarFormularios();
       form.hidden = !abrir;
       b.setAttribute("aria-expanded", String(abrir));
     }),
