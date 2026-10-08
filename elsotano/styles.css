@@ -4104,6 +4104,9 @@ h2 {
   background: #111;
   color: #f2f0e9;
 }
+#admin.contenido-editor h2 {
+  margin-bottom: 2rem;
+}
 .contenido-editor .admin-form {
   margin-bottom: 1rem;
 }
