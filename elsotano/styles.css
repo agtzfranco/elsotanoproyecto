@@ -3589,6 +3589,11 @@ h2 {
 .admin-mover .mv-msg:empty {
   display: none;
 }
+/* Al bajar a la lista o a un formulario, que el header fijo no los tape. */
+#vistaLista,
+.admin-form {
+  scroll-margin-top: 9rem;
+}
 #vistaLista[hidden],
 #vistaSemana[hidden] {
   display: none;
