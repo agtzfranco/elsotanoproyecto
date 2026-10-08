@@ -2593,26 +2593,38 @@ section h2.reveal-init,
   }
 }
 
-/* Tarjetas de servicios: entran desde la izquierda, una tras otra */
+/* Tarjetas de servicios: suben y la foto se descubre de abajo hacia
+   arriba, como una cortina; la segunda de cada fila entra un poco después */
 .service-card.reveal-init {
-  transform: translateX(-80px);
+  --retraso: 0s;
+  transform: translateY(48px) scale(0.97);
   transition:
-    opacity 0.8s ease,
-    transform 0.8s ease,
+    opacity 0.7s ease var(--retraso),
+    transform 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) var(--retraso),
     background-color 0.3s ease,
     border-color 0.3s ease,
     box-shadow 0.3s ease;
 }
 .service-card.reveal-init.img-visible {
-  transform: translateX(0);
+  transform: none;
 }
 .service-card.reveal-init:nth-child(2n) {
-  transition:
-    opacity 0.8s ease 0.2s,
-    transform 0.8s ease 0.2s,
-    background-color 0.3s ease,
-    border-color 0.3s ease,
-    box-shadow 0.3s ease;
+  --retraso: 0.15s;
+}
+.service-card.reveal-init .card-img {
+  clip-path: inset(100% 0 0 0);
+  transition: clip-path 0.9s cubic-bezier(0.65, 0, 0.35, 1) calc(var(--retraso) + 0.2s);
+}
+.service-card.reveal-init.img-visible .card-img {
+  clip-path: inset(0 0 0 0);
+}
+@media (prefers-reduced-motion: reduce) {
+  .service-card.reveal-init,
+  .service-card.reveal-init .card-img {
+    transform: none;
+    clip-path: none;
+    transition: none;
+  }
 }
 
 /* Tarjetas de servicios más compactas en altura */
